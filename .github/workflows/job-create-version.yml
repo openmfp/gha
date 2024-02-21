@@ -4,11 +4,11 @@ on:
     outputs:
       version:
         description: The prepared Version
-        value: ${{ jobs.createVersion.outputs.version }}
+        value: ${{ jobs.version.outputs.version }}
 
 jobs:
   # Creates a new semver to be used in the following workflow steps
-  createVersion:
+  version:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
