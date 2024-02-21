@@ -92,7 +92,7 @@ jobs:
           yq e -i '.version = "${{ needs.createVersion.outputs.version }}"' ${{ inputs.chartFolder }}/Chart.yaml
           yq e -i '.image.tag = "${{ needs.createVersion.outputs.version }}"' ${{ inputs.chartFolder }}/values.yaml
       - name: Push Helm chart
-        uses: bsord/helm-push@4.2.0
+        uses: bsord/helm-push@v4.1.0
         with:
           useOCIRegistry: true
           username: ${{ github.actor }}
