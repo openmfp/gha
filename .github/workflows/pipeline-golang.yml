@@ -1,0 +1,47 @@
+name: Pipeline
+on:
+  workflow_call:
+    inputs:
+      imageTagName:
+        required: true
+        type: string
+      chartFolder:
+        required: false
+        type: string
+        default: 'chart'
+      additionalTestFilesCommand:
+        required: false
+        type: string
+        default: '-f chart/test-values.yaml'
+    outputs:
+      version:
+        description: "The created Version"
+        value: ${{ jobs.createVersion.outputs.version }}
+
+jobs:
+  createVersion:
+    uses: ./.github/workflows/job-create-version.yml
+    secrets: inherit
+  
+  validateChart:
+    uses: ./.github/workflows/job-chart-validate.yml
+    with:
+      chartFolder: ${{ inputs.chartFolder }}
+      additionalTestFilesCommand: ${{ inputs.additionalTestFilesCommand }}
+    secrets: inherit
+
+  dockerBuildAndPush:
+    needs: [createVersion]
+    uses: ./.github/workflows/job-docker-build-push.yml
+    with:
+      imageTagName: ${{ inputs.imageTagName }}
+      version: ${{ needs.createVersion.outputs.version }}
+    secrets: inherit
+
+  release:
+    needs: [dockerBuildAndPush,validateChart,createVersion]
+    uses: ./.github/workflows/job-release.yml
+    secrets: inherit
+    with:
+      version: ${{ needs.createVersion.outputs.version }}
+      chartFolder: ${{ inputs.chartFolder }}
