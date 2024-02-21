@@ -25,7 +25,7 @@ jobs:
       useMake: ${{ inputs.useMake }}
 
   publishVersion:
-    needs: [createVersion]
+    needs: [createVersion,lint,testSource]
     uses: ./.github/workflows/job-version-publish.yaml
     with:
       version: v${{ needs.createVersion.outputs.version }}
