@@ -15,9 +15,6 @@ on:
         required: false
         type: string
         default: '-f chart/test-values.yaml'
-    secrets:
-      GCP_CREDENTIALS:
-        required: true
 
 jobs:
   # Validates the helm chart (lint/unittest)
