@@ -1,4 +1,4 @@
-name: test-source
+name: Golang Test Source
 on:
   workflow_call:
     inputs:

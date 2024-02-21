@@ -1,0 +1,43 @@
+name: pipeline
+on:
+  workflow_call:
+    inputs:
+      imageTagName:
+        required: true
+        type: string
+      chartFolder:
+        required: false
+        type: string
+        default: 'chart'
+      additionalTestFilesCommand:
+        required: false
+        type: string
+        default: '-f chart/test-values.yaml'
+      useMake:
+        required: false
+        type: boolean
+        default: false
+    outputs:
+      version:
+        description: "The created Version"
+        value: ${{ jobs.createVersion.outputs.version }}
+
+jobs:
+  createVersion:
+    uses: ./.github/workflows/job-create-version.yml
+    secrets: inherit
+  
+  lint:
+    uses: ./.github/workflows/job-golang-lint.yml
+
+  testSource:
+    uses: ./.github/workflows/job-golang-test-source.yml
+    with:
+      useMake: ${{ inputs.useMake }}
+
+  publishVersion:
+    needs: [createVersion]
+    uses: ./.github/workflows/job-version-publish.yaml
+    with:
+      version: v${{ needs.createVersion.outputs.version }}
+    secrets: inherit

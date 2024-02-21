@@ -1,4 +1,4 @@
-name: test-chart
+name: Test Helm Chart
 on:
   workflow_call:
     inputs:

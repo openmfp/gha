@@ -1,4 +1,4 @@
-name: create-version
+name: Create Version
 on:
   workflow_call:
     outputs:
