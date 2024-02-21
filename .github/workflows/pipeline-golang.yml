@@ -1,4 +1,4 @@
-name: Pipeline
+name: pipeline
 on:
   workflow_call:
     inputs:
@@ -30,6 +30,9 @@ jobs:
       additionalTestFilesCommand: ${{ inputs.additionalTestFilesCommand }}
     secrets: inherit
 
+  lint:
+    uses: ./.github/workflows/job-golang-lint.yml
+
   dockerBuildAndPush:
     needs: [createVersion]
     uses: ./.github/workflows/job-docker-build-push.yml
@@ -39,7 +42,7 @@ jobs:
     secrets: inherit
 
   release:
-    needs: [dockerBuildAndPush,validateChart,createVersion]
+    needs: [dockerBuildAndPush,validateChart,createVersion,lint]
     uses: ./.github/workflows/job-release.yml
     secrets: inherit
     with:
