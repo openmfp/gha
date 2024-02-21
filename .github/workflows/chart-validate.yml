@@ -15,10 +15,6 @@ on:
         required: false
         type: string
         default: '-f chart/test-values.yaml'
-    secrets:
-      GITHUB_TOKEN:
-        description: 'Token to access the repository'
-        required: true
 
 jobs:
   # Validates the helm chart (lint/unittest)
@@ -28,7 +24,7 @@ jobs:
       image: ghcr.io/project-jukebox/gha/infra/helm-unittest:latest
       credentials:
         username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
+        password: ${{ secrets.github_token }}
     steps:
       - uses: actions/checkout@v3
         with:
