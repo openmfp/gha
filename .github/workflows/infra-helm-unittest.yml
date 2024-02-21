@@ -2,8 +2,9 @@ name: Docker
 
 on:
   push:
-    branches: [ main ]
+    branches: [ nexus49-patch-1 ]
     paths:
+      - '.github/workflows/infra-helm-unittest.yml'
       - 'infra/infra-helm-unittest'
 
 jobs:
