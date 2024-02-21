@@ -21,7 +21,7 @@ jobs:
   run:
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/project-jukebox/gha/infra/helm-unittest:latest
+      image: ghcr.io/openmfp/gha/infra/helm-unittest:latest
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.github_token }}
