@@ -42,7 +42,7 @@ jobs:
 
   # Validates the helm chart (lint/unittest)
   validateChart:
-    uses: ./workflows/chart-validate.yaml
+    uses: .github/workflows/chart-validate.yaml
     with:
       chartFolder: ${{ inputs.chartFolder }}
       additionalTestFilesCommand: ${{ inputs.additionalTestFilesCommand }}
