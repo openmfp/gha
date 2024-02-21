@@ -43,5 +43,6 @@ jobs:
     uses: ./.github/workflows/job-release.yml
     secrets: inherit
     with:
+      imageTagName: ${{ inputs.imageTagName }}
       version: ${{ needs.createVersion.outputs.version }}
       chartFolder: ${{ inputs.chartFolder }}

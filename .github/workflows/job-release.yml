@@ -2,6 +2,9 @@ name: Pipeline
 on:
   workflow_call:
     inputs:
+      imageTagName:
+        required: true
+        type: string
       version:
         required: true
         type: string
@@ -36,11 +39,8 @@ jobs:
           access-token: ${{ secrets.GITHUB_TOKEN }}
           registry-url:  oci://ghcr.io/${{ inputs.imageTagName }}/helm
           chart-folder: ${{ inputs.chartFolder }}
-      # Without actions-ecosystem-action-get-latest-tag, actions-ecosystem-action-push-tag runs into an error, needs more investigation why
-      # https://github.com/actions-ecosystem/action-push-tag/issues/10
-      - uses: actions-ecosystem/action-get-latest-tag@v1
       - name: Publish GH Tag
-        uses: actions-ecosystem/action-push-tag@v1
+        uses: thejeff77/action-push-tag@v1.0.0
         with:
           tag: ${{ inputs.version }}
           message: '${{ inputs.version }}'
