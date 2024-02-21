@@ -27,8 +27,8 @@ jobs:
     uses: ./.github/workflows/job-create-version.yml
     secrets: inherit
   
-  validateChart:
-    uses: ./.github/workflows/job-chart-validate.yml
+  testChart:
+    uses: ./.github/workflows/job-test-chart.yml
     with:
       chartFolder: ${{ inputs.chartFolder }}
       additionalTestFilesCommand: ${{ inputs.additionalTestFilesCommand }}
@@ -37,8 +37,8 @@ jobs:
   lint:
     uses: ./.github/workflows/job-golang-lint.yml
 
-  validateSource:
-    uses: ./.github/workflows/job-golang-validate-source.yml
+  testSource:
+    uses: ./.github/workflows/job-golang-test-source.yml
     with:
       useMake: ${{ inputs.useMake }}
 
@@ -51,7 +51,7 @@ jobs:
     secrets: inherit
 
   release:
-    needs: [dockerBuildAndPush,lint,validateSource,validateChart]
+    needs: [createVersion,dockerBuildAndPush,lint,testSource,testChart]
     uses: ./.github/workflows/job-release.yml
     secrets: inherit
     with:

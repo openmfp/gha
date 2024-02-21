@@ -1,4 +1,4 @@
-name: chart-validation
+name: test-chart
 on:
   workflow_call:
     inputs:
@@ -17,8 +17,7 @@ on:
         default: '-f chart/test-values.yaml'
 
 jobs:
-  # Validates the helm chart (lint/unittest)
-  validateChart:
+  testChart:
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/openmfp/gha/infra/helm-unittest:latest
