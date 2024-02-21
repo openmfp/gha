@@ -1,4 +1,4 @@
-name: lint
+name: test-source
 on:
   workflow_call:
     inputs:
@@ -8,7 +8,7 @@ on:
         default: false
 
 jobs:
-  lint:
+  test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3

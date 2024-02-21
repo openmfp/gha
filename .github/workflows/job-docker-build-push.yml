@@ -10,7 +10,7 @@ on:
         type: string
 
 jobs:
-  dockerBuildAndPush:
+  docker:
     runs-on: ubuntu-latest
     steps:
       - name: Login to GitHub Container Registry
