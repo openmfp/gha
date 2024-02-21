@@ -21,7 +21,7 @@ on:
 jobs:
   # Creates a new semver to be used in the following workflow steps
   createVersion:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - name: Get Latest Version
@@ -50,7 +50,7 @@ jobs:
 
   # Builds the docker container and pushes it to the registry in case of main branch
   dockerBuildAndPush:
-    runs-on: [self-hosted]
+    runs-on: ubuntu-latest
     needs: [createVersion]
     steps:
       - name: Login to GitHub Container Registry
