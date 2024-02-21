@@ -35,7 +35,7 @@ jobs:
     uses: ./.github/workflows/job-docker-build-push.yml
     with:
       imageTagName: ${{ inputs.imageTagName }}
-      version: ${{ needs.createVersion.createVersion.outputs.version }}
+      version: ${{ needs.createVersion.outputs.version }}
     secrets: inherit
 
   release:
@@ -43,5 +43,5 @@ jobs:
     uses: ./.github/workflows/job-release.yml
     secrets: inherit
     with:
-      version: ${{ needs.createVersion.createVersion.outputs.version }}
+      version: ${{ needs.createVersion.outputs.version }}
       chartFolder: ${{ inputs.chartFolder }}

@@ -1,6 +1,10 @@
 name: Pipeline
 on:
   workflow_call:
+    outputs:
+      version:
+        description: The prepared Version
+        value: ${{ jobs.createVersion.outputs.version }}
 
 jobs:
   # Creates a new semver to be used in the following workflow steps
