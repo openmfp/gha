@@ -2,17 +2,6 @@ name: pipeline
 on:
   workflow_call:
     inputs:
-      imageTagName:
-        required: true
-        type: string
-      chartFolder:
-        required: false
-        type: string
-        default: 'chart'
-      additionalTestFilesCommand:
-        required: false
-        type: string
-        default: '-f chart/test-values.yaml'
       useMake:
         required: false
         type: boolean
