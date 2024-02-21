@@ -15,6 +15,10 @@ on:
         required: false
         type: string
         default: '-f chart/test-values.yaml'
+    secrets:
+      GITHUB_TOKEN:
+        description: 'Token to access the repository'
+        required: true
 
 jobs:
   # Validates the helm chart (lint/unittest)
