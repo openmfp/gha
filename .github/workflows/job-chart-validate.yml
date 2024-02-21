@@ -18,7 +18,7 @@ on:
 
 jobs:
   # Validates the helm chart (lint/unittest)
-  run:
+  validateChart:
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/openmfp/gha/infra/helm-unittest:latest
