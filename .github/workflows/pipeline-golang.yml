@@ -13,6 +13,10 @@ on:
         required: false
         type: string
         default: '-f chart/test-values.yaml'
+      useMake:
+        required: false
+        type: boolean
+        default: false
     outputs:
       version:
         description: "The created Version"
@@ -33,6 +37,11 @@ jobs:
   lint:
     uses: ./.github/workflows/job-golang-lint.yml
 
+  validateSource:
+    uses: ./.github/workflows/job-golang-validate-source.yml
+    with:
+      useMake: ${{ inputs.useMake }}
+
   dockerBuildAndPush:
     needs: [createVersion]
     uses: ./.github/workflows/job-docker-build-push.yml
@@ -42,7 +51,7 @@ jobs:
     secrets: inherit
 
   release:
-    needs: [dockerBuildAndPush,validateChart,createVersion,lint]
+    needs: [dockerBuildAndPush,lint,validateSource,validateChart]
     uses: ./.github/workflows/job-release.yml
     secrets: inherit
     with:

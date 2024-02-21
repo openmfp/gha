@@ -1,0 +1,29 @@
+name: lint
+on:
+  workflow_call:
+    inputs:
+      useMake:
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  validateSource:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+          cache: true
+      - name: Format
+        run: go fmt ./...
+      - name: Vet
+        run: go vet ./...
+      - name: Test Go
+        if: ${{ inputs.useMake == false }}
+        run: go test ./...
+      - name: Test Make
+        if: ${{ inputs.useMake == true }}
+        run: make test
