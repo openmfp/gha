@@ -1,6 +1,6 @@
 name: pipeline
 on:
-  push:
+  workflow_call:
 
 jobs:
   createVersion:
