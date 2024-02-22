@@ -9,12 +9,23 @@ on:
         required: false
         type: string
         default: 'chart'
+      additionalTestFilesCommand:
+        required: false
+        type: string
+        default: '-f chart/test-values.yaml'
 jobs:
   createVersion:
     uses: ./.github/workflows/job-create-version.yml
 
   test:
     uses: ./.github/workflows/job-node-test.yml
+
+  testChart:
+    uses: ./.github/workflows/job-test-chart.yml
+    with:
+      chartFolder: ${{ inputs.chartFolder }}
+      additionalTestFilesCommand: ${{ inputs.additionalTestFilesCommand }}
+    secrets: inherit
 
   dockerBuildAndPush:
     needs: [createVersion]
@@ -25,7 +36,7 @@ jobs:
     secrets: inherit
 
   release:
-    needs: [createVersion,dockerBuildAndPush, test]
+    needs: [createVersion,dockerBuildAndPush, test,testChart]
     uses: ./.github/workflows/job-release.yml
     secrets: inherit
     with:
