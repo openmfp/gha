@@ -19,7 +19,7 @@ jobs:
     - uses: actions/checkout@v2
     - uses: actions/setup-node@v1
       with:
-        node-version: 12
+        node-version: 18
         registry-url: https://npm.pkg.github.com/
     - name: Change Version
       uses: reedyuk/npm-version@1.1.1
