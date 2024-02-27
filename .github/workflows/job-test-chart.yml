@@ -22,7 +22,7 @@ jobs:
     container:
       image: ghcr.io/openmfp/gha/infra/helm-unittest:latest
       credentials:
-        username: openmfp-technical-user
+        username: ${{ github.actor }}
         password: ${{ secrets.github_token }}
     steps:
       - uses: actions/checkout@v3
