@@ -24,7 +24,7 @@ on:
         type: string
       versionRepoBranch:
         required: false
-        default: "main"
+        default: "dev"
         type: string
       version:
         required: true
