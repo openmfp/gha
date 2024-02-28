@@ -21,7 +21,7 @@ jobs:
       with:
         app-id: "838464"
         private-key: ${{ secrets.OPENMFP_PUBLISHER_PRIVATE_KEY }}
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
       with:
         token: ${{ steps.app-token.outputs.token }}
     - uses: actions/setup-node@v1
