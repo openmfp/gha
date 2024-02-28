@@ -1,0 +1,85 @@
+name: Update-Version-File
+
+on:
+  workflow_call:
+    inputs:
+      componentVersionKey:
+        required: true
+        type: string
+      githubUser:
+        required: false
+        default: "openmfp-technical-user"
+        type: string
+      githubUserEmail:
+        required: false
+        default: "openmfp@gmail.com"
+        type: string
+      versionsFile:
+        required: false
+        default: "versions.yaml"
+        type: string
+      versionRepo:
+        required: false
+        default: "https://github.com/openmfp/versions"
+        type: string
+      versionRepoBranch:
+        required: false
+        default: "main"
+        type: string
+      version:
+        required: true
+        type: string
+    secrets:
+      # This access token requires inter-repository access, so it cannot be the default GITHUB_TOKEN
+      GH_ACCESS_TOKEN:
+        required: true
+
+jobs:
+  version-update:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          repository: ${{ inputs.versionRepo }}
+          ref: ${{ inputs.versionRepoBranch }}
+          token: ${{ secrets.GH_ACCESS_TOKEN }}
+      - name: Setup yq@latest
+        run: |
+          if ! command -v yq &>/dev/null
+          then
+            mkdir -p /home/runner/.local/bin
+            wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /home/runner/.local/bin/yq &&\
+              chmod +x /home/runner/.local/bin/yq
+          fi
+      - name: Update till successful
+        shell: bash
+        run: |
+          count=1
+
+          git config --global user.name ${{ inputs.githubUser }}
+          git config --global user.email ${{ inputs.githubUserEmail }}
+
+          clean_and_retry () {
+            echo "trying for the $count time, to push"
+            count=$((count+1))
+            if [ $count -gt 10 ]
+            then
+              printf 'too many attempts, I give up' >&2
+              exit 1
+            fi
+            git reset --hard HEAD^1
+            git fetch
+            git rebase origin/${{ inputs.versionRepoBranch }}
+            apply_change_and_commit
+            git push origin ${{ inputs.versionRepoBranch }} || clean_and_retry
+          }
+
+          apply_change_and_commit () {
+            yq e -i '."${{ inputs.componentVersionKey }}" = "${{ inputs.version }}"' ${{ inputs.versionsFile }}
+            echo "set version ${{ inputs.version }} for ${{ inputs.componentVersionKey }} in ${{ inputs.versionsFile }}"
+            git add ${{ inputs.versionsFile }}
+            git commit -m "Updating version of [${{ inputs.componentVersionKey }}] to ${{ inputs.version }}" || echo "version was already up to date"
+          }
+
+          apply_change_and_commit
+          git push origin ${{ inputs.versionRepoBranch }} || clean_and_retry

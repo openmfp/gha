@@ -9,6 +9,9 @@ on:
         required: false
         type: string
         default: 'chart'
+      componentVersionKey:
+        required: true
+        type: string
       additionalTestFilesCommand:
         required: false
         type: string
@@ -43,3 +46,11 @@ jobs:
       imageTagName: ${{ inputs.imageTagName }}
       version: ${{ needs.createVersion.outputs.version }}
       chartFolder: ${{ inputs.chartFolder }}
+
+  updateVersionFile:
+    needs: [createVersion, release]
+    uses: ./.github/workflows/job-update-version-file.yml
+    secrets: inherit
+    with:
+      componentVersionKey: ${{ inputs.componentVersionKey }}
+      version: ${{ needs.createVersion.outputs.version }}
