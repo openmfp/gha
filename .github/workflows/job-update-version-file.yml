@@ -29,6 +29,10 @@ on:
       version:
         required: true
         type: string
+    secrets:
+      # This access token requires inter-repository access, so it cannot be the default GITHUB_TOKEN
+      GH_ACCESS_TOKEN:
+        required: true
 
 jobs:
   version-update:
@@ -41,7 +45,7 @@ jobs:
           private-key: ${{ secrets.OPENMFP_PUBLISHER_PRIVATE_KEY }}
       - uses: actions/checkout@v3
         with:
-          token: ${{ steps.app-token.outputs.token }}
+          token: ${{ secrets.GH_ACCESS_TOKEN }}
           repository: ${{ inputs.versionRepo }}
           ref: ${{ inputs.versionRepoBranch }}
       - name: Setup yq@latest
