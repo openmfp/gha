@@ -20,7 +20,7 @@ on:
         type: string
       versionRepo:
         required: false
-        default: "https://github.com/openmfp/versions"
+        default: "openmfp/versions"
         type: string
       versionRepoBranch:
         required: false
