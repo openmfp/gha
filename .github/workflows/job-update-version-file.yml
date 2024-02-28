@@ -29,10 +29,6 @@ on:
       version:
         required: true
         type: string
-    secrets:
-      # This access token requires inter-repository access, so it cannot be the default GITHUB_TOKEN
-      GH_ACCESS_TOKEN:
-        required: true
 
 jobs:
   version-update:
@@ -42,7 +38,6 @@ jobs:
         with:
           repository: ${{ inputs.versionRepo }}
           ref: ${{ inputs.versionRepoBranch }}
-          token: ${{ secrets.GH_ACCESS_TOKEN }}
       - name: Setup yq@latest
         run: |
           if ! command -v yq &>/dev/null
