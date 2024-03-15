@@ -29,5 +29,5 @@ jobs:
     needs: [createVersion,lint,testSource]
     uses: ./.github/workflows/job-version-publish.yaml
     with:
-      version: v${{ needs.createVersion.outputs.version }}
+      version: ${{ needs.createVersion.outputs.version }}
     secrets: inherit
