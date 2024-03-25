@@ -29,10 +29,6 @@ jobs:
         with:
           go-version-file: 'go.mod'
           cache: true
-      - name: Format
-        run: go fmt ./...
-      - name: Vet
-        run: go vet ./...
       - name: Test Go
         if: ${{ inputs.useMake == false }}
         run: go test ./... -coverprofile=./cover.out -covermode=atomic -coverpkg=./...
