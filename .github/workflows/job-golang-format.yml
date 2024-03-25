@@ -1,0 +1,17 @@
+name: Golang Format and Vet
+on:
+  workflow_call:
+jobs:
+  format:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+          cache: true
+      - name: Format
+        run: go fmt ./...
+      - name: Vet
+        run: go vet ./...

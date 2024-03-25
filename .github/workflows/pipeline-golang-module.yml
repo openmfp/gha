@@ -24,9 +24,12 @@ jobs:
     with:
       useMake: ${{ inputs.useMake }}
 
+  format:
+    uses: ./.github/workflows/job-golang-format.yml
+
   publishVersion:
     if: github.ref == 'refs/heads/main'
-    needs: [createVersion,lint,testSource]
+    needs: [createVersion,lint,testSource,format]
     uses: ./.github/workflows/job-version-publish.yaml
     with:
       version: ${{ needs.createVersion.outputs.version }}
