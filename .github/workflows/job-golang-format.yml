@@ -2,7 +2,7 @@ name: Golang Format and Vet
 on:
   workflow_call:
 jobs:
-  test:
+  format:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
