@@ -23,9 +23,10 @@ jobs:
           path: repo
       - name: Check for PR Creation
         run: |
-          pwd
+          cd repo
           gh auth login --with-token <<< "${{ secrets.GITHUB_TOKEN }}"
           if ! git diff --quiet origin/main..origin/reuse-metadata-proposal; then
+            echo "Changes detected, creating PR..."
             gh pr create --title "License File Update" --body "Auto-generated PR to update License Information" --base main --head reuse-metadata-proposal --repo ${{ github.repository }}
           fi
         env:
