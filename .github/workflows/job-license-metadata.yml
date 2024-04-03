@@ -27,9 +27,13 @@ jobs:
       - name: Check for PR Creation
         working-directory: ./repo
         run: |
-          if ! git diff --quiet origin/main..origin/reuse-metadata-proposal; then
-            echo "Changes detected, creating PR..."
-            gh pr create --title "License File Update" --body "Auto-generated PR to update License Information" --base main --head reuse-metadata-proposal --repo ${{ github.repository }}
+          # Check if the branch exists
+          if git show-ref --verify --quiet refs/remotes/origin/reuse-metadata-proposal; then
+            # check if the branch has changes to the main branch
+            if ! git diff --quiet origin/main..origin/reuse-metadata-proposal; then
+              echo "Changes detected, creating PR..."
+              gh pr create --title "License File Update" --body "Auto-generated PR to update License Information" --base main --head reuse-metadata-proposal --repo ${{ github.repository }}
+            fi
           fi
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
