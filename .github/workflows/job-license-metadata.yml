@@ -16,7 +16,7 @@ jobs:
       - uses: SAP/metadata-creation-tool-for-reuse@main
         with:
           repository_url: "${{ github.server_url }}/${{ github.repository }}"
-          access_token: "${{ secrets.GITHUB_TOKEN }}"
+          access_token: "${{ secrets.GH_ACCESS_TOKEN }}"
           copyright_owner: "SAP SE or an SAP affiliate company and openMFP contributors"
           upstream_contact: ""
       - name: Setup GitHub CLI
