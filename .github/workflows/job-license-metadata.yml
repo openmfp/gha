@@ -26,7 +26,7 @@ jobs:
       - name: Check for changes and create pull request
         run: |
           git fetch
-          if ! git diff --quiet main..reuse-metadata-proposal; then
+          if ! git diff --quiet origin/main..origin/reuse-metadata-proposal; then
             git checkout source-branch
             gh pr create --title "License File Update" --body "Auto-generated PR to update License Information" --base main --head reuse-metadata-proposal --repo ${{ github.repository }} --confirm
           fi
