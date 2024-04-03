@@ -27,7 +27,7 @@ jobs:
         run: |
           git fetch
           if ! git diff --quiet origin/main..origin/reuse-metadata-proposal; then
-            gh pr create --title "License File Update" --body "Auto-generated PR to update License Information" --base origin/main --head origin/reuse-metadata-proposal --repo ${{ github.repository }} --confirm
+            gh pr create --title "License File Update" --body "Auto-generated PR to update License Information" --base origin/main --head origin/reuse-metadata-proposal --repo ${{ github.repository }}
           fi
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
