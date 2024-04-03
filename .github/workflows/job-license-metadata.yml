@@ -13,12 +13,12 @@ jobs:
     name: "Metadata Creation Tool"
     steps:
       - uses: actions/checkout@v4
-      # - uses: SAP/metadata-creation-tool-for-reuse@main
-      #   with:
-      #     repository_url: "${{ github.server_url }}/${{ github.repository }}"
-      #     access_token: "${{ secrets.GITHUB_TOKEN }}"
-      #     copyright_owner: "(20xx-)20xx SAP SE or an SAP affiliate company and openMFP contributors"
-      #     upstream_contact: ""
+      - uses: SAP/metadata-creation-tool-for-reuse@main
+        with:
+          repository_url: "${{ github.server_url }}/${{ github.repository }}"
+          access_token: "${{ secrets.GITHUB_TOKEN }}"
+          copyright_owner: "SAP SE or an SAP affiliate company and openMFP contributors"
+          upstream_contact: ""
       - name: Setup GitHub CLI
         run: |
           gh auth login --with-token <<< "${{ secrets.GITHUB_TOKEN }}"
