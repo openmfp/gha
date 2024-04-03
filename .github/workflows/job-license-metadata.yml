@@ -3,7 +3,6 @@ name: "Update License Metadata"
 on:
   workflow_call:
     secrets:
-      # This access token requires inter-repository access, so it cannot be the default GITHUB_TOKEN
       GH_ACCESS_TOKEN:
         required: true
 
