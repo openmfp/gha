@@ -21,7 +21,7 @@ jobs:
       #     upstream_contact: ""
       - name: Setup GitHub CLI
         run: |
-          gh auth login --with-token <<< "${{ secrets.GH_ACCESS_TOKEN }}"
+          gh auth login --with-token <<< "${{ secrets.GITHUB_TOKEN }}"
 
       - name: Check for changes and create pull request
         run: |
