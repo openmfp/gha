@@ -18,14 +18,17 @@ jobs:
           access_token: "${{ secrets.GH_ACCESS_TOKEN }}"
           copyright_owner: "(20xx-)20xx SAP SE or an SAP affiliate company and openMFP contributors"
           upstream_contact: ""
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v3
-        with:
-          token: ${{ secrets.GH_ACCESS_TOKEN }}
-          commit-message: "Update from source branch"
-          title: "Update from source branch"
-          body: "This PR was auto-generated to merge changes from source branch to main."
-          branch: reuse-metadata-proposal
-          base: "main"
-          delete-branch: true
-          draft: false
+      - uses: actions/checkout@v4
+      - name: Setup GitHub CLI
+        run: |
+          gh auth login --with-token <<< "${{ secrets.GH_ACCESS_TOKEN }}"
+
+      - name: Check for changes and create pull request
+        run: |
+          git fetch
+          if ! git diff --quiet main..reuse-metadata-proposal; then
+            git checkout source-branch
+            gh pr create --title "License File Update" --body "Auto-generated PR to update License Information" --base main --head reuse-metadata-proposal --repo ${{ github.repository }} --confirm
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
