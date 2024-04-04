@@ -1,0 +1,38 @@
+name: "Update License Metadata"
+
+on:
+  workflow_call:
+    secrets:
+      GH_ACCESS_TOKEN:
+        required: true
+
+jobs:
+  create_metadata_proposal:
+    runs-on: ubuntu-latest
+    name: "Metadata Creation Tool"
+    steps:
+      - uses: SAP/metadata-creation-tool-for-reuse@main
+        with:
+          repository_url: "${{ github.server_url }}/${{ github.repository }}"
+          access_token: "${{ secrets.GH_ACCESS_TOKEN }}"
+          copyright_owner: "SAP SE or an SAP affiliate company and openMFP contributors"
+          upstream_contact: ""
+      - name: Login Gitub CLI
+        run: |
+          gh auth login --with-token <<< "${{ secrets.GITHUB_TOKEN }}"
+      - uses: actions/checkout@v4
+        with:
+          path: repo
+      - name: Check for PR Creation
+        working-directory: ./repo
+        run: |
+          # Check if the branch exists
+          if git show-ref --verify --quiet refs/remotes/origin/reuse-metadata-proposal; then
+            # check if the branch has changes to the main branch
+            if ! git diff --quiet origin/main..origin/reuse-metadata-proposal; then
+              echo "Changes detected, creating PR..."
+              gh pr create --title "License File Update" --body "Auto-generated PR to update License Information" --base main --head reuse-metadata-proposal --repo ${{ github.repository }}
+            fi
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
