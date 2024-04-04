@@ -1,3 +1,8 @@
+# openMFP - Github Actions Reuse Workflows
+
+[![REUSE status](
+https://api.reuse.software/badge/github.com/openmfp/gha)](https://api.reuse.software/info/github.com/openmfp/gha)
+
 ## Description
 
 This repository holds reusable gha workflow and pipeline definitions
