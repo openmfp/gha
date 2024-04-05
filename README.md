@@ -1,3 +1,8 @@
+# openMFP - Github Actions Reuse Workflows
+
+[![REUSE status](
+https://api.reuse.software/badge/github.com/openmfp/gha)](https://api.reuse.software/info/github.com/openmfp/gha)
+
 ## Description
 
 This repository holds reusable gha workflow and pipeline definitions
@@ -39,4 +44,4 @@ Please refer to the [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) file in this reposi
 
 ## Licensing
 
-Copyright 2024 SAP SE or an SAP affiliate company and openMFP contributors. Please see our [LICENSE](LICENSE) for copyright and license information. Detailed information including third-party components and their licensing/copyright information is available [via the REUSE tool](https://api.reuse.software/info/github.com/openmfp/golang-commons).
+Copyright 2024 SAP SE or an SAP affiliate company and openMFP contributors. Please see our [LICENSE](LICENSE) for copyright and license information. Detailed information including third-party components and their licensing/copyright information is available [via the REUSE tool](https://api.reuse.software/info/github.com/openmfp/gha).
