@@ -39,6 +39,7 @@ jobs:
         uses: vladopajic/go-test-coverage@v2
         with:
           profile: cover.out
+          config: ./.testcoverage.yml
           # local-prefix: github.com/org/project
           threshold-file: ${{ inputs. coverageThreasholdFile }}
           threshold-package: ${{ inputs. coverageThreasholdPackage }}
