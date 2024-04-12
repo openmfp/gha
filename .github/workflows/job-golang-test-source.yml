@@ -48,7 +48,7 @@ jobs:
           threshold-file: ${{ inputs. coverageThreasholdFile }}
           threshold-package: ${{ inputs. coverageThreasholdPackage }}
           threshold-total: ${{ inputs. coverageThreasholdTotal }}
-      - name: Check Test Coverage
+      - name: Check Test Coverage with Config
         uses: vladopajic/go-test-coverage@v2
         if: ${{ inputs.useLocalCoverageConfig == true }}
         with:
