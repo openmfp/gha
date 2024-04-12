@@ -6,6 +6,18 @@ on:
         required: false
         type: boolean
         default: false
+      coverageThreasholdFile:
+        required: false
+        type: number
+        default: 80
+      coverageThreasholdPackage:
+        required: false
+        type: number
+        default: 80
+      coverageThreasholdTotal:
+        required: false
+        type: number
+        default: 95
       useLocalCoverageConfig:
         required: false
         type: boolean
@@ -28,6 +40,9 @@ jobs:
     with:
       useMake: ${{ inputs.useMake }}
       useLocalCoverageConfig: ${{ inputs.useLocalCoverageConfig }}
+      coverageThreasholdFile: ${{ inputs.coverageThreasholdFile }}
+      coverageThreasholdPackage: ${{ inputs.coverageThreasholdPackage }}
+      coverageThreasholdTotal: ${{ inputs.coverageThreasholdTotal }}
   format:
     uses: ./.github/workflows/job-golang-format.yml
 
