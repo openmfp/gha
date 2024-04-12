@@ -23,6 +23,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           path: repo
+          fetch-depth: 0  # Fetch all history for git diff
       - name: Check for PR Creation
         working-directory: ./repo
         run: |
