@@ -29,10 +29,14 @@ jobs:
           # Check if the branch exists
           if git show-ref --verify --quiet refs/remotes/origin/reuse-metadata-proposal; then
             # check if the branch has changes to the main branch
-            if ! git diff --quiet origin/main..origin/reuse-metadata-proposal; then
+            if ! [[ git diff --quiet origin/main..origin/reuse-metadata-proposal ]]; then
               echo "Changes detected, creating PR..."
               gh pr create --title "License File Update" --body "Auto-generated PR to update License Information" --base main --head reuse-metadata-proposal --repo ${{ github.repository }}
+            else
+              echo "No changes in branch, skipping PR creation"
             fi
+          else
+            echo "Branch does not exist, skipping PR creation"
           fi
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
