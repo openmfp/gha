@@ -6,6 +6,10 @@ on:
         required: false
         type: boolean
         default: false
+      useLocalCoverageConfig:
+        required: false
+        type: boolean
+        default: false
     outputs:
       version:
         description: "The created Version"
@@ -23,7 +27,7 @@ jobs:
     uses: ./.github/workflows/job-golang-test-source.yml
     with:
       useMake: ${{ inputs.useMake }}
-
+      useLocalCoverageConfig: ${{ inputs.useLocalCoverageConfig }}
   format:
     uses: ./.github/workflows/job-golang-format.yml
 
