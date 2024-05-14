@@ -17,6 +17,10 @@ on:
         required: false
         type: boolean
         default: false
+      useTask:
+        required: false
+        type: boolean
+        default: false
       coverageThreasholdFile:
         required: false
         type: number
@@ -52,11 +56,14 @@ jobs:
 
   lint:
     uses: ./.github/workflows/job-golang-lint.yml
+    with:
+      useTask: ${{ inputs.useTask }}
 
   testSource:
     uses: ./.github/workflows/job-golang-test-source.yml
     with:
       useMake: ${{ inputs.useMake }}
+      useTask: ${{ inputs.useTask }}
       useLocalCoverageConfig: ${{ inputs.useLocalCoverageConfig }}
       coverageThreasholdFile: ${{ inputs.coverageThreasholdFile }}
       coverageThreasholdPackage: ${{ inputs.coverageThreasholdPackage }}
@@ -64,6 +71,8 @@ jobs:
 
   format:
     uses: ./.github/workflows/job-golang-format.yml
+    with:
+      useTask: ${{ inputs.useTask }}
 
   dockerBuildAndPush:
     needs: [createVersion]

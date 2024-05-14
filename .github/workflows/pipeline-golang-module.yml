@@ -6,6 +6,10 @@ on:
         required: false
         type: boolean
         default: false
+      useTask:
+        required: false
+        type: boolean
+        default: false
       coverageThreasholdFile:
         required: false
         type: number
@@ -39,6 +43,7 @@ jobs:
     uses: ./.github/workflows/job-golang-test-source.yml
     with:
       useMake: ${{ inputs.useMake }}
+      useTask: ${{ inputs.useTask }}
       useLocalCoverageConfig: ${{ inputs.useLocalCoverageConfig }}
       coverageThreasholdFile: ${{ inputs.coverageThreasholdFile }}
       coverageThreasholdPackage: ${{ inputs.coverageThreasholdPackage }}

@@ -1,6 +1,11 @@
-name: Golang Format and Vet
+name: Golang Format
 on:
   workflow_call:
+    inputs:
+      useTask:
+        required: false
+        type: boolean
+        default: false
 jobs:
   format:
     runs-on: ubuntu-latest
@@ -11,7 +16,14 @@ jobs:
         with:
           go-version-file: 'go.mod'
           cache: true
+      - name: Install Task
+        uses: arduino/setup-task@v2
+        if: ${{ inputs.useTask }}
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Format
+        if: ${{ !inputs.useTask }}
         run: go fmt ./...
-      - name: Vet
-        run: go vet ./...
+      - name: Format task
+        if: ${{ inputs.useTask }}
+        run: task fmt
