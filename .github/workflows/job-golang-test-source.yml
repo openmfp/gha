@@ -2,11 +2,6 @@ name: Golang Test Source
 on:
   workflow_call:
     inputs:
-      # deprecated, will be removed
-      useMake:
-        required: false
-        type: boolean
-        default: false
       useTask:
         required: false
         type: boolean
@@ -38,11 +33,8 @@ jobs:
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Test Go
-        if: ${{ inputs.useMake == false && inputs.useTask == false }}
+        if: ${{ inputs.useTask == false }}
         run: go test ./... -coverprofile=./cover.out -covermode=atomic -coverpkg=./...
-      - name: Test Make
-        if: ${{ inputs.useMake == true }}
-        run: make test
       - name: Test task
         if: ${{ inputs.useTask == true }}
         run: task cover

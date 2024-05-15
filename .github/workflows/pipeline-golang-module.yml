@@ -2,10 +2,6 @@ name: pipeline
 on:
   workflow_call:
     inputs:
-      useMake:
-        required: false
-        type: boolean
-        default: false
       useTask:
         required: false
         type: boolean
@@ -38,22 +34,21 @@ jobs:
   
   lint:
     uses: ./.github/workflows/job-golang-lint.yml
+    with:
+      useTask: ${{ inputs.useTask }}
 
   testSource:
     uses: ./.github/workflows/job-golang-test-source.yml
     with:
-      useMake: ${{ inputs.useMake }}
       useTask: ${{ inputs.useTask }}
       useLocalCoverageConfig: ${{ inputs.useLocalCoverageConfig }}
       coverageThreasholdFile: ${{ inputs.coverageThreasholdFile }}
       coverageThreasholdPackage: ${{ inputs.coverageThreasholdPackage }}
       coverageThreasholdTotal: ${{ inputs.coverageThreasholdTotal }}
-  format:
-    uses: ./.github/workflows/job-golang-format.yml
 
   publishVersion:
     if: github.ref == 'refs/heads/main'
-    needs: [createVersion,lint,testSource,format]
+    needs: [createVersion,lint,testSource]
     uses: ./.github/workflows/job-version-publish.yaml
     with:
       version: ${{ needs.createVersion.outputs.version }}
