@@ -43,7 +43,14 @@ jobs:
       working-directory: ${{ inputs.workingDirectory }}
       env:
         NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
-    - name: Commit, Tag and Push
+    # npm version does not commit on subdirectories, so we commit manually
+    - name: Commit and Tag
+      if: workingDirectory != './'
+      run: |
+        git add .
+        git commit -m "[no ci] Release ${{inputs.version}}"
+        git tag -a ${{inputs.version}} -m "[no ci] Release ${{inputs.version}}"
+    - name: Push
       run: |
         git push origin
         git push origin --tags
