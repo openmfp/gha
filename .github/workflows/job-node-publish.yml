@@ -18,6 +18,7 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    if: github.ref == inputs.mainBranchRef
     steps:
     - name: Setup Git
       run: |
@@ -31,7 +32,6 @@ jobs:
     - uses: actions/checkout@v4
       with:
         token: ${{ steps.app-token.outputs.token }}
-        ref: ${{ inputs.mainBranchRef }}
     - uses: actions/setup-node@v1
       with:
         node-version: 18
