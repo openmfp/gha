@@ -49,6 +49,8 @@ jobs:
       run: |
         git add .
         git commit -m "[no ci] Release ${{inputs.version}}"
+        git fetch
+        git rebase
         git tag -a ${{inputs.version}} -m "[no ci] Release ${{inputs.version}}"
     - name: Push
       run: |
