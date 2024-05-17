@@ -45,7 +45,7 @@ jobs:
         NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
     # npm version does not commit on subdirectories, so we commit manually
     - name: Commit and Tag
-      if: workingDirectory != './'
+      if: inputs.workingDirectory != './'
       run: |
         git add .
         git commit -m "[no ci] Release ${{inputs.version}}"
