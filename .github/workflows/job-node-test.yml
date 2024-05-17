@@ -1,6 +1,11 @@
 name: Node Test
 on:
   workflow_call:
+    inputs:
+      workingDirectory:
+        required: false
+        type: string
+        default: './'
 
 jobs:
   build:
@@ -13,4 +18,8 @@ jobs:
         node-version: 18
         registry-url: https://npm.pkg.github.com/
     - run: npm ci
+      env:
+        NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      working-directory: ${{ inputs.workingDirectory }}
     - run: npm test
+      working-directory: ${{ inputs.workingDirectory }}

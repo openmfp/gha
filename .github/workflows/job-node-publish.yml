@@ -6,6 +6,10 @@ on:
         type: string
         description: 'Version'
         required: true
+      workingDirectory:
+        required: false
+        type: string
+        default: './'
 
 jobs:
   publish:
@@ -32,6 +36,7 @@ jobs:
       run: |
         npm version ${{inputs.version}} -m "[no ci] Release ${{inputs.version}}"
         npm publish
+      working-directory: ${{ inputs.workingDirectory }}
       env:
         NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
     - name: Commit, Tag and Push
