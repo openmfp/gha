@@ -1,6 +1,15 @@
 name: pipeline
 on:
   workflow_call:
+    inputs:
+      workingDirectory:
+        required: false
+        type: string
+        default: './'
+      mainBranchRef:
+        required: false
+        type: string
+        default: 'refs/heads/main'
 
 jobs:
   createVersion:
@@ -8,6 +17,9 @@ jobs:
 
   build:
     uses: ./.github/workflows/job-node-test.yml
+    secrets: inherit
+    with:
+      workingDirectory: ${{ inputs.workingDirectory }}
 
   publish:
     needs: [createVersion, build]
@@ -15,4 +27,6 @@ jobs:
     secrets: inherit
     with:
       version: ${{ needs.createVersion.outputs.version }}
+      workingDirectory: ${{ inputs.workingDirectory }}
+      mainBranchRef: ${{ inputs.mainBranchRef }}
 

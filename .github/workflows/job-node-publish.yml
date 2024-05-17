@@ -6,11 +6,19 @@ on:
         type: string
         description: 'Version'
         required: true
+      workingDirectory:
+        required: false
+        type: string
+        default: './'
+      mainBranchRef:
+        required: false
+        type: string
+        default: 'refs/heads/main'
 
 jobs:
   publish:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == inputs.mainBranchRef
     steps:
     - name: Setup Git
       run: |
@@ -32,6 +40,7 @@ jobs:
       run: |
         npm version ${{inputs.version}} -m "[no ci] Release ${{inputs.version}}"
         npm publish
+      working-directory: ${{ inputs.workingDirectory }}
       env:
         NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
     - name: Commit, Tag and Push
