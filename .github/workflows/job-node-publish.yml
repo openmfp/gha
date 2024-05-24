@@ -39,7 +39,6 @@ jobs:
     - name: Publish
       run: |
         npm version ${{inputs.version}} -m "[no ci] Release ${{inputs.version}}"
-        npm run build
         npm publish
       working-directory: ${{ inputs.workingDirectory }}
       env:
