@@ -13,7 +13,7 @@ on:
         required: false
         type: string
         default: '-f chart/test-values.yaml'
-      useMake:
+      useTask:
         required: false
         type: boolean
         default: false
@@ -52,18 +52,17 @@ jobs:
 
   lint:
     uses: ./.github/workflows/job-golang-lint.yml
+    with:
+      useTask: ${{ inputs.useTask }}
 
   testSource:
     uses: ./.github/workflows/job-golang-test-source.yml
     with:
-      useMake: ${{ inputs.useMake }}
+      useTask: ${{ inputs.useTask }}
       useLocalCoverageConfig: ${{ inputs.useLocalCoverageConfig }}
       coverageThreasholdFile: ${{ inputs.coverageThreasholdFile }}
       coverageThreasholdPackage: ${{ inputs.coverageThreasholdPackage }}
       coverageThreasholdTotal: ${{ inputs.coverageThreasholdTotal }}
-
-  format:
-    uses: ./.github/workflows/job-golang-format.yml
 
   dockerBuildAndPush:
     needs: [createVersion]
@@ -74,7 +73,7 @@ jobs:
     secrets: inherit
 
   release:
-    needs: [createVersion,dockerBuildAndPush,lint,testSource,format,testChart]
+    needs: [createVersion,dockerBuildAndPush,lint,testSource,testChart]
     uses: ./.github/workflows/job-release.yml
     secrets: inherit
     with:
