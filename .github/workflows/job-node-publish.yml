@@ -36,6 +36,10 @@ jobs:
       with:
         node-version: 18
         registry-url: https://npm.pkg.github.com/
+    - uses: actions/download-artifact@v3
+      with:
+        name: target
+        path: dist
     - name: Publish
       run: |
         npm version ${{inputs.version}} -m "[no ci] Release ${{inputs.version}}"
