@@ -28,5 +28,5 @@ jobs:
         with:
           push: ${{ github.ref == 'refs/heads/main' }}
           tags: ${{ inputs.imageTagName }}:${{ inputs.version }}
-        secrets: |
-          NODE_AUTH_TOKEN=${{ secrets.GITHUB_TOKEN }}
+          secrets: |
+            NODE_AUTH_TOKEN=${{ secrets.GITHUB_TOKEN }}
