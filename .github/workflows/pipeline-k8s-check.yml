@@ -5,16 +5,44 @@ name: Kube Checks
 on:
   workflow_call:
     inputs:
-      kube_lint_target:
-        description: 'The directory to run kube-linter'
-        required: false
-        default: "./"
+      # REQUIRED
+      kube_lint_directory:
+        description: 'Path of file or directory to scan with kube-linter'
+        required: true
         type: string
-      kube_score_target:
-        description: 'The yaml or yaml files to run kube-score on'
-        required: false
-        default: "./**/*.y*ml"
+      kube_score_manifests_folders:
+        description: 'An array of relative paths to manifests(not directories) to analyze with kube-score'
+        required: true
         type: string
+
+      # OPTIONAL kube-score
+      kube_score_version:
+        description: 'Version of kube-score to use'
+        required: false
+        default: 'v1.18.0'
+        type: string
+      kube_score_args:
+        description: "You can pass additional flags like --disable-ignore-checks-annotations or --disable-optional-checks-annotations"
+        required: false
+        type: string
+      kube_score_continue_on_error:
+        description: "Continue in case of errors"
+        required: false
+        default: false
+        type: bool
+
+      # OPTIONAL kube-lint
+      kube_lint_version:
+        description: 'kube-linter release version to use'
+        required: false
+        default: "v0.6.8"
+        type: string
+      kube_lint_continue_on_error:
+        description: "Continue in case of errors"
+        required: false
+        default: false
+        type: bool
+
 
 jobs:
   kube-checks:
@@ -24,22 +52,19 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install Kube-Score
-        run: |
-          curl -LO https://github.com/zegl/kube-score/releases/download/v1.18.0/kube-score_1.18.0_linux_amd64.tar.gz
-          tar -xzf kube-score_1.18.0_linux_amd64.tar.gz
-          mv kube-score /usr/local/bin/
+      - name: kube-score install
+        uses: yokawasa/action-setup-kube-tools@v0.11.1
+        with:
+          kube-score: ${{ inputs.kube_score_version }}
 
-      - name: Install Kube-Linter
+      - name: kube-score run
         run: |
-          curl -LO https://github.com/stackrox/kube-linter/releases/download/v0.6.8/kube-linter-linux.tar.gz
-          tar -xzf kube-linter-linux.tar.gz
-          mv kube-linter /usr/local/bin/
+          kube-score score ${{ inputs.kube_score_manifests_folders }} ${{ inputs.kube_score_args }}
+        continue-on-error:  ${{ inputs.kube_score_continue_on_error }}
 
-      - name: Run Kube-Score
-        run: |
-          kube-score score ${{ inputs.kube_score_target }}
-
-      - name: Run Kube-Linter
-        run: |
-          kube-linter lint ${{ inputs.kube_lint_target }}
+      - name: kube-linter
+        uses: stackrox/kube-linter-action@v1.0.5
+        with:
+          directory: ${{ inputs.kube_lint_directory }}
+          version: ${{ inputs.kube_lint_version }}
+        continue-on-error:  ${{ inputs.kube_lint_continue_on_error }}
