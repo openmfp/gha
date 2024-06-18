@@ -21,6 +21,7 @@ jobs:
     secrets: inherit
     with:
       workingDirectory: ${{ inputs.workingDirectory }}
+      release_branch: ${{ inputs.release_branch }}
 
   publish:
     needs: [createVersion, build]

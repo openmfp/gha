@@ -16,12 +16,19 @@ on:
         required: false
         type: string
         default: '-f chart/test-values.yaml'
+      release_branch:
+        description: 'Name of the release branch'
+        required: false
+        type: string
+        default: 'main'
 jobs:
   createVersion:
     uses: ./.github/workflows/job-create-version.yml
 
   test:
     uses: ./.github/workflows/job-node-test.yml
+    with:
+      release_branch: ${{ inputs.release_branch }}
 
   testChart:
     uses: ./.github/workflows/job-test-chart.yml
@@ -36,6 +43,7 @@ jobs:
     with:
       imageTagName: ${{ inputs.imageTagName }}
       version: ${{ needs.createVersion.outputs.version }}
+      release_branch: ${{ inputs.release_branch }}
     secrets: inherit
 
   release:
@@ -46,6 +54,7 @@ jobs:
       imageTagName: ${{ inputs.imageTagName }}
       version: ${{ needs.createVersion.outputs.version }}
       chartFolder: ${{ inputs.chartFolder }}
+      release_branch: ${{ inputs.release_branch }}
 
   updateVersionFile:
     needs: [createVersion, release]

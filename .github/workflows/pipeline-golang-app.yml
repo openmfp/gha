@@ -70,6 +70,7 @@ jobs:
     with:
       imageTagName: ${{ inputs.imageTagName }}
       version: ${{ needs.createVersion.outputs.version }}
+      release_branch: ${{ inputs.release_branch }}
     secrets: inherit
 
   release:
@@ -80,3 +81,4 @@ jobs:
       imageTagName: ${{ inputs.imageTagName }}
       version: ${{ needs.createVersion.outputs.version }}
       chartFolder: ${{ inputs.chartFolder }}
+      release_branch: ${{ inputs.release_branch }}
