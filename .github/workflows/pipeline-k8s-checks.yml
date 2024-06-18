@@ -1,0 +1,60 @@
+# This workflow performs static code analysis of your Kubernetes object definitions
+# using kube-score and kube-linter tools.
+name: K8S Checks
+
+on:
+  workflow_call:
+    inputs:
+      # REQUIRED
+      kube_lint_target_directory:
+        description: 'Path of file or directory to scan with kube-linter'
+        required: true
+        type: string
+      kube_score_target_manifests:
+        description: 'A list(with no commas) of relative paths to manifests (not directories) to analyze with kube-score'
+        required: true
+        type: string
+
+      # OPTIONAL kube-score
+      kube_score_version:
+        description: 'Version of kube-score to use'
+        required: false
+        default: 'v1.18.0'
+        type: string
+      kube_score_args:
+        description: 'You can pass additional flags like --disable-ignore-checks-annotations or --disable-optional-checks-annotations'
+        required: false
+        default: ''
+        type: string
+
+      # OPTIONAL kube-lint
+      kube_lint_version:
+        description: 'kube-linter release version to use'
+        required: false
+        default: 'v0.6.8'
+        type: string
+
+
+jobs:
+  kube-checks:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: kube-score install
+        uses: yokawasa/action-setup-kube-tools@v0.11.1
+        with:
+          kube-score: ${{ inputs.kube_score_version }}
+
+      - name: kube-score run
+        run: |
+          kube-score score ${{ inputs.kube_score_target_manifests }} ${{ inputs.kube_score_args }}
+
+      - name: kube-linter
+        if: always() # run this step even if previous fails
+        uses: stackrox/kube-linter-action@v1.0.5
+        with:
+          directory: ${{ inputs.kube_lint_target_directory }}
+          version: ${{ inputs.kube_lint_version }}
