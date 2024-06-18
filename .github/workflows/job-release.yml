@@ -16,7 +16,7 @@ on:
         required: false
         type: string
         default: 'main'
-      skip_image_tag:
+      skip_version:
         required: false
         type: boolean
         default: false
@@ -36,7 +36,7 @@ jobs:
               chmod +x /home/runner/.local/bin/yq
           fi
       - name: Update Image Tag
-        if: ${{ !inputs.skip_image_tag }}
+        if: ${{ !inputs.skip_version }}
         run: |
           yq e -i '.version = "${{ inputs.version }}"' ${{ inputs.chartFolder }}/Chart.yaml
           yq e -i '.image.tag = "${{ inputs.version }}"' ${{ inputs.chartFolder }}/values.yaml

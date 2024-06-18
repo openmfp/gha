@@ -2,6 +2,9 @@ name: pipeline-chart
 on:
   workflow_call:
     inputs:
+      imageTagName:
+        required: true
+        type: string
       chartFolder:
         required: false
         type: string
@@ -36,7 +39,7 @@ jobs:
     uses: ./.github/workflows/job-release.yml
     secrets: inherit
     with:
-      skip_image_tag: true
+      skip_version: true
       version: ${{ needs.createVersion.outputs.version }}
       chartFolder: ${{ inputs.chartFolder }}
       release_branch: ${{ inputs.release_branch }}
