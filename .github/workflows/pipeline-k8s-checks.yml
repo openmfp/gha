@@ -22,11 +22,12 @@ on:
         default: 'v1.18.0'
         type: string
       kube_score_args:
-        description: "You can pass additional flags like --disable-ignore-checks-annotations or --disable-optional-checks-annotations"
+        description: 'You can pass additional flags like --disable-ignore-checks-annotations or --disable-optional-checks-annotations'
         required: false
+        default: ''
         type: string
       kube_score_continue_on_error:
-        description: "Continue in case of errors"
+        description: 'Continue in case of errors'
         required: false
         default: false
         type: bool
@@ -35,10 +36,10 @@ on:
       kube_lint_version:
         description: 'kube-linter release version to use'
         required: false
-        default: "v0.6.8"
+        default: 'v0.6.8'
         type: string
       kube_lint_continue_on_error:
-        description: "Continue in case of errors"
+        description: 'Continue in case of errors'
         required: false
         default: false
         type: bool
