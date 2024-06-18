@@ -26,11 +26,6 @@ on:
         required: false
         default: ''
         type: string
-      kube_score_continue_on_error:
-        description: 'Continue in case of errors'
-        required: false
-        default: false
-        type: boolean
 
       # OPTIONAL kube-lint
       kube_lint_version:
@@ -38,11 +33,7 @@ on:
         required: false
         default: 'v0.6.8'
         type: string
-      kube_lint_continue_on_error:
-        description: 'Continue in case of errors'
-        required: false
-        default: false
-        type: boolean
+
 
 jobs:
   kube-checks:
@@ -60,11 +51,10 @@ jobs:
       - name: kube-score run
         run: |
           kube-score score ${{ inputs.kube_score_target_manifests }} ${{ inputs.kube_score_args }}
-        continue-on-error: ${{ inputs.kube_score_continue_on_error }}
 
       - name: kube-linter
+        if: always() # run this step even if previous fails
         uses: stackrox/kube-linter-action@v1.0.5
         with:
           directory: ${{ inputs.kube_lint_target_directory }}
           version: ${{ inputs.kube_lint_version }}
-        continue-on-error: ${{ inputs.kube_lint_continue_on_error }}
