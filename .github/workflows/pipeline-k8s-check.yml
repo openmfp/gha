@@ -6,11 +6,11 @@ on:
   workflow_call:
     inputs:
       # REQUIRED
-      kube_lint_directory:
+      kube_lint_target_directory:
         description: 'Path of file or directory to scan with kube-linter'
         required: true
         type: string
-      kube_score_manifests_folders:
+      kube_score_target_manifests:
         description: 'An array of relative paths to manifests(not directories) to analyze with kube-score'
         required: true
         type: string
@@ -59,12 +59,12 @@ jobs:
 
       - name: kube-score run
         run: |
-          kube-score score ${{ inputs.kube_score_manifests_folders }} ${{ inputs.kube_score_args }}
+          kube-score score ${{ inputs.kube_score_target_manifests }} ${{ inputs.kube_score_args }}
         continue-on-error:  ${{ inputs.kube_score_continue_on_error }}
 
       - name: kube-linter
         uses: stackrox/kube-linter-action@v1.0.5
         with:
-          directory: ${{ inputs.kube_lint_directory }}
+          directory: ${{ inputs.kube_lint_target_directory }}
           version: ${{ inputs.kube_lint_version }}
         continue-on-error:  ${{ inputs.kube_lint_continue_on_error }}
