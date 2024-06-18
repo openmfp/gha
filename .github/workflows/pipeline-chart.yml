@@ -43,3 +43,4 @@ jobs:
       version: ${{ needs.createVersion.outputs.version }}
       chartFolder: ${{ inputs.chartFolder }}
       release_branch: ${{ inputs.release_branch }}
+      imageTagName: ${{ inputs.imageTagName }}
