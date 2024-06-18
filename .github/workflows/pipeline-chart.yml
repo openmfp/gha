@@ -1,0 +1,42 @@
+name: pipeline-chart
+on:
+  workflow_call:
+    inputs:
+      chartFolder:
+        required: false
+        type: string
+        default: 'chart'
+      additionalTestFilesCommand:
+        required: false
+        type: string
+        default: '-f chart/test-values.yaml'
+      release_branch:
+        required: false
+        type: string
+        default: 'main'
+    outputs:
+      version:
+        description: "The created Version"
+        value: ${{ jobs.createVersion.outputs.version }}
+
+jobs:
+  createVersion:
+    uses: ./.github/workflows/job-create-version.yml
+    secrets: inherit
+  
+  testChart:
+    uses: ./.github/workflows/job-test-chart.yml
+    with:
+      chartFolder: ${{ inputs.chartFolder }}
+      additionalTestFilesCommand: ${{ inputs.additionalTestFilesCommand }}
+    secrets: inherit
+
+  release:
+    needs: [createVersion,testChart]
+    uses: ./.github/workflows/job-release.yml
+    secrets: inherit
+    with:
+      skip_image_tag: true
+      version: ${{ needs.createVersion.outputs.version }}
+      chartFolder: ${{ inputs.chartFolder }}
+      release_branch: ${{ inputs.release_branch }}
