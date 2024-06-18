@@ -22,6 +22,10 @@ on:
         required: false
         type: boolean
         default: false
+      release_branch:
+        required: false
+        type: string
+        default: 'main'
     outputs:
       version:
         description: "The created Version"
@@ -47,7 +51,7 @@ jobs:
       coverageThreasholdTotal: ${{ inputs.coverageThreasholdTotal }}
 
   publishVersion:
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == format('refs/heads/{0}',inputs.release_branch)
     needs: [createVersion,lint,testSource]
     uses: ./.github/workflows/job-version-publish.yaml
     with:

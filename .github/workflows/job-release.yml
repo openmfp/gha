@@ -12,11 +12,15 @@ on:
         required: false
         type: string
         default: 'chart'
+      release_branch:
+        required: false
+        type: string
+        default: 'main'
 
 jobs:
   release:
     runs-on: ubuntu-latest
-    if: ${{ github.ref == 'refs/heads/main' }}
+    if: ${{ github.ref == format('refs/heads/{0}',inputs.release_branch) }}
     steps:
       - uses: actions/checkout@v4
       - name: Setup yq@latest

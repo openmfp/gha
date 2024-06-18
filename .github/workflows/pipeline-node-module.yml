@@ -6,10 +6,11 @@ on:
         required: false
         type: string
         default: './'
-      mainBranchRef:
+      release_branch:
+        description: 'Name of the release branch'
         required: false
         type: string
-        default: 'refs/heads/main'
+        default: 'main'
 
 jobs:
   createVersion:
@@ -28,5 +29,5 @@ jobs:
     with:
       version: ${{ needs.createVersion.outputs.version }}
       workingDirectory: ${{ inputs.workingDirectory }}
-      mainBranchRef: ${{ inputs.mainBranchRef }}
+      release_branch: ${{ inputs.mainBranchRef }}
 

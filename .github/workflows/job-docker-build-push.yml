@@ -8,6 +8,10 @@ on:
       version:
         required: true
         type: string
+      release_branch:
+        required: false
+        type: string
+        default: 'main'
 
 jobs:
   docker:
@@ -26,7 +30,7 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
         with:
-          push: ${{ github.ref == 'refs/heads/main' }}
+          push: ${{ github.ref == format('refs/heads/{0}',inputs.release_branch) }}
           tags: ${{ inputs.imageTagName }}:${{ inputs.version }}
           secrets: |
             NODE_AUTH_TOKEN=${{ secrets.GITHUB_TOKEN }}

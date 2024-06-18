@@ -10,15 +10,16 @@ on:
         required: false
         type: string
         default: './'
-      mainBranchRef:
+      release_branch:
+        description: 'Name of the release branch'
         required: false
         type: string
-        default: 'refs/heads/main'
+        default: 'main'
 
 jobs:
   publish:
     runs-on: ubuntu-latest
-    if: github.ref == inputs.mainBranchRef
+    if: github.ref == format('refs/heads/{0}',inputs.release_branch)
     steps:
     - name: Setup Git
       run: |
