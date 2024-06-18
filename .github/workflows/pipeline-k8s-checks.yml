@@ -11,9 +11,9 @@ on:
         required: true
         type: string
       kube_score_target_manifests:
-        description: 'An array of relative paths to manifests (not directories) to analyze with kube-score'
+        description: 'A list(with no commas) of relative paths to manifests (not directories) to analyze with kube-score'
         required: true
-        type: array
+        type: string
 
       # OPTIONAL kube-score
       kube_score_version:
@@ -59,7 +59,7 @@ jobs:
 
       - name: kube-score run
         run: |
-          kube-score score ${{ inputs.kube_score_target_manifests.join(' ') }} ${{ inputs.kube_score_args }}
+          kube-score score ${{ inputs.kube_score_target_manifests }} ${{ inputs.kube_score_args }}
         continue-on-error: ${{ inputs.kube_score_continue_on_error }}
 
       - name: kube-linter
