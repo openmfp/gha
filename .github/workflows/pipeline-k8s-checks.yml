@@ -1,6 +1,6 @@
 # This workflow performs static code analysis of your Kubernetes object definitions
 # using kube-score and kube-linter tools.
-name: Kube Checks
+name: K8S Checks
 
 on:
   workflow_call:
