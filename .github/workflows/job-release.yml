@@ -16,7 +16,7 @@ on:
         required: false
         type: string
         default: 'main'
-      skip_version:
+      skip_image_tag:
         required: false
         type: boolean
         default: false
@@ -35,10 +35,12 @@ jobs:
             wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /home/runner/.local/bin/yq &&\
               chmod +x /home/runner/.local/bin/yq
           fi
-      - name: Update Image Tag
-        if: ${{ !inputs.skip_version }}
+      - name: Update Chart version
         run: |
           yq e -i '.version = "${{ inputs.version }}"' ${{ inputs.chartFolder }}/Chart.yaml
+      - name: Update Image Tag
+        if: ${{ !inputs.skip_image_tag }}
+        run: |
           yq e -i '.image.tag = "${{ inputs.version }}"' ${{ inputs.chartFolder }}/values.yaml
       - name: Push Helm chart
         uses: bsord/helm-push@v4.1.0

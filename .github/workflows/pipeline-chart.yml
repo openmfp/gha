@@ -39,7 +39,7 @@ jobs:
     uses: ./.github/workflows/job-release.yml
     secrets: inherit
     with:
-      skip_version: true
+      skip_image_tag: true
       version: ${{ needs.createVersion.outputs.version }}
       chartFolder: ${{ inputs.chartFolder }}
       release_branch: ${{ inputs.release_branch }}
