@@ -21,6 +21,11 @@ on:
         required: false
         type: string
         default: 'main'
+      node_version:
+        description: 'Node version to use'
+        required: false
+        type: string
+        default: '18'
 jobs:
   createVersion:
     uses: ./.github/workflows/job-create-version.yml
@@ -29,6 +34,7 @@ jobs:
     uses: ./.github/workflows/job-node-test.yml
     with:
       release_branch: ${{ inputs.release_branch }}
+      node_version: ${{ inputs.node_version }}
 
   testChart:
     uses: ./.github/workflows/job-test-chart.yml

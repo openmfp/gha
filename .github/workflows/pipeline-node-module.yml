@@ -11,6 +11,11 @@ on:
         required: false
         type: string
         default: 'main'
+      node_version:
+        description: 'Node version to use'
+        required: false
+        type: string
+        default: '18'
 
 jobs:
   createVersion:
@@ -31,4 +36,5 @@ jobs:
       version: ${{ needs.createVersion.outputs.version }}
       workingDirectory: ${{ inputs.workingDirectory }}
       release_branch: ${{ inputs.mainBranchRef }}
+      node_version: ${{ inputs.node_version }}
 
