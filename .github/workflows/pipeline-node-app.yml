@@ -25,7 +25,7 @@ on:
         description: 'Node version to use'
         required: false
         type: string
-        default: '18'
+        default: '20'
 jobs:
   createVersion:
     uses: ./.github/workflows/job-create-version.yml
