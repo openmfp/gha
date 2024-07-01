@@ -107,7 +107,7 @@ jobs:
     uses: ./.github/workflows/job-ocm-release.yml
     with:
         version: ${{ needs.createVersion.outputs.version }}
-        compName: ${{ inputs.componentName }}
+        componentName: ${{ inputs.componentName }}
         imageName: ${{ inputs.imageTagName }}
         provider: ${{ inputs.provider }}
         componentDescriptorFile: ${{ inputs.componentDescriptorFile }}
