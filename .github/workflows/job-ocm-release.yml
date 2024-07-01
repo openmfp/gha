@@ -20,6 +20,9 @@ on:
       componentRepo:
         required: true
         type: string
+      chartFolder:
+        required: true
+        type: string
 jobs:
   ocm:
     runs-on: ubuntu-latest
@@ -35,6 +38,7 @@ jobs:
           components: ${{ inputs.componentDescriptorFile }}
           directory: .ocm
           version: ${{ inputs.version }}
+          templater: spiff
           var_values: |
             COMMIT: ${{ github.sha }}
             COMP_NAME: ${{ inputs.componentName }}
@@ -42,6 +46,8 @@ jobs:
             PROVIDER: ${{ inputs.provider }}
             REPO_URL: ${{ github.server_url }}/${{ github.repository }}
             VERSION: ${{ inputs.VERSION}}
+            CHART_FOLDER: ${{ inputs.chartFolder }}
+            HELM_REPO: ${{ github.repository }}/helm
       - name: transfer to OCI Repo
         uses: open-component-model/ocm-action@main
         with:
