@@ -38,6 +38,7 @@ jobs:
       - name: Update Chart version
         run: |
           yq e -i '.version = "${{ inputs.version }}"' ${{ inputs.chartFolder }}/Chart.yaml
+          yq e -i '.appVersion = "${{ inputs.version }}"' ${{ inputs.chartFolder }}/Chart.yaml
       - name: Update Image Tag
         if: ${{ !inputs.skip_image_tag }}
         run: |
