@@ -92,15 +92,15 @@ jobs:
       release_branch: ${{ inputs.release_branch }}
     secrets: inherit
 
-  release:
-    needs: [createVersion,dockerBuildAndPush,lint,testSource,testChart]
-    uses: ./.github/workflows/job-release.yml
-    secrets: inherit
-    with:
-      imageTagName: ${{ inputs.imageTagName }}
-      version: ${{ needs.createVersion.outputs.version }}
-      chartFolder: ${{ inputs.chartFolder }}
-      release_branch: ${{ inputs.release_branch }}
+#  release:
+#    needs: [createVersion,dockerBuildAndPush,lint,testSource,testChart]
+#    uses: ./.github/workflows/job-release.yml
+#    secrets: inherit
+#    with:
+#      imageTagName: ${{ inputs.imageTagName }}
+#      version: ${{ needs.createVersion.outputs.version }}
+#      chartFolder: ${{ inputs.chartFolder }}
+#      release_branch: ${{ inputs.release_branch }}
 
   ocm:
     needs: [createVersion,dockerBuildAndPush,lint,testSource,testChart]
