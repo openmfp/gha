@@ -83,29 +83,29 @@ jobs:
       coverageThreasholdPackage: ${{ inputs.coverageThreasholdPackage }}
       coverageThreasholdTotal: ${{ inputs.coverageThreasholdTotal }}
 
-#  dockerBuildAndPush:
-#    needs: [createVersion]
-#    uses: ./.github/workflows/job-docker-build-push.yml
-#    with:
-#      imageTagName: ${{ inputs.imageTagName }}
-#      version: ${{ needs.createVersion.outputs.version }}
-#      release_branch: ${{ inputs.release_branch }}
-#    secrets: inherit
+  dockerBuildAndPush:
+    needs: [createVersion]
+    uses: ./.github/workflows/job-docker-build-push.yml
+    with:
+      imageTagName: ${{ inputs.imageTagName }}
+      version: ${{ needs.createVersion.outputs.version }}
+      release_branch: ${{ inputs.release_branch }}
+    secrets: inherit
 
-#  release:
-#    needs: [createVersion,dockerBuildAndPush,lint,testSource,testChart]
-#    uses: ./.github/workflows/job-release.yml
-#    secrets: inherit
-#    with:
-#      imageTagName: ${{ inputs.imageTagName }}
-#      version: ${{ needs.createVersion.outputs.version }}
-#      chartFolder: ${{ inputs.chartFolder }}
-#      release_branch: ${{ inputs.release_branch }}
+  release:
+    needs: [createVersion,dockerBuildAndPush,lint,testSource,testChart]
+    uses: ./.github/workflows/job-release.yml
+    secrets: inherit
+    with:
+      imageTagName: ${{ inputs.imageTagName }}
+      version: ${{ needs.createVersion.outputs.version }}
+      chartFolder: ${{ inputs.chartFolder }}
+      release_branch: ${{ inputs.release_branch }}
 
   ocm:
-#    needs: [createVersion,dockerBuildAndPush,lint,testSource,testChart]
-    needs: [createVersion,lint,testSource,testChart]
+    needs: [createVersion,dockerBuildAndPush,lint,testSource,testChart]
     uses: ./.github/workflows/job-ocm-release.yml
+    secrets: inherit
     with:
         version: ${{ needs.createVersion.outputs.version }}
         componentName: ${{ inputs.componentName }}
