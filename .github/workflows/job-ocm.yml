@@ -1,0 +1,54 @@
+name: COM
+on:
+  workflow_call:
+    inputs:
+      version:
+        required: true
+        type: string
+      compName:
+        required: true
+        type: string
+      imageName:
+        required: true
+        type: string
+      provider:
+        required: false
+        type: string
+        default: github.com/openmfp
+      componentDescriptorFile:
+        required: false
+        type: string
+        default: resources.yaml
+      componentRepo:
+        required: false
+        type: string
+        default: ghcr.io/openmfp/ocm
+jobs:
+  ocm:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v3
+      - name: setup OCM
+        uses: open-component-model/ocm-setup-action@main
+      - name: create OCM ComponentArchive
+        uses: open-component-model/ocm-action@main
+        with:
+          action: add_component
+          components: ${{ inputs.componentDescriptorFile }}
+          directory: .ocm
+          version: ${{ inputs.version }}
+          var_values: |
+            COMMIT: ${{ github.sha }}
+            COMP_NAME: ${{ inputs.compName }}
+            IMAGE: ${{ inputs.imageName }}
+            PROVIDER: ${{ inputs.provider }}
+            REPO_URL: ${{ github.server_url }}/${{ github.repository }}
+            VERSION: ${{ inputs.VERSION}}
+      - name: transfer to OCI Repo
+        uses: open-component-model/ocm-action@main
+        with:
+          action: push_ctf
+          comprepo_url: ${{ inputs.componentRepo }}
+          force_push: true
+          comprepo_password: ${{ secrets.GITHUB_TOKEN }}
