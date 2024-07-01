@@ -5,24 +5,21 @@ on:
       version:
         required: true
         type: string
-      compName:
-        required: true
-        type: string
       imageName:
         required: true
         type: string
       provider:
-        required: false
+        required: true
         type: string
-        default: github.com/openmfp
+      componentName:
+        required: true
+        type: string
       componentDescriptorFile:
-        required: false
+        required: true
         type: string
-        default: resources.yaml
       componentRepo:
-        required: false
+        required: true
         type: string
-        default: ghcr.io/openmfp/ocm
 jobs:
   ocm:
     runs-on: ubuntu-latest
@@ -40,7 +37,7 @@ jobs:
           version: ${{ inputs.version }}
           var_values: |
             COMMIT: ${{ github.sha }}
-            COMP_NAME: ${{ inputs.compName }}
+            COMP_NAME: ${{ inputs.componentName }}
             IMAGE: ${{ inputs.imageName }}
             PROVIDER: ${{ inputs.provider }}
             REPO_URL: ${{ github.server_url }}/${{ github.repository }}

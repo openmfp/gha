@@ -37,6 +37,21 @@ on:
         required: false
         type: string
         default: 'main'
+      provider:
+        required: false
+        type: string
+        default: github.com/openmfp
+      componentName:
+        required: true
+        type: string
+      componentDescriptorFile:
+        required: false
+        type: string
+        default: resources.yaml
+      componentRepo:
+        required: false
+        type: string
+        default: ghcr.io/openmfp/ocm
     outputs:
       version:
         description: "The created Version"
@@ -86,3 +101,14 @@ jobs:
       version: ${{ needs.createVersion.outputs.version }}
       chartFolder: ${{ inputs.chartFolder }}
       release_branch: ${{ inputs.release_branch }}
+
+  ocm:
+    needs: [createVersion,dockerBuildAndPush,lint,testSource,testChart]
+    uses: ./.github/workflows/job-ocm-release.yml
+    with:
+        version: ${{ needs.createVersion.outputs.version }}
+        compName: ${{ inputs.componentName }}
+        imageName: ${{ inputs.imageTagName }}
+        provider: ${{ inputs.provider }}
+        componentDescriptorFile: ${{ inputs.componentDescriptorFile }}
+        componentRepo: ${{ inputs.componentRepo }}
