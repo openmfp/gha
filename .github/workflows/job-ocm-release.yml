@@ -42,7 +42,7 @@ jobs:
           var_values: |
             COMMIT: ${{ github.sha }}
             COMP_NAME: ${{ inputs.componentName }}
-            IMAGE: ${{ inputs.imageName }}
+            IMAGE: ${{ inputs.imageName }}:${{ inputs.VERSION}}
             PROVIDER: ${{ inputs.provider }}
             REPO_URL: ${{ github.server_url }}/${{ github.repository }}
             VERSION: ${{ inputs.VERSION}}
