@@ -113,4 +113,3 @@ jobs:
         provider: ${{ inputs.provider }}
         componentDescriptorFile: ${{ inputs.componentDescriptorFile }}
         componentRepo: ${{ inputs.componentRepo }}
-        chartFolder: ${{ inputs.chartFolder }}

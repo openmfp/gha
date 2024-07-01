@@ -20,9 +20,6 @@ on:
       componentRepo:
         required: true
         type: string
-      chartFolder:
-        required: true
-        type: string
 jobs:
   ocm:
     runs-on: ubuntu-latest
@@ -35,22 +32,6 @@ jobs:
         run: |
           REPO_NAME=$(echo ${{ github.repository }} | cut -d'/' -f2)
           echo "REPO_NAME=$REPO_NAME" >> $GITHUB_ENV
-
-      # Workaround until we get this to work with the remote chart repo
-      - name: Setup yq@latest
-        run: |
-          if ! command -v yq &>/dev/null
-          then
-            mkdir -p /home/runner/.local/bin
-            wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /home/runner/.local/bin/yq &&\
-              chmod +x /home/runner/.local/bin/yq
-          fi
-      # Workaround until we get this to work with the remote chart repo
-      - name: Update Chart version
-        run: |
-          yq e -i '.version = "${{ inputs.version }}"' ${{ inputs.chartFolder }}/Chart.yaml
-          yq e -i '.appVersion = "${{ inputs.version }}"' ${{ inputs.chartFolder }}/Chart.yaml
-
       - name: create OCM ComponentArchive
         uses: open-component-model/ocm-action@main
         with:
@@ -66,8 +47,8 @@ jobs:
             PROVIDER: ${{ inputs.provider }}
             REPO_URL: ${{ github.server_url }}/${{ github.repository }}
             VERSION: ${{ inputs.VERSION}}
-            CHART_FOLDER: ${{ inputs.chartFolder }}
-            HELM_REPO: helm/${{ env.REPO_NAME }}
+            CHART_URL: ghcr.io/${{ github.repository }}/helm/${{ env.REPO_NAME }}:${{ inputs.VERSION }}
+            REPO_NAME: ${{ env.REPO_NAME }}
       - name: transfer to OCI Repo
         uses: open-component-model/ocm-action@main
         with:
