@@ -103,7 +103,7 @@ jobs:
       release_branch: ${{ inputs.release_branch }}
 
   ocm:
-    needs: [release]
+    needs: [release,createVersion]
     uses: ./.github/workflows/job-ocm-release.yml
     secrets: inherit
     with:
