@@ -35,6 +35,6 @@ jobs:
     with:
       version: ${{ needs.createVersion.outputs.version }}
       workingDirectory: ${{ inputs.workingDirectory }}
-      release_branch: ${{ inputs.mainBranchRef }}
+      release_branch: ${{ inputs.release_branch }}
       node_version: ${{ inputs.node_version }}
 
