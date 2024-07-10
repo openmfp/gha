@@ -20,6 +20,14 @@ on:
         required: false
         type: boolean
         default: false
+      publishCRDChart:
+        required: false
+        type: boolean
+        default: false
+      crdChartPath:
+        required: false
+        type: string
+        default: 'charts/crds'
 
 jobs:
   release:
@@ -50,6 +58,19 @@ jobs:
           access-token: ${{ secrets.GITHUB_TOKEN }}
           registry-url:  oci://ghcr.io/${{ inputs.imageTagName }}/helm
           chart-folder: ${{ inputs.chartFolder }}
+      - name: Update CRD Chart version
+        if: ${{ inputs.publishCRDChart }}
+        run: |
+          yq e -i '.version = "${{ inputs.version }}"' ${{ inputs.chartFolder }}/${{ inputs.crdChartPath }}/Chart.yaml
+      - name: Push CRD Helm chart
+        uses: bsord/helm-push@v4.1.0
+        if: ${{ inputs.publishCRDChart }}
+        with:
+          useOCIRegistry: true
+          username: ${{ github.actor }}
+          access-token: ${{ secrets.GITHUB_TOKEN }}
+          registry-url:  oci://ghcr.io/${{ inputs.imageTagName }}/helm/crds
+          chart-folder: ${{ inputs.chartFolder }}/${{ inputs.crdChartPath }}
       - name: Publish GH Tag
         uses: thejeff77/action-push-tag@v1.0.0
         with:

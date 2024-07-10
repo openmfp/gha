@@ -37,6 +37,10 @@ on:
         required: false
         type: string
         default: 'main'
+      publishCRDChart:
+        required: false
+        type: boolean
+        default: false
     outputs:
       version:
         description: "The created Version"
@@ -86,3 +90,4 @@ jobs:
       version: ${{ needs.createVersion.outputs.version }}
       chartFolder: ${{ inputs.chartFolder }}
       release_branch: ${{ inputs.release_branch }}
+      publishCRDChart: ${{ inputs.publishCRDChart }}
