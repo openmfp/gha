@@ -10,6 +10,10 @@ on:
         required: false
         type: string
         default: './'
+      workingDirectoryDist:
+        required: false
+        type: string
+        default: './dist'
       publishFromDist:
         required: false
         type: boolean
@@ -55,7 +59,7 @@ jobs:
         npm version ${{inputs.version}}
         npm publish
       working-directory:
-        ${{ inputs.publishFromDist ? inputs.workingDirectory + '/dist' : inputs.workingDirectory }}
+        ${{ inputs.publishFromDist && inputs.workingDirectoryDist || inputs.workingDirectory }}
       env:
         NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
     # npm version does not commit on subdirectories, so we commit manually
