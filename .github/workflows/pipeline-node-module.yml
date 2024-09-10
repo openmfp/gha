@@ -6,6 +6,10 @@ on:
         required: false
         type: string
         default: './'
+      publishFromDist:
+        required: false
+        type: boolean
+        default: false
       release_branch:
         description: 'Name of the release branch'
         required: false
@@ -35,6 +39,7 @@ jobs:
     with:
       version: ${{ needs.createVersion.outputs.version }}
       workingDirectory: ${{ inputs.workingDirectory }}
+      publishFromDist: ${{ inputs.publishFromDist }}
       release_branch: ${{ inputs.release_branch }}
       node_version: ${{ inputs.node_version }}
 

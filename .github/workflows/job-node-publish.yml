@@ -10,6 +10,10 @@ on:
         required: false
         type: string
         default: './'
+      publishFromDist:
+        required: false
+        type: boolean
+        default: false
       release_branch:
         description: 'Name of the release branch'
         required: false
@@ -48,9 +52,10 @@ jobs:
         path: dist
     - name: Publish
       run: |
-        npm version ${{inputs.version}} -m "[no ci] Release ${{inputs.version}}"
+        npm version ${{inputs.version}}
         npm publish
-      working-directory: ${{ inputs.workingDirectory }}
+      working-directory:
+        ${{ inputs.publishFromDist ? inputs.workingDirectory + '/dist' : inputs.workingDirectory }}
       env:
         NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
     # npm version does not commit on subdirectories, so we commit manually
@@ -64,5 +69,7 @@ jobs:
         git tag -a ${{inputs.version}} -m "[no ci] Release ${{inputs.version}}"
     - name: Push
       run: |
+        npm version ${{inputs.version}} -m "[no ci] Release ${{inputs.version}}"
         git push origin
         git push origin --tags
+      working-directory: ${{ inputs.workingDirectory }}
