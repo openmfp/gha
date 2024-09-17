@@ -23,10 +23,6 @@ on:
         value: ${{ jobs.createVersion.outputs.version }}
 
 jobs:
-  createVersion:
-    uses: ./.github/workflows/job-create-version.yml
-    secrets: inherit
-  
   testChart:
     uses: ./.github/workflows/job-test-chart.yml
     with:
@@ -34,13 +30,20 @@ jobs:
       additionalTestFilesCommand: ${{ inputs.additionalTestFilesCommand }}
     secrets: inherit
 
+  testChartVersion:
+    uses: ./.github/workflows/job-test-chart-version.yml
+    with:
+      chartFolder: ${{ inputs.chartFolder }}
+    secrets: inherit
+
   release:
-    needs: [createVersion,testChart]
-    uses: ./.github/workflows/job-release.yml
+    needs: [testChart,testChartVersion]
+    uses: ./.github/workflows/job-release-chart.yml
     secrets: inherit
     with:
+      updateVersion: false
+      pushTags: false
       skip_image_tag: true
-      version: ${{ needs.createVersion.outputs.version }}
       chartFolder: ${{ inputs.chartFolder }}
       release_branch: ${{ inputs.release_branch }}
       imageTagName: ${{ inputs.imageTagName }}
