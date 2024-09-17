@@ -5,14 +5,6 @@ on:
       imageTagName:
         required: true
         type: string
-      chartFolder:
-        required: false
-        type: string
-        default: 'chart'
-      additionalTestFilesCommand:
-        required: false
-        type: string
-        default: '-f chart/test-values.yaml'
       useTask:
         required: false
         type: boolean
@@ -37,10 +29,6 @@ on:
         required: false
         type: string
         default: 'main'
-      publishCRDChart:
-        required: false
-        type: boolean
-        default: false
     outputs:
       version:
         description: "The created Version"
@@ -51,13 +39,6 @@ jobs:
     uses: ./.github/workflows/job-create-version.yml
     secrets: inherit
   
-  testChart:
-    uses: ./.github/workflows/job-test-chart.yml
-    with:
-      chartFolder: ${{ inputs.chartFolder }}
-      additionalTestFilesCommand: ${{ inputs.additionalTestFilesCommand }}
-    secrets: inherit
-
   lint:
     uses: ./.github/workflows/job-golang-lint.yml
     with:
@@ -80,16 +61,3 @@ jobs:
       version: ${{ needs.createVersion.outputs.version }}
       release_branch: ${{ inputs.release_branch }}
     secrets: inherit
-
-  release:
-    needs: [createVersion,dockerBuildAndPush,lint,testSource,testChart]
-    uses: ./.github/workflows/job-release-chart.yml
-    secrets: inherit
-    with:
-      updateVersion: true
-      pushTags: true
-      imageTagName: ${{ inputs.imageTagName }}
-      version: ${{ needs.createVersion.outputs.version }}
-      chartFolder: ${{ inputs.chartFolder }}
-      release_branch: ${{ inputs.release_branch }}
-      publishCRDChart: ${{ inputs.publishCRDChart }}
