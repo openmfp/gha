@@ -29,15 +29,9 @@ jobs:
   testChart:
     uses: ./.github/workflows/job-test-chart.yml
     with:
-      chartFolder: ${{ inputs.chartFolder }}/${{ inputs.chartName }}
-      additionalTestFilesCommand: ${{ inputs.additionalTestFilesCommand }}
-    secrets: inherit
-
-  testChartVersion:
-    uses: ./.github/workflows/job-test-chart-version.yml
-    with:
       chartsFolder: ${{ inputs.chartFolder }}
       chartName: ${{ inputs.chartName }}
+      additionalTestFilesCommand: ${{ inputs.additionalTestFilesCommand }}
     secrets: inherit
 
   release:
