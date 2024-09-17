@@ -6,7 +6,7 @@ on:
         required: true
         type: string
       version:
-        required: true
+        required: false
         type: string
       chartFolder:
         required: false
@@ -28,6 +28,14 @@ on:
         required: false
         type: string
         default: 'charts/crds'
+      updateVersion:
+        required: false
+        type: boolean
+        default: true
+      pushTags:
+        required: false
+        type: boolean
+        default: true
 
 jobs:
   release:
@@ -36,6 +44,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Setup yq@latest
+        if: ${{ inputs.updateVersion }}
         run: |
           if ! command -v yq &>/dev/null
           then
@@ -44,10 +53,11 @@ jobs:
               chmod +x /home/runner/.local/bin/yq
           fi
       - name: Update Chart version
+        if: ${{ inputs.updateVersion }}
         run: |
           yq e -i '.version = "${{ inputs.version }}"' ${{ inputs.chartFolder }}/Chart.yaml
       - name: Update Image Tag
-        if: ${{ !inputs.skip_image_tag }}
+        if: ${{ !inputs.skip_image_tag && inputs.updateVersion }}
         run: |
           yq e -i '.image.tag = "${{ inputs.version }}"' ${{ inputs.chartFolder }}/values.yaml
       - name: Push Helm chart
@@ -59,7 +69,7 @@ jobs:
           registry-url:  oci://ghcr.io/${{ inputs.imageTagName }}/helm
           chart-folder: ${{ inputs.chartFolder }}
       - name: Update CRD Chart version
-        if: ${{ inputs.publishCRDChart }}
+        if: ${{ inputs.publishCRDChart && inputs.updateVersion }}
         run: |
           yq e -i '.version = "${{ inputs.version }}"' ${{ inputs.chartFolder }}/${{ inputs.crdChartPath }}/Chart.yaml
       - name: Push CRD Helm chart
@@ -72,6 +82,7 @@ jobs:
           registry-url:  oci://ghcr.io/${{ inputs.imageTagName }}/helm/crds
           chart-folder: ${{ inputs.chartFolder }}/${{ inputs.crdChartPath }}
       - name: Publish GH Tag
+        if: ${{ inputs.pushTags }}
         uses: thejeff77/action-push-tag@v1.0.0
         with:
           tag: ${{ inputs.version }}

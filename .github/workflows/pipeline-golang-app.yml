@@ -83,9 +83,11 @@ jobs:
 
   release:
     needs: [createVersion,dockerBuildAndPush,lint,testSource,testChart]
-    uses: ./.github/workflows/job-release.yml
+    uses: ./.github/workflows/job-release-chart.yml
     secrets: inherit
     with:
+      updateVersion: true
+      pushTags: true
       imageTagName: ${{ inputs.imageTagName }}
       version: ${{ needs.createVersion.outputs.version }}
       chartFolder: ${{ inputs.chartFolder }}
