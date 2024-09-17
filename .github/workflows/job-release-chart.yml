@@ -16,10 +16,6 @@ on:
         required: false
         type: string
         default: 'main'
-      skip_image_tag:
-        required: false
-        type: boolean
-        default: false
       publishCRDChart:
         required: false
         type: boolean
@@ -28,6 +24,10 @@ on:
         required: false
         type: string
         default: 'charts/crds'
+      updateImageTag:
+        required: false
+        type: boolean
+        default: false
       updateVersion:
         required: false
         type: boolean
@@ -57,7 +57,7 @@ jobs:
         run: |
           yq e -i '.version = "${{ inputs.version }}"' ${{ inputs.chartFolder }}/Chart.yaml
       - name: Update Image Tag
-        if: ${{ !inputs.skip_image_tag && inputs.updateVersion }}
+        if: ${{ inputs.updateImageTag && inputs.updateVersion }}
         run: |
           yq e -i '.image.tag = "${{ inputs.version }}"' ${{ inputs.chartFolder }}/values.yaml
       - name: Push Helm chart
