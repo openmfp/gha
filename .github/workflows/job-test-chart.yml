@@ -32,9 +32,9 @@ jobs:
         with:
           ref: ${{ inputs.branch }}
       - name: Linting Chart
-        run: helm lint ${{ inputs.additionalTestFilesCommand }} ${{ inputs.chartFolder }}/${{ inputs.chartName }}
+        run: helm lint ${{ inputs.additionalTestFilesCommand }} ${{ inputs.chartsFolder }}/${{ inputs.chartName }}
       - name: Unit Testing Chart
-        run: helm unittest ${{ inputs.chartFolder }}/${{ inputs.chartName }}
+        run: helm unittest ${{ inputs.chartsFolder }}/${{ inputs.chartName }}
       - name: Set up Helm
         uses: azure/setup-helm@v4.2.0
         with:
