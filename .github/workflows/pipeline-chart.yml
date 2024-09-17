@@ -9,6 +9,9 @@ on:
         required: false
         type: string
         default: 'chart'
+      chartName:
+        required: true
+        type: string
       additionalTestFilesCommand:
         required: false
         type: string
@@ -26,14 +29,14 @@ jobs:
   testChart:
     uses: ./.github/workflows/job-test-chart.yml
     with:
-      chartFolder: ${{ inputs.chartFolder }}
+      chartFolder: ${{ inputs.chartFolder }}/${{ inputs.chartName }}
       additionalTestFilesCommand: ${{ inputs.additionalTestFilesCommand }}
     secrets: inherit
 
   testChartVersion:
     uses: ./.github/workflows/job-test-chart-version.yml
     with:
-      chartFolder: ${{ inputs.chartFolder }}
+      chartsFolder: ${{ inputs.chartFolder }}
     secrets: inherit
 
   release:
