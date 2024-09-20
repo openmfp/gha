@@ -97,10 +97,10 @@ jobs:
   #     release_branch: ${{ inputs.release_branch }}
   #   secrets: inherit
 
-  # updateVersion:
-  #   needs: [createVersion]
-  #   uses: ./.github/workflows/job-chart-version-update.yml
-  #   secrets: inherit
-  #   with:
-  #     appVersion: ${{ needs.createVersion.outputs.version }}
-  #     chart: ${{ github.event.repository.name }}
+  updateVersion:
+    needs: [createVersion]
+    uses: ./.github/workflows/job-chart-version-update.yml
+    secrets: inherit
+    with:
+      appVersion: ${{ needs.createVersion.outputs.version }}
+      chart: ${{ github.event.repository.name }}
