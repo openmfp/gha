@@ -62,10 +62,6 @@ on:
         required: false
         type: string
         default: 'main'
-    outputs:
-      version:
-        description: "The created Version"
-        value: ${{ jobs.createVersion.outputs.version }}
 
 jobs:
   createVersion:
