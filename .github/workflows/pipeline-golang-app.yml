@@ -92,6 +92,7 @@ jobs:
     secrets: inherit
 
   updateVersion:
+    needs: [createVersion]
     uses: ./.github/workflows/job-chart-version-update.yml
     secrets: inherit
     with:
