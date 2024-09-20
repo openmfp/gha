@@ -68,8 +68,7 @@ jobs:
     uses: ./.github/workflows/job-create-version.yml
     secrets: inherit
   
-
- debugRepositoryName:
+  debugRepositoryName:
     runs-on: ubuntu-latest
     steps:
       - name: Print repository name
