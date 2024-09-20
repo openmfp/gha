@@ -14,9 +14,6 @@ jobs:
   trigger-helm-charts-version-update:
     runs-on: ubuntu-latest
     steps:
-      - name: Get repository name
-        id: get-repo-name
-        run: echo "REPO_NAME=${GITHUB_REPOSITORY##*/}" >> $GITHUB_ENV
       - name: Generate a token
         id: generate-token
         uses: actions/create-github-app-token@v1
@@ -25,7 +22,7 @@ jobs:
          private-key: ${{ secrets.OPENMFP_PUBLISHER_PRIVATE_KEY }}
          owner: ${{ github.repository_owner }}
          repositories: |
-           ${{ env.REPO_NAME }}
+           ${{ inputs.chartName }}
            helm-charts
       - run: gh workflow run update-chart-parameters.yaml --repo openmfp/helm-charts --field chart=${{ inputs.chartName }} --field appVersion=${{ inputs.appVersion }}
         env:
