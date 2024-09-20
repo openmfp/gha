@@ -100,4 +100,4 @@ jobs:
     secrets: inherit
     with:
       appVersion: ${{ needs.createVersion.outputs.version }}
-      chart: ${{ repository.name }}
+      chart: ${{ github.event.repository.name }}
