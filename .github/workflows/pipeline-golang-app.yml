@@ -33,6 +33,39 @@ on:
       version:
         description: "The created Version"
         value: ${{ jobs.createVersion.outputs.version }}
+  workflow_dispatch:
+    inputs:
+      imageTagName:
+        required: true
+        type: string
+      useTask:
+        required: false
+        type: boolean
+        default: false
+      coverageThreasholdFile:
+        required: false
+        type: number
+        default: 80
+      coverageThreasholdPackage:
+        required: false
+        type: number
+        default: 80
+      coverageThreasholdTotal:
+        required: false
+        type: number
+        default: 95
+      useLocalCoverageConfig:
+        required: false
+        type: boolean
+        default: false
+      release_branch:
+        required: false
+        type: string
+        default: 'main'
+    outputs:
+      version:
+        description: "The created Version"
+        value: ${{ jobs.createVersion.outputs.version }}
 
 jobs:
   createVersion:
