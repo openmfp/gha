@@ -72,7 +72,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Print repository name
-        run: echo "Repository name: ${{ github.event.repository.name }}"
+        run: echo "Repository name ${{ github.event.repository.name }}"
 
   # lint:
   #   uses: ./.github/workflows/job-golang-lint.yml
