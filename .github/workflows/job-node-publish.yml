@@ -54,12 +54,24 @@ jobs:
       with:
         name: target
         path: dist
-    - name: Publish
+    - name: Publish from dist folder
+      if: ${{ inputs.publishFromDist }}
       run: |
-        npm version ${{inputs.version}}
+        npm version ${{ inputs.version }}
+        npm publish
+        cd ..
+        npm version ${{inputs.version}} -m "[no ci] Release ${{inputs.version}}"
+      working-directory:
+        ${{ inputs.workingDirectoryDist }}
+      env:
+        NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+    - name: Publish
+      if: ${{ !inputs.publishFromDist }}
+      run: |
+        npm version ${{inputs.version}} -m "[no ci] Release ${{inputs.version}}"
         npm publish
       working-directory:
-        ${{ inputs.publishFromDist && inputs.workingDirectoryDist || inputs.workingDirectory }}
+        ${{ inputs.workingDirectory }}
       env:
         NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
     # npm version does not commit on subdirectories, so we commit manually
@@ -73,7 +85,6 @@ jobs:
         git tag -a ${{inputs.version}} -m "[no ci] Release ${{inputs.version}}"
     - name: Push
       run: |
-        npm version ${{inputs.version}} -m "[no ci] Release ${{inputs.version}}"
         git push origin
         git push origin --tags
       working-directory: ${{ inputs.workingDirectory }}
