@@ -5,6 +5,10 @@ on:
       imageTagName:
         required: true
         type: string
+      chartRepos:
+        required: false
+        type: string
+        default: ''
       chartFolder:
         required: false
         type: string
@@ -52,5 +56,6 @@ jobs:
       pushTags: ${{ inputs.pushTags }}
       updateImageTag: false
       chartFolder: ${{ inputs.chartFolder }}/${{ inputs.chartName }}
+      chartRepos: ${{ inputs.chartRepos }}
       release_branch: ${{ inputs.release_branch }}
       imageTagName: ${{ inputs.imageTagName }}
