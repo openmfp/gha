@@ -45,6 +45,7 @@ jobs:
       chartsFolder: ${{ inputs.chartFolder }}
       chartName: ${{ inputs.chartName }}
       additionalTestFilesCommand: ${{ inputs.additionalTestFilesCommand }}
+      chartRepos: ${{ inputs.chartRepos }}
     secrets: inherit
 
   release:
@@ -56,6 +57,5 @@ jobs:
       pushTags: ${{ inputs.pushTags }}
       updateImageTag: false
       chartFolder: ${{ inputs.chartFolder }}/${{ inputs.chartName }}
-      chartRepos: ${{ inputs.chartRepos }}
       release_branch: ${{ inputs.release_branch }}
       imageTagName: ${{ inputs.imageTagName }}
