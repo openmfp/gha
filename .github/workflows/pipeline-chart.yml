@@ -27,7 +27,7 @@ on:
     outputs:
       version:
         description: "The created Version"
-        value: ${{ jobs.createVersion.outputs.version }}
+        value: ${{ jobs.release.outputs.version }}
 
 jobs:
   createVersion:
