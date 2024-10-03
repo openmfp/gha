@@ -36,6 +36,10 @@ on:
         required: false
         type: boolean
         default: true
+    outputs:
+      version:
+        description: The chart version that was pushed
+        value: ${{ jobs.release.outputs.version }}
 
 jobs:
   release:
