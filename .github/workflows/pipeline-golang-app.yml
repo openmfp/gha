@@ -92,7 +92,7 @@ jobs:
     secrets: inherit
 
   updateVersion:
-    needs: [createVersion]
+    needs: [createVersion,dockerBuildAndPush]
     uses: ./.github/workflows/job-chart-version-update.yml
     secrets: inherit
     with:
