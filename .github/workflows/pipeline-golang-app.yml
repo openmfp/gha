@@ -93,6 +93,7 @@ jobs:
 
   updateVersion:
     needs: [createVersion,dockerBuildAndPush]
+    if: ${{ github.ref == format('refs/heads/{0}',inputs.release_branch) }}
     uses: ./.github/workflows/job-chart-version-update.yml
     secrets: inherit
     with:
