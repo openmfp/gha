@@ -39,6 +39,7 @@ jobs:
           tags: ${{ inputs.imageTagName }}:${{ inputs.version }}
           secrets: |
             NODE_AUTH_TOKEN=${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/checkout@v4
       - name: Publish GH Tag
         if: ${{ github.ref == format('refs/heads/{0}',inputs.release_branch) }}
         uses: thejeff77/action-push-tag@v1.0.0
