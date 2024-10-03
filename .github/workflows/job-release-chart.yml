@@ -62,8 +62,7 @@ jobs:
           yq e -i '.image.tag = "${{ inputs.version }}"' ${{ inputs.chartFolder }}/values.yaml
       - name: Retrieve helm chart version
         id: chart_version
-        run: |
-          run: echo "::set-output name=chart_version::$(yq '.version' ${{ inputs.chartFolder }}/Chart.yaml)"
+        run: echo "::set-output name=chart_version::$(yq '.version' ${{ inputs.chartFolder }}/Chart.yaml)"
       - name: Push Helm chart
         uses: bsord/helm-push@v4.1.0
         with:
