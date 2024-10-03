@@ -18,6 +18,10 @@ on:
         required: false
         type: string
         default: '20'
+      multiarch:
+        required: false
+        type: boolean
+        default: true
 jobs:
   createVersion:
     uses: ./.github/workflows/job-create-version.yml
@@ -35,6 +39,7 @@ jobs:
       imageTagName: ${{ inputs.imageTagName }}
       version: ${{ needs.createVersion.outputs.version }}
       release_branch: ${{ inputs.release_branch }}
+      multiarch: ${{ inputs.multiarch }}
     secrets: inherit
 
   updateVersion:
