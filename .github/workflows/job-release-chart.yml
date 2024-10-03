@@ -72,6 +72,10 @@ jobs:
         if: ${{ inputs.publishCRDChart && inputs.updateVersion }}
         run: |
           yq e -i '.version = "${{ inputs.version }}"' ${{ inputs.chartFolder }}/${{ inputs.crdChartPath }}/Chart.yaml
+      - name: Retrieve helm chart version
+        id: chart_version
+        run: |          
+          run: echo "::set-output name=chart_version::$(yq '.version' ./Chart.yaml ${{ inputs.chartFolder }}/${{ inputs.crdChartPath }}/Chart.yaml)"
       - name: Push CRD Helm chart
         uses: bsord/helm-push@v4.1.0
         if: ${{ inputs.publishCRDChart }}
@@ -87,3 +91,5 @@ jobs:
         with:
           tag: ${{ inputs.version }}
           message: '${{ inputs.version }}'
+    outputs:
+      version: ${{ steps.chart_version.outputs.chart_version }}
