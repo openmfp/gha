@@ -33,7 +33,7 @@ jobs:
       node_version: ${{ inputs.node_version }}
 
   dockerBuildAndPush:
-    needs: [createVersion]
+    needs: [createVersion,test]
     uses: ./.github/workflows/job-docker-build-push.yml
     with:
       imageTagName: ${{ inputs.imageTagName }}
