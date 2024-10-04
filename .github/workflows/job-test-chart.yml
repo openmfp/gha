@@ -63,5 +63,5 @@ jobs:
           fi
       - name: Run chart-testing (lint)
         if: steps.list-changed.outputs.changed == 'true'
-        run: ct lint --target-branch ${{ github.event.repository.default_branch }} --chart-dirs=${{ inputs.chartsFolder }} --validate-maintainers=false --chart-repos=${{ inputs.chartRepos }} --excluded-charts=openmfp,common
+        run: ct lint --target-branch ${{ github.event.repository.default_branch }} --charts=${{ inputs.chartsFolder }}/${{ inputs.chartName }} --validate-maintainers=false --chart-repos=${{ inputs.chartRepos }}
   
