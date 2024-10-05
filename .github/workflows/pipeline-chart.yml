@@ -9,7 +9,7 @@ on:
       chartFolder:
         required: false
         type: string
-        default: 'chart'
+        default: 'charts'
       chartName:
         required: true
         type: string
