@@ -28,7 +28,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build Docker image
-        run: docker buildx build --tag=${{inputs.imageTagName}}:${{inputs.version}} .
+        run: docker buildx build  .
 #      - name: Build and push
 #        uses: docker/build-push-action@v6
 #        env:
