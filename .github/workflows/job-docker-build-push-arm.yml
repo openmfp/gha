@@ -18,9 +18,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Setup Docker
-        run: brew install docker
-      - name: Setup Docker Buildx
-        run: brew install docker-buildx
+        run: |
+          brew install docker
+          colima start
       - name: Test for docker
         run: docker --version
       - name: Login to GitHub Container Registry
