@@ -30,7 +30,7 @@ jobs:
 
   dockerBuildAndPushAMD:
     needs: [createVersion,test]
-    uses: ./.github/workflows/job-docker-build-push.yml
+    uses: ./.github/workflows/job-docker-build-push-single-arch.yml
     with:
       imageTagName: ${{ inputs.imageTagName }}
       version: ${{ needs.createVersion.outputs.version }}
@@ -40,7 +40,7 @@ jobs:
 
   dockerBuildAndPushARM:
     needs: [createVersion,test]
-    uses: ./.github/workflows/job-docker-build-push.yml
+    uses: ./.github/workflows/job-docker-build-push-single-arch.yml
     with:
       imageTagName: ${{ inputs.imageTagName }}
       version: ${{ needs.createVersion.outputs.version }}
