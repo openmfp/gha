@@ -1,0 +1,22 @@
+name: Push Tag
+on:
+  workflow_call:
+    inputs:
+      version:
+        required: true
+        type: string
+      release_branch:
+        required: false
+        type: string
+        default: 'main'
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Publish GH Tag
+        if: ${{ github.ref == format('refs/heads/{0}',inputs.release_branch) }}
+        uses: thejeff77/action-push-tag@v1.0.0
+        with:
+          tag: ${{ inputs.version }}
+          message: '${{ inputs.version }}'

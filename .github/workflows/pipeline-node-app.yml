@@ -48,8 +48,16 @@ jobs:
       arch: linux/arm64
     secrets: inherit
 
+  pushGithubTag:
+    needs: [dockerBuildAndPushAMD,dockerBuildAndPushARM]
+    uses: ./.github/workflows/job-push-tag.yml
+    with:
+      version: ${{ needs.createVersion.outputs.version }}
+      release_branch: ${{ inputs.release_branch }}
+    secrets: inherit
+
   updateVersion:
-    needs: [createVersion,dockerBuildAndPushAMD,dockerBuildAndPushARM]
+    needs: [createVersion,pushGithubTag]
     if: ${{ github.ref == format('refs/heads/{0}',inputs.release_branch) }}
     uses: ./.github/workflows/job-chart-version-update.yml
     secrets: inherit
