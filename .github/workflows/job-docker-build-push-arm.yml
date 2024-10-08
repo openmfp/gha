@@ -14,7 +14,7 @@ on:
         default: 'main'
 jobs:
   dockerARM:
-    runs-on: macos-latest-large
+    runs-on: macos-13-large
     steps:
       - uses: actions/checkout@v4
       - name: Setup Docker
@@ -32,7 +32,11 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build Docker image
-        run: echo ${{secrets.GITHUB_TOKEN}} | docker buildx build --secret id=github_token,src=/dev/stdin --tag ${{inputs.imageTagName}}:${{inputs.version}} .
+        run: |
+          echo ${{secrets.GITHUB_TOKEN}} | docker buildx build \
+            --secret id=github_token,src=/dev/stdin \
+            --secret id=NODE_AUTH_TOKEN,src=/dev/stdin \
+            --tag ${{inputs.imageTagName}}:${{inputs.version}} .
 #      - name: Build and push
 #        uses: docker/build-push-action@v6
 #        env:
