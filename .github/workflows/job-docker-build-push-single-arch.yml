@@ -14,7 +14,7 @@ on:
         default: 'main'
       arch:
         required: false
-        type: boolean
+        type: string
         default: true
 jobs:
   docker:
