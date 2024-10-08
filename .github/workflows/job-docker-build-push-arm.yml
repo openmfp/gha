@@ -36,13 +36,6 @@ jobs:
           echo ${{secrets.GITHUB_TOKEN}} | docker buildx build \
             --secret id=github_token,src=/dev/stdin \
             --tag ${{inputs.imageTagName}}:${{inputs.version}} .
-#      - name: Build and push
-#        uses: docker/build-push-action@v6
-#        env:
-#          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
-#        with:
-#          push: ${{ github.ref == format('refs/heads/{0}',inputs.release_branch) }}
-#          platforms: ${{ inputs.arch }}
-#          tags: ${{ inputs.imageTagName }}:${{ inputs.version }}
-#          secrets: |
-#            NODE_AUTH_TOKEN=${{ secrets.GITHUB_TOKEN }}
+      - name: Push Docker image
+        if: ${{ github.ref == format('refs/heads/{0}',inputs.release_branch) }}
+        run: docker push ${{inputs.imageTagName}}:${{inputs.version}}
