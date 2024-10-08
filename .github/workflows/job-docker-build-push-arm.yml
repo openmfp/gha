@@ -32,7 +32,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build Docker image
-        run: docker buildx build --tag=${{inputs.imageTagName}}:${{inputs.version}} .
+        run: echo ${{secrets.GITHUB_TOKEN}} | docker buildx build --secret id=NODE_AUTH_TOKEN,src=/dev/stdin --tag=${{inputs.imageTagName}}:${{inputs.version}} .
 #      - name: Build and push
 #        uses: docker/build-push-action@v6
 #        env:
