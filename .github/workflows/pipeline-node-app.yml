@@ -29,7 +29,7 @@ jobs:
       node_version: ${{ inputs.node_version }}
 
   dockerBuildAndPushAMD:
-    needs: [createVersion,test]
+    needs: [createVersion]
     uses: ./.github/workflows/job-docker-build-push-single-arch.yml
     with:
       imageTagName: ${{ inputs.imageTagName }}
@@ -39,7 +39,7 @@ jobs:
     secrets: inherit
 
   dockerBuildAndPushARM:
-    needs: [createVersion,test]
+    needs: [createVersion]
     uses: ./.github/workflows/job-docker-build-push-single-arch.yml
     with:
       imageTagName: ${{ inputs.imageTagName }}
@@ -49,7 +49,7 @@ jobs:
     secrets: inherit
 
   pushGithubTag:
-    needs: [dockerBuildAndPushAMD,dockerBuildAndPushARM]
+    needs: [test, dockerBuildAndPushAMD,dockerBuildAndPushARM]
     if: ${{ github.ref == format('refs/heads/{0}',inputs.release_branch) }}
     uses: ./.github/workflows/job-push-tag.yml
     with:
