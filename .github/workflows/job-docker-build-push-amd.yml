@@ -34,4 +34,4 @@ jobs:
           platforms: linux/amd64
           tags: ${{ inputs.imageTagName }}:${{ inputs.version }}
           secrets: |
-            NODE_AUTH_TOKEN=${{ secrets.GITHUB_TOKEN }}
+            github_token=${{ secrets.GITHUB_TOKEN }}
