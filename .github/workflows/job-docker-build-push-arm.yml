@@ -23,8 +23,6 @@ jobs:
       - name: Start Docker container runtimes
         run: |
           colima start
-      - name: Test for docker
-        run: docker --version
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
         with:
