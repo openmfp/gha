@@ -18,10 +18,6 @@ on:
         required: false
         type: string
         default: '20'
-      multiarch:
-        required: false
-        type: boolean
-        default: true
 jobs:
   createVersion:
     uses: ./.github/workflows/job-create-version.yml
@@ -32,18 +28,28 @@ jobs:
       release_branch: ${{ inputs.release_branch }}
       node_version: ${{ inputs.node_version }}
 
-  dockerBuildAndPush:
+  dockerBuildAndPushAMD:
     needs: [createVersion,test]
     uses: ./.github/workflows/job-docker-build-push.yml
     with:
       imageTagName: ${{ inputs.imageTagName }}
       version: ${{ needs.createVersion.outputs.version }}
       release_branch: ${{ inputs.release_branch }}
-      multiarch: ${{ inputs.multiarch }}
+      arch: linux/amd64
+    secrets: inherit
+
+  dockerBuildAndPushARM:
+    needs: [createVersion,test]
+    uses: ./.github/workflows/job-docker-build-push.yml
+    with:
+      imageTagName: ${{ inputs.imageTagName }}
+      version: ${{ needs.createVersion.outputs.version }}
+      release_branch: ${{ inputs.release_branch }}
+      arch: linux/arm64
     secrets: inherit
 
   updateVersion:
-    needs: [createVersion,dockerBuildAndPush]
+    needs: [createVersion,dockerBuildAndPushAMD,dockerBuildAndPushARM]
     if: ${{ github.ref == format('refs/heads/{0}',inputs.release_branch) }}
     uses: ./.github/workflows/job-chart-version-update.yml
     secrets: inherit
