@@ -17,7 +17,7 @@ jobs:
     runs-on: macos-13
     steps:
       - uses: douglascamata/setup-docker-macos-action@v1-alpha
-      - name: Setup Docker
+      - name: Setup Docker Buildx
         run: |
           brew install docker-buildx
       - uses: actions/checkout@v4
