@@ -17,7 +17,7 @@ on:
         required: true
         type: string
 jobs:
-  dockerAMD:
+  docker:
     runs-on: ubuntu-latest
     steps:
       - name: Set up QEMU
