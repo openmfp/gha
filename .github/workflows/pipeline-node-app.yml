@@ -41,7 +41,7 @@ jobs:
   dockerBuildAndPushARM:
     needs: [createVersion]
     uses: ./.github/workflows/job-docker-build-push-arch.yml
-#    if: ${{ github.ref == format('refs/heads/{0}',inputs.release_branch) }}
+    if: ${{ github.ref == format('refs/heads/{0}',inputs.release_branch) }}
     with:
       imageTagName: ${{ inputs.imageTagName }}
       version: ${{ needs.createVersion.outputs.version }}
