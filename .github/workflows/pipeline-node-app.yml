@@ -50,7 +50,7 @@ jobs:
     secrets: inherit
 
   pushGithubTag:
-    needs: [test, dockerBuildAndPushAMD,dockerBuildAndPushARM]
+    needs: [test, dockerBuildAndPushAMD,dockerBuildAndPushARM,createVersion]
     if: ${{ github.ref == format('refs/heads/{0}',inputs.release_branch) }}
     uses: ./.github/workflows/job-push-tag.yml
     with:
