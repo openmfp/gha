@@ -92,14 +92,6 @@ jobs:
       multiarch: true
     secrets: inherit
 
-  pushGithubTag:
-    needs: [testSource, lint, dockerBuildAndPush, createVersion]
-    if: ${{ github.ref == format('refs/heads/{0}',inputs.release_branch) }}
-    uses: ./.github/workflows/job-push-tag.yml
-    with:
-      version: ${{ needs.createVersion.outputs.version }}
-    secrets: inherit
-
   updateVersion:
     needs: [createVersion,pushGithubTag]
     if: ${{ github.ref == format('refs/heads/{0}',inputs.release_branch) }}
