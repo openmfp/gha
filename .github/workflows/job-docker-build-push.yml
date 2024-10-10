@@ -35,7 +35,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
         with:
           push: ${{ github.ref == format('refs/heads/{0}',inputs.release_branch) }}
-          platforms: ${{ (inputs.multiarch && github.ref == format('refs/heads/{0}',inputs.release_branch)) && 'linux/amd64,linux/arm64' || 'linux/amd64' }}
+          platforms: ${{ (inputs.multiarch && 'linux/amd64,linux/arm64' || 'linux/amd64' }}
           tags: ${{ inputs.imageTagName }}:${{ inputs.version }}
           secrets: |
             NODE_AUTH_TOKEN=${{ secrets.GITHUB_TOKEN }}
