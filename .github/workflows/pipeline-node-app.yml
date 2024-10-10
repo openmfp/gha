@@ -39,7 +39,7 @@ jobs:
     secrets: inherit
 
   updateVersion:
-    needs: [createVersion,pushGithubTag]
+    needs: [createVersion]
     if: ${{ github.ref == format('refs/heads/{0}',inputs.release_branch) }}
     uses: ./.github/workflows/job-chart-version-update.yml
     secrets: inherit
