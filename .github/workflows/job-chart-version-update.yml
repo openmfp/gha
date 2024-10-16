@@ -27,6 +27,6 @@ jobs:
          repositories: |
            ${{ inputs.chartName }}
            helm-charts
-      - run: gh workflow run update-chart-parameters.yaml --repo openmfp/helm-charts --field chart=${{ inputs.chart }} --field appVersion=${{ inputs.appVersion }}
+      - run: gh workflow run update-chart-parameters.yaml --repo openmfp/helm-charts-priv --field chart=${{ inputs.chart }} --field appVersion=${{ inputs.appVersion }}
         env:
           GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}
