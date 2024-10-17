@@ -54,6 +54,12 @@ jobs:
           check-latest: true
       - name: Set up chart-testing
         uses: helm/chart-testing-action@v2.6.1
+      - name: Log in to ghcr.io
+        run: |
+          echo "${GITHUB_TOKEN}" | helm registry login ghcr.io --username "${GITHUB_ACTOR}" --password-stdin
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_ACTOR: ${{ github.actor }}
       - name: Run chart-testing (list-changed)
         id: list-changed
         run: |
