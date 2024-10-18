@@ -29,6 +29,10 @@ on:
         required: false
         type: string
         default: 'main'
+      repoVersionUpdate:
+        required: false
+        type: string
+        default: 'openmfp/helm-charts-priv'
     outputs:
       version:
         description: "The created Version"
@@ -62,6 +66,10 @@ on:
         required: false
         type: string
         default: 'main'
+      repoVersionUpdate:
+        required: false
+        type: string
+        default: 'openmfp/helm-charts-priv'
 
 jobs:
   createVersion:
@@ -100,3 +108,4 @@ jobs:
     with:
       appVersion: ${{ needs.createVersion.outputs.version }}
       chart: ${{ github.event.repository.name }}
+      targetRepository: ${{ inputs.repoVersionUpdate }}
