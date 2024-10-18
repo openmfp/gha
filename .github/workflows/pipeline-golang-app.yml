@@ -32,7 +32,7 @@ on:
       repoVersionUpdate:
         required: false
         type: string
-        default: helm-charts
+        default: 'openmfp/helm-charts-priv'
     outputs:
       version:
         description: "The created Version"
@@ -69,7 +69,7 @@ on:
       repoVersionUpdate:
         required: false
         type: string
-        default: helm-charts
+        default: 'openmfp/helm-charts-priv'
 
 jobs:
   createVersion:
