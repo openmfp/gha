@@ -43,7 +43,7 @@ jobs:
         with:
           app-id: "838464"
           private-key: ${{ secrets.OPENMFP_PUBLISHER_PRIVATE_KEY }}
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           token: ${{ secrets.GH_ACCESS_TOKEN }}
           repository: ${{ inputs.versionRepo }}
