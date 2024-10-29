@@ -65,7 +65,7 @@ jobs:
         id: chart_version
         run: echo "version=$(yq '.version' ${{ inputs.chartFolder }}/Chart.yaml)" >> $GITHUB_OUTPUT
       - name: Push Helm chart
-        uses: bsord/helm-push@v4.1.0
+        uses: bsord/helm-push@v4.2.0
         with:
           useOCIRegistry: true
           username: ${{ github.actor }}
@@ -77,7 +77,7 @@ jobs:
         run: |
           yq e -i '.version = "${{ inputs.version }}"' ${{ inputs.chartFolder }}/${{ inputs.crdChartPath }}/Chart.yaml
       - name: Push CRD Helm chart
-        uses: bsord/helm-push@v4.1.0
+        uses: bsord/helm-push@v4.2.0
         if: ${{ inputs.publishCRDChart }}
         with:
           useOCIRegistry: true
