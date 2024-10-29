@@ -35,7 +35,7 @@ jobs:
       working-directory: ${{ inputs.workingDirectory }}
     - run: npm run build
       working-directory: ${{ inputs.workingDirectory }}
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       if: ${{ github.ref == format('refs/heads/{0}', inputs.release_branch ) }}
       with:
         name: target
