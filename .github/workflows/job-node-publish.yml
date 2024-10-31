@@ -54,6 +54,7 @@ jobs:
       with:
         name: target
         path: dist
+      continue-on-error: true
     - name: Publish from dist folder
       if: ${{ inputs.publishFromDist }}
       run: |
