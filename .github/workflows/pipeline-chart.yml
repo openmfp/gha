@@ -46,7 +46,6 @@ jobs:
     secrets: inherit
 
   vulnerabilityScan:
-    needs: [testChart]
     uses: ./.github/workflows/job-scan-kubernetes-vulnerability.yml
     secrets: inherit
     with:
