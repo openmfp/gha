@@ -111,3 +111,8 @@ jobs:
         run: |
           echo "If this step fails, kube-linter found issues. Check the output of the scan step above."
           [[ "${{ steps.kube-linter-action-scan.outcome }}" == "success" ]]
+
+      - name: kube-score check
+        uses: piraces/kube-score-ga@v0.1.3
+        with:
+          manifests-folders: ${{ inputs.chartsFolder }}
