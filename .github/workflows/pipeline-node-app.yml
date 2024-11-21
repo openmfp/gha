@@ -22,6 +22,10 @@ on:
         required: false
         type: string
         default: 'openmfp/helm-charts-priv'
+      chart:
+        required: false
+        type: string
+        default: ${{ github.event.repository.name }}
 
 jobs:
   createVersion:
@@ -50,5 +54,5 @@ jobs:
     secrets: inherit
     with:
       appVersion: ${{ needs.createVersion.outputs.version }}
-      chart: ${{ github.event.repository.name }}
+      chart: ${{ inputs.chart }}
       targetRepository: ${{ inputs.repoVersionUpdate }}
