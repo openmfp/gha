@@ -26,10 +26,16 @@ on:
         required: false
         type: string
         default: ${{ github.event.repository.name }}
+      versionPrefix:
+        required: false
+        type: string
+        default: ''
 
 jobs:
   createVersion:
     uses: ./.github/workflows/job-create-version.yml
+    with:
+      prefix: ${{ inputs.versionPrefix }}
 
   test:
     uses: ./.github/workflows/job-node-test.yml
