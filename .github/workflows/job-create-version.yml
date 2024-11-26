@@ -1,6 +1,12 @@
 name: Create Version
 on:
   workflow_call:
+    inputs:
+      prefix:
+        description: The Prefix to the created version
+        default: ""
+        type: string
+        required: false
     outputs:
       version:
         description: The prepared Version
@@ -12,18 +18,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - name: Get Latest Version
-        uses: actions-ecosystem/action-get-latest-tag@v1
         id: get-latest-tag
+        uses: WyriHaximus/github-action-get-previous-tag@v1
         with:
-          semver_only: true
-          initial_version: 0.0.0
-          with_initial_version: true
+          fallback: 0.0.0
+          prefix: "${{ inputs.prefix }}*"
       - name: Get New Version
-        uses: thejeff77/action-bump-semver@v1.0.0
         id: bump-semver
+        uses: WyriHaximus/github-action-next-semvers@v1
         with:
-          current_version: ${{ steps.get-latest-tag.outputs.tag }}
-          level: minor
+          strict: false
+          version: ${{ steps.get-latest-tag.outputs.tag }}
     outputs:
-      version: ${{ steps.bump-semver.outputs.new_version }}
+      version: ${{ inputs.prefix }}${{ steps.bump-semver.outputs.minor }}
