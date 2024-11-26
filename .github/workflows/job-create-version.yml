@@ -25,7 +25,7 @@ jobs:
         uses: WyriHaximus/github-action-get-previous-tag@v1
         with:
           fallback: 0.0.0
-          prefix: ${{ inputs.prefix }}
+          prefix: ${{ inputs.prefix || '[0-9]' }}
       - name: Remove prefix from version
         id: remove-prefix
         run: |
