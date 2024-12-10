@@ -35,11 +35,6 @@ on:
         value: ${{ jobs.release.outputs.version }}
 
 jobs:
-  createVersion:
-    if: ${{ inputs.pushTags }}
-    uses: ./.github/workflows/job-create-version.yml
-    secrets: inherit
-  
   testChart:
     uses: ./.github/workflows/job-test-chart.yml
     with:
