@@ -26,7 +26,8 @@ jobs:
       - name: Run helm-docs
         uses: losisin/helm-docs-github-action@v1
         with:
-          fail-on-diff: true
+          fail-on-diff: false
           chart-search-root: ${{ inputs.chartFolder }}
           template-files: ${{ inputs.headerFile }},README.md.gotmpl,${{ inputs.footerFile }}
           git-push: false
+      - run: git diff --exit-code
