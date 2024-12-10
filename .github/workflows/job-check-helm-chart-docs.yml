@@ -27,6 +27,6 @@ jobs:
         uses: losisin/helm-docs-github-action@v1
         with:
           fail-on-diff: true
-          chart-search-root: charts/${{ inputs.chartFolder }}
+          chart-search-root: ${{ inputs.chartFolder }}
           template-files: ${{ inputs.headerFile }},README.md.gotmpl,${{ inputs.footerFile }}
           git-push: false
