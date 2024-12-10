@@ -1,0 +1,34 @@
+name: Check Helm Chart Docs
+on:
+  workflow_call:
+    inputs:
+      chartFolder:
+        description: 'The folder where the helm chart is located'
+        required: true
+        default: ''
+        type: string
+      headerFile:
+        description: 'The header file to use for the helm-docs'
+        required: false
+        default: '../../docs-templates/header.md.gotmpl'
+        type: string
+      footerFile:
+        description: 'The footer file to use for the helm-docs'
+        required: false
+        default: '../../docs-templates/footer.md.gotmpl'
+        type: string
+
+jobs:
+  check-helm-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+      - name: Run helm-docs
+        uses: losisin/helm-docs-github-action@v1
+        with:
+          fail-on-diff: true
+          chart-search-root: charts/${{ inputs.chartFolder }}
+          template-files: ${{ inputs.headerFile }},README.md.gotmpl,${{ inputs.footerFile }}
+          git-push: false

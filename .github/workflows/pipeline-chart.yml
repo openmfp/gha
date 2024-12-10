@@ -56,6 +56,12 @@ jobs:
     secrets: inherit
     if: ${{ !inputs.skipVulnerabilityScan }}
 
+  check-helm-docs:
+    uses: ./.github/workflows/job-check-helm-chart-docs.yml
+    with:
+      chartFolder: ${{ inputs.chartFolder }}/${{ inputs.chartName }}
+    secrets: inherit
+
   release:
     needs: [testChart]
     uses: ./.github/workflows/job-release-chart.yml
