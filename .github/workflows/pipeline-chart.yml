@@ -63,7 +63,7 @@ jobs:
     secrets: inherit
 
   release:
-    needs: [testChart]
+    needs: [testChart,check-helm-docs,vulnerabilityScan]
     uses: ./.github/workflows/job-release-chart.yml
     secrets: inherit
     with:
