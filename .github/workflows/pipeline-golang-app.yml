@@ -91,7 +91,7 @@ jobs:
       coverageThreasholdTotal: ${{ inputs.coverageThreasholdTotal }}
 
   dockerBuildAndPush:
-    needs: [createVersion]
+    needs: [createVersion,lint,testSource]
     uses: ./.github/workflows/job-docker-build-push.yml
     with:
       imageTagName: ${{ inputs.imageTagName }}
