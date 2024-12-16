@@ -26,6 +26,10 @@ on:
         required: false
         type: string
         default: 'main'
+      versionPrefix:
+        required: false
+        type: string
+        default: ''
     outputs:
       version:
         description: "The created Version"
@@ -35,6 +39,8 @@ jobs:
   createVersion:
     uses: ./.github/workflows/job-create-version.yml
     secrets: inherit
+    with:
+        prefix: ${{ inputs.versionPrefix }}
   
   lint:
     uses: ./.github/workflows/job-golang-lint.yml
