@@ -25,10 +25,6 @@ on:
         required: false
         type: boolean
         default: false
-      skipVulnerabilityScan:
-        required: false
-        type: boolean
-        default: false
     outputs:
       version:
         description: "The created Version"
@@ -49,7 +45,6 @@ jobs:
     with:
       chartFolder: ${{ inputs.chartFolder }}/${{ inputs.chartName }}
     secrets: inherit
-    if: ${{ !inputs.skipVulnerabilityScan }}
 
   checkHelmDocs:
     uses: ./.github/workflows/job-check-helm-chart-docs.yml
