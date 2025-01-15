@@ -54,7 +54,7 @@ jobs:
 
       - name: kube-linter
         if: always() # run this step even if previous fails
-        uses: stackrox/kube-linter-action@v1.0.5
+        uses: stackrox/kube-linter-action@v1.0.6
         with:
           directory: ${{ inputs.kube_lint_target_directory }}
           version: ${{ inputs.kube_lint_version }}
