@@ -53,7 +53,7 @@ jobs:
           python-version: '3.x'
           check-latest: true
       - name: Set up chart-testing
-        uses: helm/chart-testing-action@v2.6.1
+        uses: helm/chart-testing-action@v2.7.0
       - name: Log in to ghcr.io
         run: |
           echo "${GITHUB_TOKEN}" | helm registry login ghcr.io --username "${GITHUB_ACTOR}" --password-stdin
