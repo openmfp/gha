@@ -17,6 +17,10 @@ on:
         required: false
         default: 'openmfp/helm-charts-priv'
         type: string
+      removeAppversionPrefixV:
+        required: false
+        type: boolean
+        default: false
 
 jobs:
   trigger-helm-charts-version-update:
@@ -33,6 +37,12 @@ jobs:
            ${{ inputs.chartName }}
            helm-charts
            helm-charts-priv
-      - run: gh workflow run update-chart-parameters.yaml --repo ${{ inputs.targetRepository }} --field chart=${{ inputs.chart }} --field appVersion=${{ inputs.appVersion }}
+      - name: Remove 'v' prefix from appVersion
+        if: ${{ inputs.removeAppversionPrefixV }}
+        run: |
+          appVersion=${{ inputs.appVersion }}
+          appVersion=${appVersion#v}
+          echo "::set-output name=cleaned_appVersion::$appVersion"
+      - run: gh workflow run update-chart-parameters.yaml --repo ${{ inputs.targetRepository }} --field chart=${{ inputs.chart }} --field appVersion=${{ steps.remove-prefix.outputs.cleaned_appVersion || inputs.appVersion }}
         env:
           GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}
