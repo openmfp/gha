@@ -75,6 +75,8 @@ jobs:
   createVersion:
     uses: ./.github/workflows/job-create-version.yml
     secrets: inherit
+    with:
+      prefix: v
   
   lint:
     uses: ./.github/workflows/job-golang-lint.yml
