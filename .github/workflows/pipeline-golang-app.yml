@@ -38,6 +38,10 @@ on:
         default: "[0-9]"
         type: string
         required: false
+      removeAppversionPrefixV:
+        required: false
+        type: boolean
+        default: false
     outputs:
       version:
         description: "The created Version"
@@ -75,10 +79,6 @@ on:
         required: false
         type: string
         default: 'openmfp/helm-charts-priv'
-      removeAppversionPrefixV:
-        required: false
-        type: boolean
-        default: false
 
 jobs:
   createVersion:
