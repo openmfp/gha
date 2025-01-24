@@ -120,7 +120,8 @@ jobs:
     steps:
       - name: Publish Prefixed GH Tag
         id: push-prefixed-gh-tag
-        if: ${{ github.ref == format('refs/heads/{0}',inputs.release_branch) && inputs.doubleTagging == true }}
+        if: ${{ inputs.doubleTagging == true }}
+        # if: ${{ github.ref == format('refs/heads/{0}',inputs.release_branch) && inputs.doubleTagging == true }}
         # uses: thejeff77/action-push-tag@v1.0.0
         # with:
         #   tag: v${{ inputs.version }}
