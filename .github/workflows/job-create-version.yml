@@ -32,7 +32,7 @@ jobs:
           original_string=${{ steps.get-latest-tag.outputs.tag }}
           prefix=${{ inputs.prefix }}
           result=${original_string#"$prefix"}
-          echo "cleaned_string=$result"
+          echo "cleaned_string=$result" >> $GITHUB_ENV
       - name: Get New Version
         id: bump-semver
         uses: WyriHaximus/github-action-next-semvers@v1
