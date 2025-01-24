@@ -32,12 +32,12 @@ jobs:
           original_string=${{ steps.get-latest-tag.outputs.tag }}
           prefix=${{ inputs.prefix }}
           result=${original_string#"$prefix"}
-          echo "::set-output name=cleaned_string::$result"
+          echo "cleaned_string=$result"
       - name: Get New Version
         id: bump-semver
         uses: WyriHaximus/github-action-next-semvers@v1
         with:
           strict: false
-          version: ${{ steps.remove-prefix.outputs.cleaned_string }}
+          version: ${{ env.cleaned_string }}
     outputs:
       version: ${{ inputs.prefix }}${{ steps.bump-semver.outputs.minor }}
