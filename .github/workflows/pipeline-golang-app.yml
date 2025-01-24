@@ -123,20 +123,16 @@ jobs:
         if: ${{ inputs.doubleTagging == true }}
         run: |
           echo "Creating second tag"
-          result=${{ needs.createVersion.outputs.version }}
+          result="${{ needs.createVersion.outputs.version }}"
           if [[ $result == v* ]]; then
-            result=${result:1}
+            result="${result:1}"
           else
             result="v$result"
           fi
-          echo "::set-output name=secondtag_string::$result"
+          echo "secondtag_string=$result" >> $GITHUB_ENV
+
       - name: Publish Prefixed GH Tag
         id: push-prefixed-gh-tag
         if: ${{ inputs.doubleTagging == true }}
-        # if: ${{ github.ref == format('refs/heads/{0}',inputs.release_branch) && inputs.doubleTagging == true }}
-        # uses: thejeff77/action-push-tag@v1.0.0
-        # with:
-        #   tag: v${{ inputs.version }}
-        #   message: 'v${{ inputs.version }}'
         run: |
-          echo v${{ steps.create-second-tag.outputs.secondtag_string }}
+          echo "v${{ env.secondtag_string }}"
