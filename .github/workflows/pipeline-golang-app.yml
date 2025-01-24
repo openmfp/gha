@@ -33,7 +33,7 @@ on:
         required: false
         type: string
         default: 'openmfp/helm-charts-priv'
-      pushPrevixedTag:
+      doubleTagging:
         required: false
         type: boolean
         default: false
@@ -113,15 +113,17 @@ jobs:
       appVersion: ${{ needs.createVersion.outputs.version }}
       chart: ${{ github.event.repository.name }}
       targetRepository: ${{ inputs.repoVersionUpdate }}
-      removeAppversionPrefixV: ${{ inputs.removeAppversionPrefixV }}
 
   pushPrefixedGHTag:
+    runs-on: ubuntu-latest
     needs: [createVersion]
     steps:
       - name: Publish Prefixed GH Tag
-        if: ${{ github.ref == format('refs/heads/{0}',inputs.release_branch) && inputs.pushPrevixedTag == true }}
+        id: push-prefixed-gh-tag
+        if: ${{ github.ref == format('refs/heads/{0}',inputs.release_branch) && inputs.doubleTagging == true }}
         # uses: thejeff77/action-push-tag@v1.0.0
         # with:
         #   tag: v${{ inputs.version }}
         #   message: 'v${{ inputs.version }}'
-        run:
+        run: |
+          echo v${{ needs.createVersion.outputs.version }}
