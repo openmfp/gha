@@ -38,6 +38,7 @@ jobs:
            helm-charts
            helm-charts-priv
       - name: Remove 'v' prefix from appVersion
+        id: remove-prefix
         if: ${{ inputs.removeAppversionPrefixV }}
         run: |
           appVersion=${{ inputs.appVersion }}
