@@ -120,7 +120,7 @@ jobs:
     steps:
       - name: Create second tag
         id: create-second-tag
-        if: ${{ inputs.doubleTagging == true }}
+        if: ${{  github.ref == format('refs/heads/{0}',inputs.release_branch) && inputs.doubleTagging == true }}
         run: |
           echo "Creating second tag"
           result="${{ needs.createVersion.outputs.version }}"
@@ -133,6 +133,8 @@ jobs:
 
       - name: Publish Prefixed GH Tag
         id: push-prefixed-gh-tag
-        if: ${{ inputs.doubleTagging == true }}
-        run: |
-          echo "${{ env.secondtag_string }}"
+        if: ${{  github.ref == format('refs/heads/{0}',inputs.release_branch) && inputs.doubleTagging == true }}
+        uses: thejeff77/action-push-tag@v1.0.0
+        with:
+          tag: ${{ env.secondtag_string }}
+          message: '${{ env.secondtag_string }}'
