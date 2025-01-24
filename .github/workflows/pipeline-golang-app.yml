@@ -85,7 +85,7 @@ jobs:
     uses: ./.github/workflows/job-create-version.yml
     secrets: inherit
     with:
-      prefix: ${{ inputs.versionPrefix || 'useLocalCoverageConfig[0-9]' }}
+      prefix: ${{ inputs.versionPrefix }}
   
   lint:
     uses: ./.github/workflows/job-golang-lint.yml
@@ -113,7 +113,7 @@ jobs:
 
   updateVersion:
     needs: [createVersion, dockerBuildAndPush]
-    if: ${{ github.ref == format('refs/heads/{0}',inputs.release_branch) }}
+    # if: ${{ github.ref == format('refs/heads/{0}',inputs.release_branch) }}
     uses: ./.github/workflows/job-chart-version-update.yml
     secrets: inherit
     with:
