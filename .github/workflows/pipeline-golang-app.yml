@@ -33,12 +33,7 @@ on:
         required: false
         type: string
         default: 'openmfp/helm-charts-priv'
-      versionPrefix:
-        description: The Prefix to the created version
-        default: "[0-9]"
-        type: string
-        required: false
-      removeAppversionPrefixV:
+      pushPrevixedTag:
         required: false
         type: boolean
         default: false
@@ -84,8 +79,6 @@ jobs:
   createVersion:
     uses: ./.github/workflows/job-create-version.yml
     secrets: inherit
-    with:
-      prefix: ${{ inputs.versionPrefix }}
   
   lint:
     uses: ./.github/workflows/job-golang-lint.yml
@@ -113,7 +106,7 @@ jobs:
 
   updateVersion:
     needs: [createVersion, dockerBuildAndPush]
-    # if: ${{ github.ref == format('refs/heads/{0}',inputs.release_branch) }}
+    if: ${{ github.ref == format('refs/heads/{0}',inputs.release_branch) }}
     uses: ./.github/workflows/job-chart-version-update.yml
     secrets: inherit
     with:
@@ -121,3 +114,14 @@ jobs:
       chart: ${{ github.event.repository.name }}
       targetRepository: ${{ inputs.repoVersionUpdate }}
       removeAppversionPrefixV: ${{ inputs.removeAppversionPrefixV }}
+
+  pushPrefixedGHTag:
+    needs: [createVersion]
+    steps:
+      - name: Publish Prefixed GH Tag
+        if: ${{ github.ref == format('refs/heads/{0}',inputs.release_branch) && inputs.pushPrevixedTag == true }}
+        # uses: thejeff77/action-push-tag@v1.0.0
+        # with:
+        #   tag: v${{ inputs.version }}
+        #   message: 'v${{ inputs.version }}'
+        run:

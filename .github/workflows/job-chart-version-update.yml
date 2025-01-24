@@ -44,7 +44,6 @@ jobs:
           appVersion=${{ inputs.appVersion }}
           appVersion=${appVersion#v}
           echo "::set-output name=cleaned_appVersion::$appVersion"
-      - run: echo "appVersion=${{ steps.remove-prefix.outputs.cleaned_appVersion || inputs.appVersion }}"
-      # - run: gh workflow run update-chart-parameters.yaml --repo ${{ inputs.targetRepository }} --field chart=${{ inputs.chart }} --field appVersion=${{ steps.remove-prefix.outputs.cleaned_appVersion || inputs.appVersion }}
-      #   env:
-      #     GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}
+      - run: gh workflow run update-chart-parameters.yaml --repo ${{ inputs.targetRepository }} --field chart=${{ inputs.chart }} --field appVersion=${{ steps.remove-prefix.outputs.cleaned_appVersion || inputs.appVersion }}
+        env:
+          GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}
