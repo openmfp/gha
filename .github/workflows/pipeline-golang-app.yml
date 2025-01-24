@@ -33,6 +33,11 @@ on:
         required: false
         type: string
         default: 'openmfp/helm-charts-priv'
+      versionPrefix:
+        description: The Prefix to the created version
+        default: "[0-9]"
+        type: string
+        required: false
     outputs:
       version:
         description: "The created Version"
@@ -70,13 +75,17 @@ on:
         required: false
         type: string
         default: 'openmfp/helm-charts-priv'
+      removeAppversionPrefixV:
+        required: false
+        type: boolean
+        default: false
 
 jobs:
   createVersion:
     uses: ./.github/workflows/job-create-version.yml
     secrets: inherit
     with:
-      prefix: v
+      prefix: ${{ inputs.versionPrefix || 'useLocalCoverageConfig[0-9]' }}
   
   lint:
     uses: ./.github/workflows/job-golang-lint.yml
@@ -111,3 +120,4 @@ jobs:
       appVersion: ${{ needs.createVersion.outputs.version }}
       chart: ${{ github.event.repository.name }}
       targetRepository: ${{ inputs.repoVersionUpdate }}
+      removeAppversionPrefixV: ${{ inputs.removeAppversionPrefixV }}
