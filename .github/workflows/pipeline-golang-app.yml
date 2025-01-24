@@ -139,4 +139,4 @@ jobs:
         #   tag: v${{ inputs.version }}
         #   message: 'v${{ inputs.version }}'
         run: |
-          echo v${{ needs.create-second-tag.outputs.secondtag_string }}
+          echo v${{ steps.create-second-tag.outputs.secondtag_string }}
