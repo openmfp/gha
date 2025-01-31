@@ -117,7 +117,7 @@ jobs:
   pushPrefixedGHTag:
     runs-on: ubuntu-latest
     needs: [createVersion]
-    if: ${{ github.ref == format('refs/heads/{0}',inputs.release_branch) && (inputs.doubleTagging == true) }}
+    if: ${{ inputs.doubleTagging == true }}
     steps:
       - name: Create second tag
         id: create-second-tag
