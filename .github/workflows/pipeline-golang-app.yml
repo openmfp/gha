@@ -131,6 +131,9 @@ jobs:
           fi
           echo "secondtag_string=$result" >> $GITHUB_ENV
 
+      - name: Checkout
+        uses: actions/checkout@v4
+        
       - name: Publish Prefixed GH Tag
         id: push-prefixed-gh-tag
         uses: thejeff77/action-push-tag@v1.0.0
