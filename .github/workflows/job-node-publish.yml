@@ -58,7 +58,7 @@ jobs:
     - name: Get npm version
       id: get-npm-version
       run: |
-        NPM_VERSION=$(cat ${{ inputs.workingDirectory }}/package.json | jq '.version' -r)
+        NPM_VERSION=$(cat package.json | jq '.version' -r)
         echo "NPM version: $NPM_VERSION"
         echo "npm_version=$NPM_VERSION" >> $GITHUB_ENV
       working-directory: ${{ inputs.workingDirectory }}
