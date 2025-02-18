@@ -55,21 +55,34 @@ jobs:
         name: target
         path: dist
       continue-on-error: true
+    - name: Get npm version
+      id: get-npm-version
+      run: |
+        NPM_VERSION=$(cat package.json | jq '.version' -r)
+        echo "NPM version: $NPM_VERSION"
+        echo "npm_version=$NPM_VERSION" >> $GITHUB_ENV
+      working-directory: ${{ inputs.workingDirectory }}
     - name: Publish from dist folder
       if: ${{ inputs.publishFromDist }}
       run: |
-        npm version ${{ inputs.version }}
+        npm version ${{ env.npm_version }}
         npm publish
         cd ..
-        npm version ${{inputs.version}} -m "[no ci] Release ${{inputs.version}}"
+        npm version ${{ env.npm_version }} -m "[no ci] Release ${{ env.npm_version }}"
       working-directory:
         ${{ inputs.workingDirectoryDist }}
       env:
         NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+    - name: Get New Version
+      id: bump-semver
+      uses: WyriHaximus/github-action-next-semvers@v1
+      with:
+        strict: false
+        version: ${{ env.npm_version }}
     - name: Publish
       if: ${{ !inputs.publishFromDist }}
       run: |
-        npm version ${{inputs.version}} -m "[no ci] Release ${{inputs.version}}"
+        npm version ${{ steps.bump-semver.outputs.minor }} -m "[no ci] Release ${{ steps.bump-semver.outputs.minor }}"
         npm publish
       working-directory:
         ${{ inputs.workingDirectory }}
@@ -80,10 +93,10 @@ jobs:
       if: inputs.workingDirectory != './'
       run: |
         git add .
-        git commit -m "[no ci] Release ${{inputs.version}}"
+        git commit -m "[no ci] Release ${{ steps.bump-semver.outputs.minor }}"
         git fetch
         git rebase
-        git tag -a ${{inputs.version}} -m "[no ci] Release ${{inputs.version}}"
+        git tag -a ${{ steps.bump-semver.outputs.minor }} -m "[no ci] Release ${{ steps.bump-semver.outputs.minor }}"
     - name: Push
       run: |
         git push origin
