@@ -55,13 +55,20 @@ jobs:
         name: target
         path: dist
       continue-on-error: true
+    - name: Get npm version
+      id: get-npm-version
+      run: |
+        NPM_VERSION=$(cat ${{ inputs.workingDirectory }}/package.json | jq '.version' -r)
+        echo "NPM version: $NPM_VERSION"
+        echo "npm_version=$NPM_VERSION" >> $GITHUB_ENV
+      working-directory: ${{ inputs.workingDirectory }}
     - name: Publish from dist folder
       if: ${{ inputs.publishFromDist }}
       run: |
-        npm version ${{ inputs.version }}
+        npm version ${{ env.npm_version }}
         npm publish
         cd ..
-        npm version ${{inputs.version}} -m "[no ci] Release ${{inputs.version}}"
+        npm version ${{ env.npm_version }} -m "[no ci] Release ${{ env.npm_version }}"
       working-directory:
         ${{ inputs.workingDirectoryDist }}
       env:
@@ -69,7 +76,7 @@ jobs:
     - name: Publish
       if: ${{ !inputs.publishFromDist }}
       run: |
-        npm version ${{inputs.version}} -m "[no ci] Release ${{inputs.version}}"
+        npm version ${{ env.npm_version }} -m "[no ci] Release ${{ env.npm_version }}"
         npm publish
       working-directory:
         ${{ inputs.workingDirectory }}
