@@ -73,10 +73,16 @@ jobs:
         ${{ inputs.workingDirectoryDist }}
       env:
         NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+    - name: Get New Version
+      id: bump-semver
+      uses: WyriHaximus/github-action-next-semvers@v1
+      with:
+        strict: false
+        version: ${{ env.npm_version }}
     - name: Publish
       if: ${{ !inputs.publishFromDist }}
       run: |
-        npm version ${{ env.npm_version }} -m "[no ci] Release ${{ env.npm_version }}"
+        npm version ${{ steps.bump-semver.outputs.minor }} -m "[no ci] Release ${{ steps.bump-semver.outputs.minor }}"
         npm publish
       working-directory:
         ${{ inputs.workingDirectory }}
@@ -87,10 +93,10 @@ jobs:
       if: inputs.workingDirectory != './'
       run: |
         git add .
-        git commit -m "[no ci] Release ${{inputs.version}}"
+        git commit -m "[no ci] Release ${{ steps.bump-semver.outputs.minor }}"
         git fetch
         git rebase
-        git tag -a ${{inputs.version}} -m "[no ci] Release ${{inputs.version}}"
+        git tag -a ${{ steps.bump-semver.outputs.minor }} -m "[no ci] Release ${{ steps.bump-semver.outputs.minor }}"
     - name: Push
       run: |
         git push origin
