@@ -10,7 +10,7 @@ on:
         required: false
         type: number
         default: 80
-      coverageThreasholdPackage:
+      coverageThresholdPackage:
         required: false
         type: number
         default: 80
@@ -53,7 +53,7 @@ jobs:
       useTask: ${{ inputs.useTask }}
       useLocalCoverageConfig: ${{ inputs.useLocalCoverageConfig }}
       coverageThreasholdFile: ${{ inputs.coverageThreasholdFile }}
-      coverageThreasholdPackage: ${{ inputs.coverageThreasholdPackage }}
+      coverageThresholdPackage: ${{ inputs.coverageThresholdPackage }}
       coverageThreasholdTotal: ${{ inputs.coverageThreasholdTotal }}
 
   publishVersion:
