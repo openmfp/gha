@@ -36,6 +36,3 @@ jobs:
               - type: 'config'
                 nouns: ['config', 'conf', 'configuration', 'configure']
                 labels: ['config','fix']
-              - type: 'chore'
-                nouns: ['chore']
-                labels: ['chore','fix']
