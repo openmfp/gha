@@ -28,7 +28,7 @@ jobs:
           noNewCommitBehavior: current
       
       - name: Publish raw Tag
-        if: ${{ (github.head_ref || github.ref) == format('refs/heads/{0}',inputs.release_branch) }}
+        if: ${{ !github.head_ref }}
         run: |
           git tag ${{ steps.semver.outputs.nextStrict }}
           git push --tags
