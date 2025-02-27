@@ -38,9 +38,14 @@ jobs:
           secrets: |
             github_token=${{ secrets.GITHUB_TOKEN }}
       - uses: actions/checkout@v4
-      - name: Publish GH Tag
+      - name: Create Release
         if: ${{ github.ref == format('refs/heads/{0}',inputs.release_branch) }}
-        uses: thejeff77/action-push-tag@v1.0.0
+        uses: ncipollo/release-action@v1.12.0
         with:
+          allowUpdates: true
+          draft: false
+          makeLatest: true
+          generateReleaseNotes: true
           tag: ${{ inputs.version }}
-          message: '${{ inputs.version }}'
+          name: ${{ inputs.version }}
+          token: ${{ secrets.GITHUB_TOKEN }}
