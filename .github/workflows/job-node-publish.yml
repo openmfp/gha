@@ -29,10 +29,13 @@ on:
         type: string
         default: '20'
 
+env:
+  BRANCH: ${{ github.head_ref || github.ref }}
+
 jobs:
   publish:
     runs-on: ubuntu-latest
-    if: github.ref == format('refs/heads/{0}',inputs.release_branch)
+    if: env.BRANCH == format('refs/heads/{0}',inputs.release_branch)
     steps:
     - name: Setup Git
       run: |
