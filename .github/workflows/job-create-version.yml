@@ -26,7 +26,7 @@ jobs:
           minorList: FEATURE, Feature, feature, FEAT, Feat, feat
           patchList: FIX, Fix, fix, FIXED, Fixed, fixed, chore, config, conf, cofiguration, configure, build, chore, ci, rebuild, doc, docu, document, documentation, dependencies
           prefix: v
-          noNewCommitBehavior: warn
+          noNewCommitBehavior: current
 
     outputs:
       version: ${{ steps.semver.outputs.next }}
