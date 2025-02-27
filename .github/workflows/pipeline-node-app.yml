@@ -33,6 +33,10 @@ jobs:
     uses: ./.github/workflows/job-auto-labeler.yml
     secrets: inherit
 
+  createVersion:
+    uses: ./.github/workflows/job-create-version.yml
+    secrets: inherit
+
   test:
     uses: ./.github/workflows/job-node-test.yml
     with:
