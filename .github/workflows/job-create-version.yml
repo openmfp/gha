@@ -60,4 +60,4 @@ jobs:
           strict: false
           version: ${{ env.cleaned_string }}
     outputs:
-      version: ${{ inputs.use_semver_action && steps.semver.next || format('{0}{1}', inputs.prefix, steps.bump-semver.outputs.minor) }}
+      version: ${{ inputs.use_semver_action && steps.semver.outputs.next || format('{0}{1}', inputs.prefix, steps.bump-semver.outputs.minor) }}
