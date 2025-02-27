@@ -26,10 +26,6 @@ on:
         required: false
         type: string
         default: ${{ github.event.repository.name }}
-      versionPrefix:
-        required: false
-        type: string
-        default: ''
 
 jobs:
   auto-labeler:
@@ -39,8 +35,7 @@ jobs:
 
   createVersion:
     uses: ./.github/workflows/job-create-version.yml
-    with:
-      prefix: ${{ inputs.versionPrefix }}
+    secrets: inherit
 
   test:
     uses: ./.github/workflows/job-node-test.yml
