@@ -32,6 +32,11 @@ on:
         default: ''
 
 jobs:
+  auto-labeler:
+    if: ${{ github.ref != format('refs/heads/{0}',inputs.release_branch) }}
+    uses: ./.github/workflows/job-auto-labeler.yml
+    secrets: inherit
+
   createVersion:
     uses: ./.github/workflows/job-create-version.yml
     with:
