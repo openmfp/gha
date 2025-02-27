@@ -1,0 +1,46 @@
+name: Auto Labeler
+on:
+  workflow_call:
+    inputs:
+      release_branch:
+        required: false
+        type: string
+        default: 'main'
+
+jobs:
+  auto-labeler:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Run auto-labeler
+        id: auto-labeler
+        uses: mauroalderete/action-assign-labels@v1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          conventional-commits: |
+            conventional-commits:
+              - type: 'fix'
+                nouns: ['FIX', 'Fix', 'fix', 'FIXED', 'Fixed', 'fixed']
+                labels: ['fix']
+              - type: 'feature'
+                nouns: ['FEATURE', 'Feature', 'feature', 'FEAT', 'Feat', 'feat']
+                labels: ['feature']
+              - type: 'breaking_change'
+                nouns: ['BREAKING CHANGE', 'BREAKING', 'MAJOR']
+                labels: ['BREAKING CHANGE']
+              - type: 'documentation'
+                nouns: ['doc', 'docs', 'docu','document','documentation']
+                labels: ['documentation','fix']
+              - type: 'build'
+                nouns: ['build','rebuild']
+                labels: ['build','fix']
+              - type: 'dependencies'
+                nouns: ['build(deps)','build(deps-dev)']
+                labels: ['build','dependencies','fix']
+              - type: 'config'
+                nouns: ['config', 'conf', 'configuration', 'configure']
+                labels: ['config','fix']
+              - type: 'chore'
+                nouns: ['chore']
+                labels: ['chore','fix']
