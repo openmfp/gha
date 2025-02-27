@@ -26,21 +26,12 @@ on:
         required: false
         type: string
         default: ${{ github.event.repository.name }}
-      versionPrefix:
-        required: false
-        type: string
-        default: ''
 
 jobs:
   auto-labeler:
     if: ${{ github.ref != format('refs/heads/{0}',inputs.release_branch) }}
     uses: ./.github/workflows/job-auto-labeler.yml
     secrets: inherit
-
-  createVersion:
-    uses: ./.github/workflows/job-create-version.yml
-    with:
-      prefix: ${{ inputs.versionPrefix }}
 
   test:
     uses: ./.github/workflows/job-node-test.yml

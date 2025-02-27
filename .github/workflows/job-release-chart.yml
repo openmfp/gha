@@ -85,11 +85,16 @@ jobs:
           access-token: ${{ secrets.GITHUB_TOKEN }}
           registry-url:  oci://ghcr.io/${{ github.repository }}
           chart-folder: ${{ inputs.chartFolder }}/${{ inputs.crdChartPath }}
-      - name: Publish GH Tag
+      - name: Create Release
         if: ${{ inputs.pushTags }}
-        uses: thejeff77/action-push-tag@v1.0.0
+        uses: ncipollo/release-action@v1.16.0
         with:
+          allowUpdates: true
+          draft: false
+          makeLatest: true
+          generateReleaseNotes: true
           tag: ${{ inputs.version }}
-          message: '${{ inputs.version }}'
+          name: ${{ inputs.version }}
+          token: ${{ secrets.GITHUB_TOKEN }}
     outputs:
       version: ${{ steps.chart_version.outputs.version }}

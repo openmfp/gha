@@ -37,10 +37,6 @@ on:
         required: false
         type: boolean
         default: false
-      use_semver_action:
-        required: false
-        type: boolean
-        default: false
     outputs:
       version:
         description: "The created Version"
@@ -88,8 +84,6 @@ jobs:
   createVersion:
     uses: ./.github/workflows/job-create-version.yml
     secrets: inherit
-    with:
-      use_semver_action: ${{ inputs.use_semver_action }}
   
   lint:
     uses: ./.github/workflows/job-golang-lint.yml

@@ -26,10 +26,6 @@ on:
         required: false
         type: string
         default: 'main'
-      versionPrefix:
-        required: false
-        type: string
-        default: ''
     outputs:
       version:
         description: "The created Version"
@@ -39,8 +35,6 @@ jobs:
   createVersion:
     uses: ./.github/workflows/job-create-version.yml
     secrets: inherit
-    with:
-        prefix: ${{ inputs.versionPrefix }}
   
   lint:
     uses: ./.github/workflows/job-golang-lint.yml
@@ -58,8 +52,16 @@ jobs:
 
   publishVersion:
     if: github.ref == format('refs/heads/{0}',inputs.release_branch)
+    runs-on: ubuntu-latest
     needs: [createVersion,lint,testSource]
-    uses: ./.github/workflows/job-version-publish.yaml
-    with:
-      version: ${{ needs.createVersion.outputs.version }}
-    secrets: inherit
+    steps:
+      - name: Create Release
+        uses: ncipollo/release-action@v1.16.0
+        with:
+          allowUpdates: true
+          draft: false
+          makeLatest: true
+          generateReleaseNotes: true
+          tag: ${{ needs.createVersion.outputs.version }}
+          name: ${{ needs.createVersion.outputs.version }}
+          token: ${{ secrets.GITHUB_TOKEN }}
