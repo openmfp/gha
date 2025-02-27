@@ -7,6 +7,11 @@ on:
         default: ""
         type: string
         required: false
+      use_semver_action:
+        description: Use the semver action to create the version
+        default: false
+        type: boolean
+        required: false
     outputs:
       version:
         description: The prepared Version
@@ -17,17 +22,31 @@ jobs:
   version:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Set up repository
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      
+      - name: Get next version
+        id: semver
+        uses: ietf-tools/semver-action@v1
+        if: ${{ inputs.use_semver_action }}
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          majorList: BREAKING CHANGE, BREAKING, MAJOR
+          minorList: FEATURE, Feature, feature, FEAT, Feat, feat
+          patchList: FIX, Fix, fix, FIXED, Fixed, fixed, chore, config, conf, cofiguration, configure, build, chore, ci, rebuild, doc, docu, document, documentation, dependencies
+
       - name: Get Latest Version
         id: get-latest-tag
+        if: ${{ !inputs.use_semver_action }}
         uses: WyriHaximus/github-action-get-previous-tag@v1
         with:
           fallback: 0.0.0
           prefix: ${{ inputs.prefix || '[0-9]' }}
       - name: Remove prefix from version
         id: remove-prefix
+        if: ${{ !inputs.use_semver_action }}
         run: |
           original_string=${{ steps.get-latest-tag.outputs.tag }}
           prefix=${{ inputs.prefix }}
@@ -35,9 +54,10 @@ jobs:
           echo "cleaned_string=$result" >> $GITHUB_ENV
       - name: Get New Version
         id: bump-semver
+        if: ${{ !inputs.use_semver_action }}
         uses: WyriHaximus/github-action-next-semvers@v1
         with:
           strict: false
           version: ${{ env.cleaned_string }}
     outputs:
-      version: ${{ inputs.prefix }}${{ steps.bump-semver.outputs.minor }}
+      version: ${{ inputs.use_semver_action && steps.semver.next || format('{0}{1}', inputs.prefix, steps.bump-semver.outputs.minor) }}

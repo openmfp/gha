@@ -37,6 +37,10 @@ on:
         required: false
         type: boolean
         default: false
+      use_semver_action:
+        required: false
+        type: boolean
+        default: false
     outputs:
       version:
         description: "The created Version"
@@ -84,6 +88,8 @@ jobs:
   createVersion:
     uses: ./.github/workflows/job-create-version.yml
     secrets: inherit
+    with:
+      use_semver_action: ${{ inputs.use_semver_action }}
   
   lint:
     uses: ./.github/workflows/job-golang-lint.yml
@@ -118,30 +124,3 @@ jobs:
       appVersion: ${{ needs.createVersion.outputs.version }}
       chart: ${{ github.event.repository.name }}
       targetRepository: ${{ inputs.repoVersionUpdate }}
-
-  pushPrefixedGHTag:
-    runs-on: ubuntu-latest
-    needs: [createVersion]
-    if: ${{ (github.ref == format('refs/heads/{0}',inputs.release_branch)) && inputs.doubleTagging == true }}
-    steps:
-      - name: Create second tag
-        id: create-second-tag
-        run: |
-          echo "Creating second tag"
-          result="${{ needs.createVersion.outputs.version }}"
-          if [[ $result == v* ]]; then
-            result="${result:1}"
-          else
-            result="v$result"
-          fi
-          echo "secondtag_string=$result" >> $GITHUB_ENV
-
-      - name: Checkout
-        uses: actions/checkout@v4
-        
-      - name: Publish Prefixed GH Tag
-        id: push-prefixed-gh-tag
-        uses: thejeff77/action-push-tag@v1.0.0
-        with:
-          tag: ${{ env.secondtag_string }}
-          message: '${{ env.secondtag_string }}'
