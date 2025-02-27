@@ -17,9 +17,6 @@ on:
         type: string
         default: '20'
 
-env:
-  BRANCH: ${{ github.head_ref || github.ref }}
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -39,7 +36,7 @@ jobs:
     - run: npm run build
       working-directory: ${{ inputs.workingDirectory }}
     - uses: actions/upload-artifact@v4
-      if: ${{ env.BRANCH == format('refs/heads/{0}', inputs.release_branch ) }}
+      if: ${{ (github.head_ref || github.ref) == format('refs/heads/{0}', inputs.release_branch ) }}
       with:
         name: target
         path: dist

@@ -17,12 +17,9 @@ on:
         type: boolean
         default: true
 
-env:
-  BRANCH: ${{ github.head_ref || github.ref }}
-
 jobs:
   docker:
-    runs-on: ${{ env.BRANCH == format('refs/heads/{0}',inputs.release_branch) && 'ubuntu-latest-large' || 'ubuntu-latest' }}
+    runs-on: ${{ (github.head_ref || github.ref) == format('refs/heads/{0}',inputs.release_branch) && 'ubuntu-latest-large' || 'ubuntu-latest' }}
     steps:
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
@@ -35,14 +32,14 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
-          push: ${{ env.BRANCH == format('refs/heads/{0}',inputs.release_branch) }}
-          platforms: ${{ (inputs.multiarch && env.BRANCH == format('refs/heads/{0}',inputs.release_branch)) && 'linux/amd64,linux/arm64' || 'linux/amd64' }}
+          push: ${{ (github.head_ref || github.ref) == format('refs/heads/{0}',inputs.release_branch) }}
+          platforms: ${{ (inputs.multiarch && (github.head_ref || github.ref) == format('refs/heads/{0}',inputs.release_branch)) && 'linux/amd64,linux/arm64' || 'linux/amd64' }}
           tags: ${{ inputs.imageTagName }}:${{ inputs.version }}
           secrets: |
             github_token=${{ secrets.GITHUB_TOKEN }}
       - uses: actions/checkout@v4
       - name: Create Release
-        if: ${{ env.BRANCH == format('refs/heads/{0}',inputs.release_branch) }}
+        if: ${{ (github.head_ref || github.ref) == format('refs/heads/{0}',inputs.release_branch) }}
         uses: ncipollo/release-action@v1.16.0
         with:
           allowUpdates: true

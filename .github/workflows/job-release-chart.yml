@@ -38,13 +38,10 @@ on:
         description: The chart version that was pushed
         value: ${{ jobs.release.outputs.version }}
 
-env:
-  BRANCH: ${{ github.head_ref || github.ref }}
-
 jobs:
   release:
     runs-on: ubuntu-latest
-    if: ${{ env.BRANCH == format('refs/heads/{0}',inputs.release_branch) }}
+    if: ${{ (github.head_ref || github.ref) == format('refs/heads/{0}',inputs.release_branch) }}
     steps:
       - uses: actions/checkout@v4
       - name: Setup yq@latest

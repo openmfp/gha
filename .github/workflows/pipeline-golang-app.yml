@@ -75,12 +75,10 @@ on:
         type: string
         default: 'openmfp/helm-charts-priv'
 
-env:
-  BRANCH: ${{ github.head_ref || github.ref }}
 
 jobs:
   auto-labeler:
-    if: ${{ env.BRANCH != format('refs/heads/{0}',inputs.release_branch) }}
+    if: ${{ (github.head_ref || github.ref) != format('refs/heads/{0}',inputs.release_branch) }}
     uses: ./.github/workflows/job-auto-labeler.yml
     secrets: inherit
 
@@ -114,7 +112,7 @@ jobs:
 
   updateVersion:
     needs: [createVersion, dockerBuildAndPush]
-    if: ${{ env.BRANCH == format('refs/heads/{0}',inputs.release_branch) }}
+    if: ${{ (github.head_ref || github.ref) == format('refs/heads/{0}',inputs.release_branch) }}
     uses: ./.github/workflows/job-chart-version-update.yml
     secrets: inherit
     with:

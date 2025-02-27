@@ -31,8 +31,6 @@ on:
         description: "The created Version"
         value: ${{ jobs.createVersion.outputs.version }}
 
-env:
-  BRANCH: ${{ github.head_ref || github.ref }}
 
 jobs:
   createVersion:
@@ -54,7 +52,7 @@ jobs:
       coverageThreasholdTotal: ${{ inputs.coverageThreasholdTotal }}
 
   publishVersion:
-    if: env.BRANCH == format('refs/heads/{0}',inputs.release_branch)
+    if: (github.head_ref || github.ref) == format('refs/heads/{0}',inputs.release_branch)
     runs-on: ubuntu-latest
     needs: [createVersion,lint,testSource]
     steps:
