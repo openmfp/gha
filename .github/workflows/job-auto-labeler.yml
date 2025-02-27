@@ -12,7 +12,7 @@ jobs:
         id: auto-labeler
         uses: mauroalderete/action-assign-labels@v1
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ github.token }}
           conventional-commits: |
             conventional-commits:
               - type: 'fix'
