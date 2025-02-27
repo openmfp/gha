@@ -12,7 +12,7 @@ jobs:
         id: auto-labeler
         uses: mauroalderete/action-assign-labels@v1
         with:
-          github-token: ${{ github.token }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           conventional-commits: |
             conventional-commits:
               - type: 'fix'
@@ -27,12 +27,15 @@ jobs:
               - type: 'documentation'
                 nouns: ['doc', 'docs', 'docu','document','documentation']
                 labels: ['documentation','fix']
-              - type: 'build'
-                nouns: ['build','rebuild']
-                labels: ['build','fix']
+              - type: 'ci'
+                nouns: ['build','rebuild','ci']
+                labels: ['ci']
               - type: 'dependencies'
-                nouns: ['build(deps)','build(deps-dev)']
-                labels: ['build','dependencies','fix']
+                nouns: ['build(deps)','build(deps-dev)', 'fix(deps)']
+                labels: ['ci','dependencies']
               - type: 'config'
                 nouns: ['config', 'conf', 'configuration', 'configure']
                 labels: ['config','fix']
+              - type: 'chore'
+                nouns: ['chore']
+                labels: ['chore','fix']
