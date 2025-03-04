@@ -36,7 +36,13 @@ jobs:
       - name: Run build script
         working-directory: kcp
         run: |
+          pwd
+          ls
+          ls ..
           IGNORE_GO_VERSION=1  make build
+          pwd
+          ls
+          ls ..
           cp ./bin/kcp ../bin/kcp
       - name: Install Task
         uses: arduino/setup-task@v2
