@@ -27,6 +27,17 @@ jobs:
         with:
           go-version-file: 'go.mod'
           cache: true
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          repository: kcp-dev/kcp
+          ref: main
+          path: kcp
+      - name: Run build script
+        working-directory: kcp
+        run: |
+          IGNORE_GO_VERSION=1  make build
+          cp ./bin/kcp ../bin/kcp
       - name: Install Task
         uses: arduino/setup-task@v2
         if: ${{ inputs.useTask }}
