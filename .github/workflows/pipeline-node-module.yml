@@ -20,10 +20,17 @@ on:
         required: false
         type: string
         default: '20'
+      prefix:
+        description: 'The prefix to use for the version'
+        required: false
+        default: ''
+        type: string
 
 jobs:
   createVersion:
     uses: ./.github/workflows/job-create-version.yml
+    with:
+      prefix: ${{ inputs.prefix }}
 
   build:
     uses: ./.github/workflows/job-node-test.yml
