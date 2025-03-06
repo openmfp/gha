@@ -93,9 +93,7 @@ jobs:
         git commit -m "[no ci] Release ${{ env.CLEANED_VERSION }}"
         git fetch
         git rebase
-        git tag -a ${{ inputs.version }} -m "[no ci] Release ${{ env.CLEANED_VERSION }}"
     - name: Push
       run: |
         git push origin
-        git push origin --tags
       working-directory: ${{ inputs.workingDirectory }}
