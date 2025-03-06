@@ -5,6 +5,9 @@ on:
       version:
         description: The prepared Version
         value: ${{ jobs.version.outputs.version }}
+      strictVersion:
+        description: The prepared Strict Version
+        value: ${{ jobs.version.outputs.strictVersion }}
 
 jobs:
   # Creates a new semver to be used in the following workflow steps
@@ -26,6 +29,7 @@ jobs:
           minorList: FEATURE, Feature, feature, FEAT, Feat, feat
           patchList: FIX, Fix, fix, FIXED, Fixed, fixed, chore, config, conf, cofiguration, configure, build, chore, ci, rebuild, doc, docu, document, documentation, dependencies
           noNewCommitBehavior: current
+          noVersionBumpBehavior: current
       
       - name: Publish raw Tag
         if: ${{ !github.head_ref }}
@@ -35,3 +39,4 @@ jobs:
 
     outputs:
       version: ${{ steps.semver.outputs.next }}
+      strictVersion: ${{ steps.semver.outputs.nextStrict }}

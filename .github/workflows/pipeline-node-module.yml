@@ -37,7 +37,7 @@ jobs:
     uses: ./.github/workflows/job-node-publish.yml
     secrets: inherit
     with:
-      version: ${{ needs.createVersion.outputs.version }}
+      version: ${{ needs.createVersion.outputs.strictVersion }}
       workingDirectory: ${{ inputs.workingDirectory }}
       publishFromDist: ${{ inputs.publishFromDist }}
       release_branch: ${{ inputs.release_branch }}
