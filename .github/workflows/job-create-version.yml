@@ -1,6 +1,12 @@
 name: Create Version
 on:
   workflow_call:
+    inputs:
+      prefix:
+        description: 'The prefix to use for the version'
+        required: false
+        default: ''
+        type: string
     outputs:
       version:
         description: The prepared Version
@@ -30,6 +36,7 @@ jobs:
           patchList: FIX, Fix, fix, FIXED, Fixed, fixed, chore, config, conf, cofiguration, configure, build, chore, ci, rebuild, doc, docu, document, documentation, dependencies
           noNewCommitBehavior: current
           noVersionBumpBehavior: current
+          prefix: ${{ inputs.prefix }}
       
       - name: Publish raw Tag
         if: ${{ !github.head_ref }}

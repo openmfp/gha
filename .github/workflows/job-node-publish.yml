@@ -28,6 +28,11 @@ on:
         required: false
         type: string
         default: '20'
+      prefix:
+        description: 'The prefix to use for the version'
+        required: false
+        default: ''
+        type: string
 
 jobs:
   publish:
@@ -55,13 +60,18 @@ jobs:
         name: target
         path: dist
       continue-on-error: true
+    - name: Clean up prefix from version
+      run: |
+        CLEANED_VERSION=$(echo ${{ inputs.version }} | cut -c$(wc -c <<<${{ inputs.prefix }})-) 
+
+        echo "CLEANED_VERSION=$CLEANED_VERSION" >> $GITHUB_ENV
     - name: Publish from dist folder
       if: ${{ inputs.publishFromDist }}
       run: |
-        npm version ${{ inputs.version }}
+        npm version ${{ env.CLEANED_VERSION }}
         npm publish
         cd ..
-        npm version ${{ inputs.version }} -m "[no ci] Release ${{ inputs.version }}"
+        npm version ${{ env.CLEANED_VERSION }} -m "[no ci] Release ${{ env.CLEANED_VERSION }}"
       working-directory:
         ${{ inputs.workingDirectoryDist }}
       env:
@@ -69,7 +79,7 @@ jobs:
     - name: Publish
       if: ${{ !inputs.publishFromDist }}
       run: |
-        npm version ${{ inputs.version }} -m "[no ci] Release ${{ inputs.version }}"
+        npm version ${{ env.CLEANED_VERSION }} -m "[no ci] Release ${{ env.CLEANED_VERSION }}"
         npm publish
       working-directory:
         ${{ inputs.workingDirectory }}
@@ -80,10 +90,10 @@ jobs:
       if: inputs.workingDirectory != './'
       run: |
         git add .
-        git commit -m "[no ci] Release ${{ inputs.version }}"
+        git commit -m "[no ci] Release ${{ env.CLEANED_VERSION }}"
         git fetch
         git rebase
-        git tag -a ${{ inputs.version }} -m "[no ci] Release ${{ inputs.version }}"
+        git tag -a ${{ inputs.version }} -m "[no ci] Release ${{ env.CLEANED_VERSION }}"
     - name: Push
       run: |
         git push origin
