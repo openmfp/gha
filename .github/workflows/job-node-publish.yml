@@ -62,7 +62,7 @@ jobs:
       continue-on-error: true
     - name: Clean up prefix from version
       run: |
-        CLEANED_VERSION=$(echo ${{ inputs.version }} | cut -c$(wc -c <<<${{ inputs.prefix }})-) 
+        CLEANED_VERSION=$(echo ${{ inputs.version }} | cut -c$(wc -c <<<"${{ inputs.prefix }}")-) 
 
         echo "CLEANED_VERSION=$CLEANED_VERSION" >> $GITHUB_ENV
     - name: Publish from dist folder
