@@ -49,4 +49,5 @@ jobs:
       publishFromDist: ${{ inputs.publishFromDist }}
       release_branch: ${{ inputs.release_branch }}
       node_version: ${{ inputs.node_version }}
+      prefix: ${{ inputs.prefix }}
 
