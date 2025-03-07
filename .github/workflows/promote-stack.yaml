@@ -1,0 +1,44 @@
+name: Promote-Stack
+
+on:
+  workflow_call:
+    inputs:
+      sourceBranch:
+        required: true
+        type: string
+      targetBranch:
+        required: true
+        type: string
+      stackRepo:
+        required: true
+        type: string
+    secrets:
+      # This access token requires inter-repository access, so it cannot be the default GITHUB_TOKEN
+      GH_ACCESS_TOKEN:
+        required: true
+
+jobs:
+  stack-promotion:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          repository: ${{ inputs.stackRepo }}
+          ref: ${{ inputs.targetBranch }}
+          token: ${{ secrets.GH_ACCESS_TOKEN }}
+      - name: Create promotion branch name
+        id: branch
+        run: |
+          git fetch origin "${{ inputs.sourceBranch }}:${{ inputs.sourceBranch }}"
+          git reset --hard "${{ inputs.sourceBranch }}"
+          BRANCH_NAME="promote/${{ inputs.stackRepo }}-${{ inputs.sourceBranch }}-${{ inputs.targetBranch }}"
+          echo "PULL_BRANCH_NAME=${BRANCH_NAME}" >> ${GITHUB_OUTPUT}
+      - name: Create Pull Request
+        id: pull
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: ${{ steps.branch.outputs.PULL_BRANCH_NAME }}
+          commit-message: "Promote: ${{ inputs.sourceBranch }} to ${{ inputs.targetBranch }}"
+          title: "Promote: ${{ inputs.sourceBranch }} to ${{ inputs.targetBranch }}"
+          body: "This pull requests promotes the changes of the `${{ inputs.sourceBranch }}`  branch to the `${{ inputs.targetBranch }}` branch. "
+          delete-branch: true
