@@ -33,6 +33,10 @@ on:
         required: false
         default: ''
         type: string
+      artifactPath:
+        required: false
+        type: string
+        default: 'dist'
 
 jobs:
   publish:
@@ -58,7 +62,7 @@ jobs:
     - uses: actions/download-artifact@v4
       with:
         name: target
-        path: dist
+        path: ${{ inputs.artifactPath }}
       continue-on-error: true
     - name: Clean up prefix from version
       run: |

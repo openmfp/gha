@@ -16,6 +16,10 @@ on:
         required: false
         type: string
         default: '20'
+      artifactPath:
+        required: false
+        type: string
+        default: 'dist'
 
 jobs:
   build:
@@ -39,5 +43,5 @@ jobs:
       if: ${{ (github.head_ref || github.ref) == format('refs/heads/{0}', inputs.release_branch ) }}
       with:
         name: target
-        path: dist
+        path: ${{ inputs.artifactPath }}
         retention-days: 1
