@@ -25,6 +25,10 @@ on:
         required: false
         default: ''
         type: string
+      artifactPath:
+        required: false
+        type: string
+        default: 'dist'
 
 jobs:
   createVersion:
@@ -38,6 +42,7 @@ jobs:
     with:
       workingDirectory: ${{ inputs.workingDirectory }}
       release_branch: ${{ inputs.release_branch }}
+      artifactPath: ${{ inputs.artifactPath }}
 
   publish:
     needs: [createVersion, build]
@@ -50,4 +55,5 @@ jobs:
       release_branch: ${{ inputs.release_branch }}
       node_version: ${{ inputs.node_version }}
       prefix: ${{ inputs.prefix }}
+      artifactPath: ${{ inputs.artifactPath }}
 
