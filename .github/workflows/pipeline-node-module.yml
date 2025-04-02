@@ -29,6 +29,10 @@ on:
         required: false
         type: string
         default: 'dist'
+      workingDirectoryDist:
+        required: false
+        type: string
+        default: './dist'
 
 jobs:
   createVersion:
@@ -56,4 +60,5 @@ jobs:
       node_version: ${{ inputs.node_version }}
       prefix: ${{ inputs.prefix }}
       artifactPath: ${{ inputs.artifactPath }}
+      workingDirectoryDist: ${{ inputs.workingDirectoryDist }}
 
