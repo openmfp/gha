@@ -100,7 +100,7 @@ jobs:
       coverageThresholdPackage: ${{ inputs.coverageThresholdPackage }}
       coverageThreasholdTotal: ${{ inputs.coverageThreasholdTotal }}
 
-  dockerBuildAndPushPR:
+  dockerBuild:
     if: ${{ (github.head_ref || github.ref) != format('refs/heads/{0}',inputs.release_branch) }}
     uses: ./.github/workflows/job-docker-build-push.yml
     with:
