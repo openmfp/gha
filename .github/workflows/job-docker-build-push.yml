@@ -6,8 +6,9 @@ on:
         required: true
         type: string
       version:
-        required: true
+        required: false
         type: string
+        default: 'latest'
       release_branch:
         required: false
         type: string
