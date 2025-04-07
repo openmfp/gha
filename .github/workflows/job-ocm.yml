@@ -5,6 +5,9 @@ on:
       chartPath:
         required: true
         type: string
+      componentName:
+        required: true
+        type: string
 
 jobs:
   ocm:
@@ -90,7 +93,7 @@ jobs:
             COMMIT=${{ github.sha }} \
             IMAGE_REPO_SHA=${{ env.IMAGE_REPO_SHA }} \
             CHART_REPO=${{ env.CHART_REPO }} \
-            COMPONENT_NAME=${{ env.OCM_COMPONENT_NAME }} \
+            COMPONENT_NAME=${{ inputs.componentName }} \
             CHART_OCI_PATH=${{ env.CHART_OCI_PATH }}
       - name: Transfer to OCM REPO
         run: |
