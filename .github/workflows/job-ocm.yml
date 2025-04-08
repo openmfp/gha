@@ -110,4 +110,4 @@ jobs:
             COMPONENT_NAME=${{ inputs.componentName }} \
             CHART_OCI_PATH=${{ env.CHART_OCI_PATH }}
       - name: Transfer to OCM REPO
-        run: ./ocm --overwrite .ocm/transport.ctf "europe-west3-docker.pkg.dev/sap-cp-k8s-ocm-gcp-eu30-dev/apeiro-showroom/ocm"
+        run: ./ocm transfer ctf --overwrite .ocm/transport.ctf "europe-west3-docker.pkg.dev/sap-cp-k8s-ocm-gcp-eu30-dev/apeiro-showroom/ocm"
