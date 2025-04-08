@@ -11,7 +11,7 @@ on:
       componentConstructorFile:
         required: false
         type: string
-        default: ocm/component-constructor.yaml
+        default: .ocm/component-constructor.yaml
 
 jobs:
   ocm:
