@@ -83,6 +83,7 @@ jobs:
     secrets: inherit
 
   createVersion:
+    if: ${{ (github.head_ref || github.ref) == format('refs/heads/{0}',inputs.release_branch) }}
     uses: ./.github/workflows/job-create-version.yml
     secrets: inherit
   
