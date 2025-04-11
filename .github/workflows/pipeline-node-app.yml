@@ -55,7 +55,7 @@ jobs:
 
   dockerBuildAndPush:
     if: ${{ (github.head_ref || github.ref) == format('refs/heads/{0}',inputs.release_branch) }}
-    needs: [createVersion]
+    needs: [createVersion,test]
     uses: ./.github/workflows/job-docker-build-push.yml
     with:
       imageTagName: ${{ inputs.imageTagName }}
