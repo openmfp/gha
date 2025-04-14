@@ -22,9 +22,9 @@ jobs:
   docs:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
       - name: Run helm-docs
-        uses: losisin/helm-docs-github-action@v1
+        uses: losisin/helm-docs-github-action@fca4590d199d81b91aafd320418876e26746424c # v1
         with:
           fail-on-diff: false
           chart-search-root: ${{ inputs.chartFolder }}

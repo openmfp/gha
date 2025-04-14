@@ -43,7 +43,7 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ (github.head_ref || github.ref) == format('refs/heads/{0}',inputs.release_branch) }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
       - name: Setup yq@latest
         if: ${{ inputs.updateVersion }}
         run: |
@@ -65,7 +65,7 @@ jobs:
         id: chart_version
         run: echo "version=$(yq '.version' ${{ inputs.chartFolder }}/Chart.yaml)" >> $GITHUB_OUTPUT
       - name: Push Helm chart
-        uses: bsord/helm-push@v4.2.0
+        uses: bsord/helm-push@51f937208fed71540ab5ec5215cf9b3ecae9c7b7 # v4.2.0
         with:
           useOCIRegistry: true
           username: ${{ github.actor }}
@@ -77,7 +77,7 @@ jobs:
         run: |
           yq e -i '.version = "${{ inputs.version }}"' ${{ inputs.chartFolder }}/${{ inputs.crdChartPath }}/Chart.yaml
       - name: Push CRD Helm chart
-        uses: bsord/helm-push@v4.2.0
+        uses: bsord/helm-push@51f937208fed71540ab5ec5215cf9b3ecae9c7b7 # v4.2.0
         if: ${{ inputs.publishCRDChart }}
         with:
           useOCIRegistry: true
@@ -87,7 +87,7 @@ jobs:
           chart-folder: ${{ inputs.chartFolder }}/${{ inputs.crdChartPath }}
       - name: Create Release
         if: ${{ inputs.pushTags }}
-        uses: ncipollo/release-action@v1.16.0
+        uses: ncipollo/release-action@440c8c1cb0ed28b9f43e4d1d670870f059653174 # v1.16.0
         with:
           allowUpdates: true
           draft: false
