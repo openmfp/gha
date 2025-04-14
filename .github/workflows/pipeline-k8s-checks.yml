@@ -41,10 +41,10 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 
       - name: kube-score install
-        uses: yokawasa/action-setup-kube-tools@v0.11.2
+        uses: yokawasa/action-setup-kube-tools@9e25a4277af127b60011c95b6ed2da7e3b3613b1 # v0.11.2
         with:
           kube-score: ${{ inputs.kube_score_version }}
 
@@ -54,7 +54,7 @@ jobs:
 
       - name: kube-linter
         if: always() # run this step even if previous fails
-        uses: stackrox/kube-linter-action@v1.0.6
+        uses: stackrox/kube-linter-action@15786eefcc8f5441d767d923b108abe5f7dd8882 # v1.0.6
         with:
           directory: ${{ inputs.kube_lint_target_directory }}
           version: ${{ inputs.kube_lint_version }}
