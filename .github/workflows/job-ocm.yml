@@ -108,6 +108,7 @@ jobs:
             IMAGE_REPO_SHA=${{ env.IMAGE_REPO_SHA }} \
             CHART_REPO=${{ env.CHART_REPO }} \
             COMPONENT_NAME=${{ inputs.componentName }} \
-            CHART_OCI_PATH=${{ env.CHART_OCI_PATH }}
+            CHART_OCI_PATH=${{ env.CHART_OCI_PATH }} \
+            LOCAL_CHART_PATH=${{ inputs.chartPath }}
       - name: Transfer to OCM REPO
         run: ./ocm transfer ctf --overwrite .ocm/transport.ctf "europe-west3-docker.pkg.dev/sap-cp-k8s-ocm-gcp-eu30-dev/apeiro-showroom/ocm"
