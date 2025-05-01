@@ -101,4 +101,4 @@ jobs:
             CHART_OCI_PATH=${{ env.CHART_OCI_PATH }} \
             LOCAL_CHART_PATH=${{ inputs.chartPath }}
       - name: Transfer to OCM REPO
-        run: ./ocm transfer ctf --overwrite .ocm/transport.ctf "github.com/openmfp/ocm"
+        run: ./ocm transfer ctf --overwrite .ocm/transport.ctf "ghcr.io/openmfp/ocm"
