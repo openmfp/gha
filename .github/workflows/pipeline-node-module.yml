@@ -36,6 +36,7 @@ on:
 
 jobs:
   createVersion:
+    if: ${{ (github.head_ref || github.ref) == format('refs/heads/{0}',inputs.release_branch) }}
     uses: ./.github/workflows/job-create-version.yml
     with:
       prefix: ${{ inputs.prefix }}
@@ -49,6 +50,7 @@ jobs:
       artifactPath: ${{ inputs.artifactPath }}
 
   publish:
+    if: ${{ (github.head_ref || github.ref) != format('refs/heads/{0}',inputs.release_branch) }}
     needs: [createVersion, build]
     uses: ./.github/workflows/job-node-publish.yml
     secrets: inherit
