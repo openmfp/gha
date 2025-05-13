@@ -6,7 +6,7 @@ on:
         required: false
         type: boolean
         default: false
-      coverageThreasholdFile:
+      coverageThresholdFile:
         required: false
         type: number
         default: 80
@@ -14,7 +14,7 @@ on:
         required: false
         type: number
         default: 80
-      coverageThreasholdTotal:
+      coverageThresholdTotal:
         required: false
         type: number
         default: 95
@@ -53,9 +53,9 @@ jobs:
     with:
       useTask: ${{ inputs.useTask }}
       useLocalCoverageConfig: ${{ inputs.useLocalCoverageConfig }}
-      coverageThreasholdFile: ${{ inputs.coverageThreasholdFile }}
+      coverageThresholdFile: ${{ inputs.coverageThresholdFile }}
       coverageThresholdPackage: ${{ inputs.coverageThresholdPackage }}
-      coverageThreasholdTotal: ${{ inputs.coverageThreasholdTotal }}
+      coverageThresholdTotal: ${{ inputs.coverageThresholdTotal }}
 
   publishVersion:
     if: (github.head_ref || github.ref) == format('refs/heads/{0}',inputs.release_branch)
