@@ -14,13 +14,21 @@ on:
         type: string
     secrets:
       # This access token requires inter-repository access, so it cannot be the default GITHUB_TOKEN
-      GH_ACCESS_TOKEN:
+      OPENMFP_PUBLISHER_PRIVATE_KEY:
         required: true
 
 jobs:
   stack-promotion:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/create-github-app-token@df432ceedc7162793a195dd1713ff69aefc7379e # v2
+        id: app-token
+        with:
+          app-id: "838464"
+          private-key: ${{ secrets.OPENMFP_PUBLISHER_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+          repositories: |
+            ${{ inputs.stackRepo }}
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
         with:
           repository: ${{ inputs.stackRepo }}
