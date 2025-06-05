@@ -16,6 +16,10 @@ on:
         required: false
         type: boolean
         default: false
+      runsOn:
+        required: false
+        type: string
+        default: 'ubuntu-latest'
 
 jobs:
   test:
