@@ -37,6 +37,10 @@ on:
         required: false
         type: boolean
         default: false
+      runsOn:
+        required: false
+        type: string
+        default: 'ubuntu-latest'
     outputs:
       version:
         description: "The created Version"
@@ -74,6 +78,10 @@ on:
         required: false
         type: string
         default: 'openmfp/helm-charts-priv'
+      runsOn:
+        required: false
+        type: string
+        default: 'ubuntu-latest'
 
 
 jobs:
@@ -95,6 +103,7 @@ jobs:
   testSource:
     uses: ./.github/workflows/job-golang-test-source.yml
     with:
+      runsOn: ${{ inputs.runsOn || 'ubuntu-latest' }}
       useTask: ${{ inputs.useTask }}
       useLocalCoverageConfig: ${{ inputs.useLocalCoverageConfig }}
       coverageThresholdFile: ${{ inputs.coverageThresholdFile }}
