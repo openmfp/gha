@@ -20,6 +20,10 @@ on:
         required: false
         type: string
         default: 'ubuntu-latest'
+      envArgs:
+        required: false
+        type: string
+        default: ''
 
 jobs:
   test:
@@ -43,7 +47,7 @@ jobs:
         if: ${{ inputs.useTask == true }}
         run: task cover
         env:
-          WORKFLOW_GITHUB_PAT: ${{ secrets.WORKFLOW_GITHUB_PAT }}
+          ARGS: ${{ inputs.envArgs }}
       - name: Install Code Coverage
         run: go install github.com/vladopajic/go-test-coverage/v2@latest
       - name: Check Test Coverage
