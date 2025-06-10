@@ -109,6 +109,7 @@ jobs:
       coverageThresholdFile: ${{ inputs.coverageThresholdFile }}
       coverageThresholdPackage: ${{ inputs.coverageThresholdPackage }}
       coverageThresholdTotal: ${{ inputs.coverageThresholdTotal }}
+    secrets: inherit
 
   dockerBuild:
     if: ${{ (github.head_ref || github.ref) != format('refs/heads/{0}',inputs.release_branch) }}
