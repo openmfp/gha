@@ -37,6 +37,7 @@ jobs:
           noNewCommitBehavior: patch
           noVersionBumpBehavior: patch
           prefix: ${{ inputs.prefix }}
+          maxTagsToFetch: 100
       
       - name: Publish raw Tag
         if: ${{ !github.head_ref }}
