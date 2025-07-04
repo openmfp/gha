@@ -36,6 +36,7 @@ jobs:
           patchList: FIX, Fix, fix, FIXED, Fixed, fixed, chore, config, conf, cofiguration, configure, build, chore, ci, rebuild, doc, docu, document, documentation, dependencies
           noNewCommitBehavior: patch
           noVersionBumpBehavior: patch
+          skipInvalidTags: true
           prefix: ${{ inputs.prefix }}
           maxTagsToFetch: 100
       
