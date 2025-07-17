@@ -38,6 +38,9 @@ jobs:
           tags: ${{ inputs.imageTagName }}:${{ inputs.version }}
           secrets: |
             github_token=${{ secrets.GITHUB_TOKEN }}
+          build-args: |
+            GIT_GHCOM_USERNAME=${{ secrets.GIT_GHCOM_USERNAME }}
+            GIT_GHCOM_ACCESS_TOKEN=${{ secrets.GIT_GHCOM_ACCESS_TOKEN }}
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
       - name: Create Release
         if: ${{ (github.head_ref || github.ref) == format('refs/heads/{0}',inputs.release_branch) }}
