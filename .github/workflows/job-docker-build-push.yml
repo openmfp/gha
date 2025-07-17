@@ -40,6 +40,8 @@ jobs:
             github_token=${{ secrets.GITHUB_TOKEN }}
             platformmesh_username=${{ secrets.GIT_GHCOM_USERNAME }}
             platformmesh_token=${{ secrets.GIT_GHCOM_ACCESS_TOKEN }}
+          env:
+            DOCKER_BUILD_CHECKS_ANNOTATIONS=false
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
       - name: Create Release
         if: ${{ (github.head_ref || github.ref) == format('refs/heads/{0}',inputs.release_branch) }}
