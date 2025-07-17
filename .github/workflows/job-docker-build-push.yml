@@ -38,7 +38,6 @@ jobs:
           tags: ${{ inputs.imageTagName }}:${{ inputs.version }}
           secrets: |
             github_token=${{ secrets.GITHUB_TOKEN }}
-            platformmesh_username=${{ secrets.GIT_GHCOM_USERNAME }}
             platformmesh_token=${{ secrets.GIT_GHCOM_ACCESS_TOKEN }}
           env:
             DOCKER_BUILD_CHECKS_ANNOTATIONS=false
