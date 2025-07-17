@@ -42,6 +42,8 @@ jobs:
       - name: Test task
         if: ${{ inputs.useTask == true }}
         run: task cover
+        env:
+          PLATFORMMESH_TOKEN: ${{ secrets.GIT_GHCOM_ACCESS_TOKEN }}
       - name: Install Code Coverage
         run: go install github.com/vladopajic/go-test-coverage/v2@latest
       - name: Check Test Coverage
