@@ -108,6 +108,7 @@ jobs:
 
   testSource:
     uses: ./.github/workflows/job-golang-test-source.yml
+    secrets: inherit
     with:
       runsOn: ${{ inputs.runsOn || 'ubuntu-latest' }}
       useTask: ${{ inputs.useTask }}
