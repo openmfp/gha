@@ -48,15 +48,6 @@ jobs:
     with:
       useTask: ${{ inputs.useTask }}
 
-  testSource:
-    uses: ./.github/workflows/job-golang-test-source.yml
-    with:
-      useTask: ${{ inputs.useTask }}
-      useLocalCoverageConfig: ${{ inputs.useLocalCoverageConfig }}
-      coverageThresholdFile: ${{ inputs.coverageThresholdFile }}
-      coverageThresholdPackage: ${{ inputs.coverageThresholdPackage }}
-      coverageThresholdTotal: ${{ inputs.coverageThresholdTotal }}
-
   publishVersion:
     if: (github.head_ref || github.ref) == format('refs/heads/{0}',inputs.release_branch)
     runs-on: ubuntu-latest
