@@ -105,13 +105,3 @@ jobs:
     uses: ./.github/workflows/job-golang-lint.yml
     with:
       useTask: ${{ inputs.useTask }}
-
-  updateVersion:
-    needs: [createVersion, dockerBuildAndPush]
-    if: ${{ (github.head_ref || github.ref) == format('refs/heads/{0}',inputs.release_branch) }}
-    uses: ./.github/workflows/job-chart-version-update.yml
-    secrets: inherit
-    with:
-      appVersion: ${{ needs.createVersion.outputs.version }}
-      chart: ${{ github.event.repository.name }}
-      targetRepository: ${{ inputs.repoVersionUpdate }}
