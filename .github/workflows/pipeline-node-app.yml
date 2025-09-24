@@ -44,26 +44,6 @@ jobs:
       release_branch: ${{ inputs.release_branch }}
       node_version: ${{ inputs.node_version }}
 
-  dockerBuild:
-    if: ${{ (github.head_ref || github.ref) != format('refs/heads/{0}',inputs.release_branch) }}
-    uses: ./.github/workflows/job-docker-build-push.yml
-    with:
-      imageTagName: ${{ inputs.imageTagName }}
-      release_branch: ${{ inputs.release_branch }}
-      multiarch: false
-    secrets: inherit
-
-  dockerBuildAndPush:
-    if: ${{ (github.head_ref || github.ref) == format('refs/heads/{0}',inputs.release_branch) }}
-    needs: [createVersion,test]
-    uses: ./.github/workflows/job-docker-build-push.yml
-    with:
-      imageTagName: ${{ inputs.imageTagName }}
-      version: ${{ needs.createVersion.outputs.version }}
-      release_branch: ${{ inputs.release_branch }}
-      multiarch: true
-    secrets: inherit
-
   updateVersion:
     needs: [createVersion, dockerBuildAndPush]
     if: ${{ (github.head_ref || github.ref) == format('refs/heads/{0}',inputs.release_branch) }}
