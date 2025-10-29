@@ -67,10 +67,6 @@ jobs:
       run: |
         CLEANED_VERSION=$(echo ${{ inputs.version }} | cut -c$(wc -c <<<"${{ inputs.prefix }}")-) 
         echo "CLEANED_VERSION=$CLEANED_VERSION" >> $GITHUB_ENV
-      working-directory:
-        ${{ inputs.workingDirectoryDist }}
-      env:
-        NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
     - name: Publish from dist folder
       if: ${{ inputs.publishFromDist }}
       run: |
