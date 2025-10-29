@@ -27,7 +27,7 @@ on:
         description: 'Node version to use'
         required: false
         type: string
-        default: '20'
+        default: '24'
       prefix:
         description: 'The prefix to use for the version'
         required: false
@@ -37,6 +37,11 @@ on:
         required: false
         type: string
         default: 'dist'
+      npmjs:
+        description: 'Publish to npmjs.com instead of GitHub Packages'
+        required: false
+        type: boolean
+        default: false
 
 jobs:
   publish:
@@ -56,9 +61,15 @@ jobs:
       with:
         token: ${{ steps.app-token.outputs.token }}
     - uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v6
+      if: ${{ !inputs.npmjs}}
       with:
         node-version: ${{ inputs.node_version }}
         registry-url: https://npm.pkg.github.com/
+    - uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v6
+      if: ${{ inputs.npmjs}}
+      with:
+        node-version: ${{ inputs.node_version }}
+        registry-url: https://registry.npmjs.org
     - uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6
       with:
         name: target
@@ -67,10 +78,9 @@ jobs:
     - name: Clean up prefix from version
       run: |
         CLEANED_VERSION=$(echo ${{ inputs.version }} | cut -c$(wc -c <<<"${{ inputs.prefix }}")-) 
-
         echo "CLEANED_VERSION=$CLEANED_VERSION" >> $GITHUB_ENV
     - name: Publish from dist folder
-      if: ${{ inputs.publishFromDist }}
+      if: ${{ inputs.publishFromDist && !inputs.npmjs }}
       run: |
         npm version ${{ env.CLEANED_VERSION }}
         npm publish
@@ -80,8 +90,17 @@ jobs:
         ${{ inputs.workingDirectoryDist }}
       env:
         NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+    - name: Publish from dist folder
+      if: ${{ inputs.publishFromDist && inputs.npmjs }}
+      run: |
+        npm version ${{ env.CLEANED_VERSION }}
+        npm publish --provenance --access public
+        cd ..
+        npm version ${{ env.CLEANED_VERSION }} -m "[no ci] Release ${{ env.CLEANED_VERSION }}"
+      working-directory:
+        ${{ inputs.workingDirectoryDist }}
     - name: Publish
-      if: ${{ !inputs.publishFromDist }}
+      if: ${{ !inputs.publishFromDist && !inputs.npmjs }}
       run: |
         npm version ${{ env.CLEANED_VERSION }} -m "[no ci] Release ${{ env.CLEANED_VERSION }}"
         npm publish
@@ -89,7 +108,13 @@ jobs:
         ${{ inputs.workingDirectory }}
       env:
         NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
-    # npm version does not commit on subdirectories, so we commit manually
+    - name: Publish to npmjs
+      if: ${{ !inputs.publishFromDist && inputs.npmjs }}
+      run: |
+        npm version ${{ env.CLEANED_VERSION }} -m "[no ci] Release ${{ env.CLEANED_VERSION }}"
+        npm publish --provenance --access public
+      working-directory:
+        ${{ inputs.workingDirectory }}
     - name: Commit and Tag
       if: inputs.workingDirectory != './'
       run: |
