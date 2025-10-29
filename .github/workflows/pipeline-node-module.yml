@@ -1,4 +1,9 @@
 name: pipeline
+
+permissions:
+  contents: write
+  packages: write
+  id-token: write
 on:
   workflow_call:
     inputs:
