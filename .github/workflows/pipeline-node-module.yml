@@ -38,11 +38,10 @@ on:
         required: false
         type: string
         default: './dist'
-      npmjs:
-        description: 'Publish to npmjs.com instead of GitHub Packages'
-        required: false
-        type: boolean
-        default: false
+      environment:
+        description: 'The environment to use'
+        required: true
+        type: string
 
 jobs:
   createVersion:
@@ -68,10 +67,9 @@ jobs:
       version: ${{ needs.createVersion.outputs.strictVersion }}
       workingDirectory: ${{ inputs.workingDirectory }}
       publishFromDist: ${{ inputs.publishFromDist }}
-      release_branch: ${{ inputs.release_branch }}
       node_version: ${{ inputs.node_version }}
       prefix: ${{ inputs.prefix }}
       artifactPath: ${{ inputs.artifactPath }}
       workingDirectoryDist: ${{ inputs.workingDirectoryDist }}
-      npmjs: ${{ inputs.npmjs }}
+      environment: ${{ inputs.environment }}
 
