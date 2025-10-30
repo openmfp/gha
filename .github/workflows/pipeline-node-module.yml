@@ -1,8 +1,9 @@
 name: pipeline
 
 permissions:
+  # Write access is used for tag creation and version commits
   contents: write
-  packages: write
+  # Needed for provenance creation when publishing to npmjs
   id-token: write
 on:
   workflow_call:
