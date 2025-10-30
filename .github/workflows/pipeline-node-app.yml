@@ -45,7 +45,7 @@ jobs:
       node_version: ${{ inputs.node_version }}
 
   updateVersion:
-    needs: [createVersion, dockerBuildAndPush]
+    needs: [createVersion, test]
     if: ${{ (github.head_ref || github.ref) == format('refs/heads/{0}',inputs.release_branch) }}
     uses: ./.github/workflows/job-chart-version-update.yml
     secrets: inherit
