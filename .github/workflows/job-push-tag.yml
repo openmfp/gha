@@ -9,7 +9,7 @@ jobs:
   ghTag:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
+      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6
       - name: Publish GH Tag
         uses: thejeff77/action-push-tag@f110b453ffb8c4d18880b7338f75e6725b731d81 # v1.0.0
         with:
