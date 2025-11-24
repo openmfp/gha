@@ -43,6 +43,11 @@ on:
         description: 'The environment to use'
         required: true
         type: string
+      publish:
+        description: 'Whether to publish the package'
+        required: false
+        type: boolean
+        default: true
 
 jobs:
   createVersion:
@@ -60,7 +65,7 @@ jobs:
       artifactPath: ${{ inputs.artifactPath }}
 
   publish:
-    if: ${{ (github.head_ref || github.ref) == format('refs/heads/{0}',inputs.release_branch) }}
+    if: ${{ (github.head_ref || github.ref) == format('refs/heads/{0}',inputs.release_branch) && inputs.publish }}
     needs: [createVersion, build]
     uses: ./.github/workflows/job-node-publish.yml
     secrets: inherit
