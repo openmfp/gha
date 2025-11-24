@@ -41,7 +41,7 @@ on:
         default: './dist'
       environment:
         description: 'The environment to use'
-        required: true
+        required: false
         type: string
       publish:
         description: 'Whether to publish the package'
