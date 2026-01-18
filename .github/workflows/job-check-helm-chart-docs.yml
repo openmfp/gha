@@ -24,7 +24,7 @@ jobs:
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
       - name: Run helm-docs
-        uses: losisin/helm-docs-github-action@a57fae5676e4c55a228ea654a1bcaec8dd3cf5b5 # v1
+        uses: losisin/helm-docs-github-action@7f13f1abe2db298ccc9f046b3eff30a5e7ade35a # v1
         with:
           fail-on-diff: false
           chart-search-root: ${{ inputs.chartFolder }}
