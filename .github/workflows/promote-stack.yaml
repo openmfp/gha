@@ -41,7 +41,7 @@ jobs:
           echo "PULL_BRANCH_NAME=${BRANCH_NAME}" >> ${GITHUB_OUTPUT}
       - name: Create Pull Request
         id: pull
-        uses: peter-evans/create-pull-request@98357b18bf14b5342f975ff684046ec3b2a07725 # v8
+        uses: peter-evans/create-pull-request@c0f553fe549906ede9cf27b5156039d195d2ece0 # v8
         with:
           branch: ${{ steps.branch.outputs.PULL_BRANCH_NAME }}
           commit-message: "Promote: ${{ inputs.sourceBranch }} to ${{ inputs.targetBranch }}"
