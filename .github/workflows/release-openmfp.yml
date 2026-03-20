@@ -1,0 +1,32 @@
+name: Release OpenMFP
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'The version to release (e.g. 1.2.0)'
+        required: true
+        type: string
+
+jobs:
+  trigger-releases:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate a token
+        id: generate-token
+        uses: actions/create-github-app-token@f8d387b68d61c58ab83c6c016672934102569859 # v3
+        with:
+          app-id: "838464"
+          private-key: ${{ secrets.OPENMFP_PUBLISHER_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+          repositories: |
+            portal-ui-lib
+            portal-server-lib
+      - name: Release portal-ui-lib
+        run: gh workflow run release.yml --repo openmfp/portal-ui-lib --field version=${{ inputs.version }}
+        env:
+          GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}
+      - name: Release portal-server-lib
+        run: gh workflow run release.yml --repo openmfp/portal-server-lib --field version=${{ inputs.version }}
+        env:
+          GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}
