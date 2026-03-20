@@ -23,10 +23,10 @@ jobs:
             portal-ui-lib
             portal-server-lib
       - name: Release portal-ui-lib
-        run: gh workflow run release.yml --repo openmfp/portal-ui-lib --field version=${{ inputs.version }}
+        run: gh workflow run release.yml --repo openmfp/portal-ui-lib --field version="${{ inputs.version }}"
         env:
           GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}
       - name: Release portal-server-lib
-        run: gh workflow run release.yml --repo openmfp/portal-server-lib --field version=${{ inputs.version }}
+        run: gh workflow run release.yml --repo openmfp/portal-server-lib --field version="${{ inputs.version }}"
         env:
           GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}
