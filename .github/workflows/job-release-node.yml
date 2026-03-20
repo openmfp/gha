@@ -1,0 +1,82 @@
+name: Release Node Module
+
+permissions:
+  # Write access is used for tag creation and version commits
+  contents: write
+  # Needed for provenance creation when publishing to npmjs
+  id-token: write
+
+on:
+  workflow_call:
+    inputs:
+      version:
+        description: 'The version to release (e.g. 1.2.0)'
+        required: true
+        type: string
+      environment:
+        description: 'The npm publish environment to use'
+        required: true
+        type: string
+      workingDirectory:
+        required: false
+        type: string
+        default: './'
+      publishFromDist:
+        required: false
+        type: boolean
+        default: false
+      node_version:
+        description: 'Node version to use'
+        required: false
+        type: string
+        default: '24'
+      prefix:
+        description: 'The prefix to use for the version'
+        required: false
+        default: ''
+        type: string
+      artifactPath:
+        required: false
+        type: string
+        default: 'dist'
+      workingDirectoryDist:
+        required: false
+        type: string
+        default: './dist'
+      hasBuild:
+        description: 'Whether the project has a build step'
+        required: false
+        type: boolean
+        default: true
+
+jobs:
+  build:
+    uses: ./.github/workflows/job-node-test.yml
+    secrets: inherit
+    with:
+      workingDirectory: ${{ inputs.workingDirectory }}
+      artifactPath: ${{ inputs.artifactPath }}
+      hasBuild: ${{ inputs.hasBuild }}
+      node_version: ${{ inputs.node_version }}
+      publish: true
+
+  publish:
+    needs: [build]
+    uses: ./.github/workflows/job-node-publish.yml
+    secrets: inherit
+    with:
+      version: ${{ inputs.version }}
+      workingDirectory: ${{ inputs.workingDirectory }}
+      publishFromDist: ${{ inputs.publishFromDist }}
+      node_version: ${{ inputs.node_version }}
+      prefix: ${{ inputs.prefix }}
+      artifactPath: ${{ inputs.artifactPath }}
+      workingDirectoryDist: ${{ inputs.workingDirectoryDist }}
+      environment: ${{ inputs.environment }}
+
+  github-release:
+    needs: [publish]
+    uses: ./.github/workflows/job-github-release.yml
+    secrets: inherit
+    with:
+      version: ${{ inputs.version }}
