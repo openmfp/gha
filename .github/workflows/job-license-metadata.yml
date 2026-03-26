@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     name: "Metadata Creation Tool"
     steps:
-      - uses: SAP-archive/metadata-creation-tool-for-reuse@main
+      - uses: SAP-archive/metadata-creation-tool-for-reuse@881317602f9e4df00d1c7073bf6f15cbade835c4 # main
         with:
           repository_url: "${{ github.server_url }}/${{ github.repository }}"
           access_token: "${{ secrets.GH_ACCESS_TOKEN }}"
