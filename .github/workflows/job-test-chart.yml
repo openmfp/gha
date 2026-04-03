@@ -27,7 +27,7 @@ jobs:
   unittest:
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/openmfp/gha/infra/helm-unittest:latest@sha256:31d25fcc5624f7434f21040375eceb28310bcab5a350b9be839468811897a7bf
+      image: ghcr.io/openmfp/gha/infra/helm-unittest:latest@sha256:2a636dfe8f0a13b31c6f225da0b2e12d0078505de0b2873d355b8743d64dc301
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.github_token }}
