@@ -21,6 +21,11 @@ on:
         required: false
         type: string
         default: './'
+      release_branch:
+        description: 'Name of the release branch'
+        required: false
+        type: string
+        default: 'main'
       publishFromDist:
         required: false
         type: boolean
@@ -55,6 +60,7 @@ jobs:
     secrets: inherit
     with:
       workingDirectory: ${{ inputs.workingDirectory }}
+      release_branch: ${{ inputs.release_branch }}
       artifactPath: ${{ inputs.artifactPath }}
       hasBuild: ${{ inputs.hasBuild }}
       node_version: ${{ inputs.node_version }}
