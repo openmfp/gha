@@ -1,26 +1,35 @@
-name: pipeline
+name: Release Node Module
 
 permissions:
   # Write access is used for tag creation and version commits
   contents: write
   # Needed for provenance creation when publishing to npmjs
   id-token: write
+
 on:
   workflow_call:
     inputs:
+      version:
+        description: 'The version to release (e.g. 1.2.0)'
+        required: true
+        type: string
+      environment:
+        description: 'The npm publish environment to use'
+        required: true
+        type: string
       workingDirectory:
         required: false
         type: string
         default: './'
-      publishFromDist:
-        required: false
-        type: boolean
-        default: false
       release_branch:
         description: 'Name of the release branch'
         required: false
         type: string
         default: 'main'
+      publishFromDist:
+        required: false
+        type: boolean
+        default: false
       node_version:
         description: 'Node version to use'
         required: false
@@ -39,15 +48,6 @@ on:
         required: false
         type: string
         default: './dist'
-      environment:
-        description: 'The environment to use'
-        required: false
-        type: string
-      publish:
-        description: 'Whether to publish the package'
-        required: false
-        type: boolean
-        default: false
       hasBuild:
         description: 'Whether the project has a build step'
         required: false
@@ -55,12 +55,6 @@ on:
         default: true
 
 jobs:
-  createVersion:
-    if: ${{ (github.head_ref || github.ref) == format('refs/heads/{0}',inputs.release_branch) && inputs.publish }}
-    uses: ./.github/workflows/job-create-version.yml
-    with:
-      prefix: ${{ inputs.prefix }}
-
   build:
     uses: ./.github/workflows/job-node-test.yml
     secrets: inherit
@@ -69,14 +63,15 @@ jobs:
       release_branch: ${{ inputs.release_branch }}
       artifactPath: ${{ inputs.artifactPath }}
       hasBuild: ${{ inputs.hasBuild }}
+      node_version: ${{ inputs.node_version }}
+      publish: true
 
   publish:
-    if: ${{ (github.head_ref || github.ref) == format('refs/heads/{0}',inputs.release_branch) && inputs.publish }}
-    needs: [createVersion, build]
+    needs: [build]
     uses: ./.github/workflows/job-node-publish.yml
     secrets: inherit
     with:
-      version: ${{ needs.createVersion.outputs.strictVersion }}
+      version: ${{ inputs.version }}
       workingDirectory: ${{ inputs.workingDirectory }}
       publishFromDist: ${{ inputs.publishFromDist }}
       node_version: ${{ inputs.node_version }}
@@ -85,3 +80,9 @@ jobs:
       workingDirectoryDist: ${{ inputs.workingDirectoryDist }}
       environment: ${{ inputs.environment }}
 
+  github-release:
+    needs: [publish]
+    uses: ./.github/workflows/job-github-release.yml
+    secrets: inherit
+    with:
+      version: ${{ inputs.version }}
