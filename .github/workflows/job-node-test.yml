@@ -20,6 +20,10 @@ on:
         required: false
         type: string
         default: 'dist'
+      artifactName:
+        required: false
+        type: string
+        default: 'target'
       hasBuild:
         description: 'Whether the project has a build step'
         required: false
@@ -51,6 +55,6 @@ jobs:
     - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
       if: ${{ (github.head_ref || github.ref) == format('refs/heads/{0}', inputs.release_branch ) && inputs.publish}}
       with:
-        name: target
+        name: ${{ inputs.artifactName }}
         path: ${{ inputs.artifactPath }}
         retention-days: 1

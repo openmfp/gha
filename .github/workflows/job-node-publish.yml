@@ -32,6 +32,10 @@ on:
         required: false
         type: string
         default: 'dist'
+      artifactName:
+        required: false
+        type: string
+        default: 'target'
       environment:
         description: 'The environment to use'
         required: true
@@ -60,7 +64,7 @@ jobs:
         registry-url: https://registry.npmjs.org
     - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
       with:
-        name: target
+        name: ${{ inputs.artifactName }}
         path: ${{ inputs.artifactPath }}
       continue-on-error: true
     - name: Clean up prefix from version
