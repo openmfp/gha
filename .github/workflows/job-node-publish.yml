@@ -40,6 +40,11 @@ on:
         description: 'The environment to use'
         required: true
         type: string
+      skipVersionCommit:
+        description: 'Whether to skip the version commit and push'
+        required: false
+        type: boolean
+        default: false
 
 jobs:
   publish:
@@ -88,13 +93,14 @@ jobs:
       working-directory:
         ${{ inputs.workingDirectory }}
     - name: Commit and Tag
-      if: inputs.workingDirectory != './'
+      if: ${{ inputs.workingDirectory != './' && !inputs.skipVersionCommit }}
       run: |
         git add .
         git commit -m "[no ci] Release ${{ env.CLEANED_VERSION }}"
         git fetch
         git rebase
     - name: Push
+      if: ${{ !inputs.skipVersionCommit }}
       run: |
         git push origin
       working-directory: ${{ inputs.workingDirectory }}
