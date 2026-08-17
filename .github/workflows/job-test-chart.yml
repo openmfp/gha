@@ -36,7 +36,10 @@ jobs:
         with:
           ref: ${{ inputs.branch }}
       - name: Unit Testing Chart
-        run: helm unittest ${{ inputs.chartsFolder }}/${{ inputs.chartName }}
+        run: helm unittest "$CHARTS_FOLDER/$CHART_NAME"
+        env:
+          CHARTS_FOLDER: ${{ inputs.chartsFolder }}
+          CHART_NAME: ${{ inputs.chartName }}
   lint:
     runs-on: ubuntu-latest
     steps:
@@ -63,11 +66,18 @@ jobs:
       - name: Run chart-testing (list-changed)
         id: list-changed
         run: |
-          changed=$(ct list-changed --target-branch ${{ github.event.repository.default_branch }} --chart-dirs=${{ inputs.chartsFolder }})
+          changed=$(ct list-changed --target-branch "$DEFAULT_BRANCH" --chart-dirs="$CHARTS_FOLDER")
           if [[ -n "$changed" ]]; then
             echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
+        env:
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+          CHARTS_FOLDER: ${{ inputs.chartsFolder }}
       - name: Run chart-testing (lint)
         if: steps.list-changed.outputs.changed == 'true'
-        run: ct lint --target-branch ${{ github.event.repository.default_branch }} --chart-dirs=${{ inputs.chartsFolder }} --validate-maintainers=false --chart-repos=${{ inputs.chartRepos }}
+        run: ct lint --target-branch "$DEFAULT_BRANCH" --chart-dirs="$CHARTS_FOLDER" --validate-maintainers=false --chart-repos="$CHART_REPOS"
+        env:
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+          CHARTS_FOLDER: ${{ inputs.chartsFolder }}
+          CHART_REPOS: ${{ inputs.chartRepos }}
   

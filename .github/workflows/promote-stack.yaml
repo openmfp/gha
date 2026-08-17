@@ -35,10 +35,14 @@ jobs:
       - name: Create promotion branch name
         id: branch
         run: |
-          git fetch origin "${{ inputs.sourceBranch }}:${{ inputs.sourceBranch }}"
-          git reset --hard "${{ inputs.sourceBranch }}"
-          BRANCH_NAME="promote/${{ inputs.stackRepo }}-${{ inputs.sourceBranch }}-${{ inputs.targetBranch }}"
+          git fetch origin "$SOURCE_BRANCH:$SOURCE_BRANCH"
+          git reset --hard "$SOURCE_BRANCH"
+          BRANCH_NAME="promote/$STACK_REPO-$SOURCE_BRANCH-$TARGET_BRANCH"
           echo "PULL_BRANCH_NAME=${BRANCH_NAME}" >> ${GITHUB_OUTPUT}
+        env:
+          SOURCE_BRANCH: ${{ inputs.sourceBranch }}
+          TARGET_BRANCH: ${{ inputs.targetBranch }}
+          STACK_REPO: ${{ inputs.stackRepo }}
       - name: Create Pull Request
         id: pull
         uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8

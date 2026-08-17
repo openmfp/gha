@@ -57,11 +57,18 @@ jobs:
           fi
       - name: Update till successful
         shell: bash
+        env:
+          GITHUB_USER: ${{ inputs.githubUser }}
+          GITHUB_USER_EMAIL: ${{ inputs.githubUserEmail }}
+          VERSION_REPO_BRANCH: ${{ inputs.versionRepoBranch }}
+          COMPONENT_VERSION_KEY: ${{ inputs.componentVersionKey }}
+          VERSION: ${{ inputs.version }}
+          VERSIONS_FILE: ${{ inputs.versionsFile }}
         run: |
           count=1
 
-          git config --global user.name ${{ inputs.githubUser }}
-          git config --global user.email ${{ inputs.githubUserEmail }}
+          git config --global user.name "$GITHUB_USER"
+          git config --global user.email "$GITHUB_USER_EMAIL"
 
           clean_and_retry () {
             echo "trying for the $count time, to push"
@@ -73,17 +80,17 @@ jobs:
             fi
             git reset --hard HEAD^1
             git fetch
-            git rebase origin/${{ inputs.versionRepoBranch }}
+            git rebase "origin/$VERSION_REPO_BRANCH"
             apply_change_and_commit
-            git push origin ${{ inputs.versionRepoBranch }} || clean_and_retry
+            git push origin "$VERSION_REPO_BRANCH" || clean_and_retry
           }
 
           apply_change_and_commit () {
-            yq e -i '."${{ inputs.componentVersionKey }}" = "${{ inputs.version }}"' ${{ inputs.versionsFile }}
-            echo "set version ${{ inputs.version }} for ${{ inputs.componentVersionKey }} in ${{ inputs.versionsFile }}"
-            git add ${{ inputs.versionsFile }}
-            git commit -m "Updating version of [${{ inputs.componentVersionKey }}] to ${{ inputs.version }}" || echo "version was already up to date"
+            yq e -i '.[strenv(COMPONENT_VERSION_KEY)] = strenv(VERSION)' "$VERSIONS_FILE"
+            echo "set version $VERSION for $COMPONENT_VERSION_KEY in $VERSIONS_FILE"
+            git add "$VERSIONS_FILE"
+            git commit -m "Updating version of [$COMPONENT_VERSION_KEY] to $VERSION" || echo "version was already up to date"
           }
 
           apply_change_and_commit
-          git push origin ${{ inputs.versionRepoBranch }} || clean_and_retry
+          git push origin "$VERSION_REPO_BRANCH" || clean_and_retry

@@ -50,7 +50,10 @@ jobs:
 
       - name: kube-score run
         run: |
-          kube-score score ${{ inputs.kube_score_target_manifests }} ${{ inputs.kube_score_args }}
+          kube-score score $TARGET_MANIFESTS $KUBE_SCORE_ARGS
+        env:
+          TARGET_MANIFESTS: ${{ inputs.kube_score_target_manifests }}
+          KUBE_SCORE_ARGS: ${{ inputs.kube_score_args }}
 
       - name: kube-linter
         if: always() # run this step even if previous fails

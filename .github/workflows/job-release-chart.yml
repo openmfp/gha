@@ -56,14 +56,22 @@ jobs:
       - name: Update Chart version
         if: ${{ inputs.updateVersion }}
         run: |
-          yq e -i '.version = "${{ inputs.version }}"' ${{ inputs.chartFolder }}/Chart.yaml
+          yq e -i '.version = strenv(VERSION)' "$CHART_FOLDER/Chart.yaml"
+        env:
+          VERSION: ${{ inputs.version }}
+          CHART_FOLDER: ${{ inputs.chartFolder }}
       - name: Update Image Tag
         if: ${{ inputs.updateImageTag && inputs.updateVersion }}
         run: |
-          yq e -i '.image.tag = "${{ inputs.version }}"' ${{ inputs.chartFolder }}/values.yaml
+          yq e -i '.image.tag = strenv(VERSION)' "$CHART_FOLDER/values.yaml"
+        env:
+          VERSION: ${{ inputs.version }}
+          CHART_FOLDER: ${{ inputs.chartFolder }}
       - name: Retrieve helm chart version
         id: chart_version
-        run: echo "version=$(yq '.version' ${{ inputs.chartFolder }}/Chart.yaml)" >> $GITHUB_OUTPUT
+        run: echo "version=$(yq '.version' "$CHART_FOLDER/Chart.yaml")" >> $GITHUB_OUTPUT
+        env:
+          CHART_FOLDER: ${{ inputs.chartFolder }}
       - name: Push Helm chart
         uses: bsord/helm-push@51f937208fed71540ab5ec5215cf9b3ecae9c7b7 # v4.2.0
         with:
@@ -75,7 +83,11 @@ jobs:
       - name: Update CRD Chart version
         if: ${{ inputs.publishCRDChart && inputs.updateVersion }}
         run: |
-          yq e -i '.version = "${{ inputs.version }}"' ${{ inputs.chartFolder }}/${{ inputs.crdChartPath }}/Chart.yaml
+          yq e -i '.version = strenv(VERSION)' "$CHART_FOLDER/$CRD_CHART_PATH/Chart.yaml"
+        env:
+          VERSION: ${{ inputs.version }}
+          CHART_FOLDER: ${{ inputs.chartFolder }}
+          CRD_CHART_PATH: ${{ inputs.crdChartPath }}
       - name: Push CRD Helm chart
         uses: bsord/helm-push@51f937208fed71540ab5ec5215cf9b3ecae9c7b7 # v4.2.0
         if: ${{ inputs.publishCRDChart }}

@@ -47,11 +47,15 @@ jobs:
       - name: Publish raw Tag
         if: ${{ !github.head_ref }}
         run: |
-          git tag ${{ steps.semver.outputs.nextStrict }}
-          if [ -n "${{ inputs.apiPackagePath }}" ]; then
-            git tag "${{ inputs.apiPackagePath }}/${{ steps.semver.outputs.next }}"
+          git tag "$NEXT_STRICT"
+          if [ -n "$API_PACKAGE_PATH" ]; then
+            git tag "$API_PACKAGE_PATH/$NEXT"
           fi
           git push --tags
+        env:
+          NEXT_STRICT: ${{ steps.semver.outputs.nextStrict }}
+          NEXT: ${{ steps.semver.outputs.next }}
+          API_PACKAGE_PATH: ${{ inputs.apiPackagePath }}
 
     outputs:
       version: ${{ steps.semver.outputs.next }}

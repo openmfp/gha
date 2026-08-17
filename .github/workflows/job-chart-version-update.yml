@@ -33,6 +33,9 @@ jobs:
            ${{ inputs.chartName }}
            helm-charts
            helm-charts-priv
-      - run: gh workflow run update-chart-parameters.yaml --repo ${{ inputs.targetRepository }} --field chart=${{ inputs.chart }} --field appVersion=${{ inputs.appVersion }}
+      - run: gh workflow run update-chart-parameters.yaml --repo "$TARGET_REPOSITORY" --field chart="$CHART" --field appVersion="$APP_VERSION"
         env:
           GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}
+          TARGET_REPOSITORY: ${{ inputs.targetRepository }}
+          CHART: ${{ inputs.chart }}
+          APP_VERSION: ${{ inputs.appVersion }}

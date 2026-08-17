@@ -19,7 +19,9 @@ jobs:
           upstream_contact: ""
       - name: Login Gitub CLI
         run: |
-          gh auth login --with-token <<< "${{ secrets.GITHUB_TOKEN }}"
+          gh auth login --with-token <<< "$GH_TOKEN"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           path: repo
@@ -32,7 +34,7 @@ jobs:
             # check if the branch has changes to the main branch
             if ! git diff --quiet origin/main..origin/reuse-metadata-proposal; then
               echo "Changes detected, creating PR..."
-              gh pr create --title "License File Update" --body "Auto-generated PR to update License Information" --base main --head reuse-metadata-proposal --repo ${{ github.repository }}
+              gh pr create --title "License File Update" --body "Auto-generated PR to update License Information" --base main --head reuse-metadata-proposal --repo "$REPOSITORY"
             else
               echo "No changes in branch, skipping PR creation"
             fi
@@ -41,3 +43,4 @@ jobs:
           fi
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPOSITORY: ${{ github.repository }}

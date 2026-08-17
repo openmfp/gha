@@ -74,21 +74,24 @@ jobs:
       continue-on-error: true
     - name: Clean up prefix from version
       run: |
-        CLEANED_VERSION=$(echo ${{ inputs.version }} | cut -c$(wc -c <<<"${{ inputs.prefix }}")-) 
+        CLEANED_VERSION=$(echo "$VERSION" | cut -c$(wc -c <<<"$PREFIX")-)
         echo "CLEANED_VERSION=$CLEANED_VERSION" >> $GITHUB_ENV
+      env:
+        VERSION: ${{ inputs.version }}
+        PREFIX: ${{ inputs.prefix }}
     - name: Publish from dist folder
       if: ${{ inputs.publishFromDist }}
       run: |
-        npm version ${{ env.CLEANED_VERSION }}
+        npm version "$CLEANED_VERSION"
         npm publish --provenance --access public
         cd ..
-        npm version ${{ env.CLEANED_VERSION }} -m "[no ci] Release ${{ env.CLEANED_VERSION }}"
+        npm version "$CLEANED_VERSION" -m "[no ci] Release $CLEANED_VERSION"
       working-directory:
         ${{ inputs.workingDirectoryDist }}
     - name: Publish to npmjs
       if: ${{ !inputs.publishFromDist }}
       run: |
-        npm version ${{ env.CLEANED_VERSION }} -m "[no ci] Release ${{ env.CLEANED_VERSION }}"
+        npm version "$CLEANED_VERSION" -m "[no ci] Release $CLEANED_VERSION"
         npm publish --provenance --access public
       working-directory:
         ${{ inputs.workingDirectory }}
@@ -96,7 +99,7 @@ jobs:
       if: ${{ inputs.workingDirectory != './' && !inputs.skipVersionCommit }}
       run: |
         git add .
-        git commit -m "[no ci] Release ${{ env.CLEANED_VERSION }}"
+        git commit -m "[no ci] Release $CLEANED_VERSION"
         git fetch
         git rebase
     - name: Push
