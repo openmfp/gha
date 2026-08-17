@@ -17,7 +17,7 @@ on:
         description: 'Node version to use'
         required: false
         type: string
-        default: '20'
+        default: '24'
       repoVersionUpdate:
         required: false
         type: string
