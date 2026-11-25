@@ -18,14 +18,6 @@ on:
         required: false
         type: string
         default: '24'
-      repoVersionUpdate:
-        required: false
-        type: string
-        default: 'openmfp/helm-charts-priv'
-      chart:
-        required: false
-        type: string
-        default: ${{ github.event.repository.name }}
 
 jobs:
   auto-labeler:
@@ -43,13 +35,3 @@ jobs:
     with:
       release_branch: ${{ inputs.release_branch }}
       node_version: ${{ inputs.node_version }}
-
-  updateVersion:
-    needs: [createVersion, test]
-    if: ${{ (github.head_ref || github.ref) == format('refs/heads/{0}',inputs.release_branch) }}
-    uses: ./.github/workflows/job-chart-version-update.yml
-    secrets: inherit
-    with:
-      appVersion: ${{ needs.createVersion.outputs.version }}
-      chart: ${{ inputs.chart }}
-      targetRepository: ${{ inputs.repoVersionUpdate }}
