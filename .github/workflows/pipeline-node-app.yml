@@ -47,14 +47,14 @@ jobs:
     uses: ./.github/workflows/job-create-version.yml
     secrets: inherit
 
-  build:
+  test:
     uses: ./.github/workflows/job-node-test.yml
     with:
       release_branch: ${{ inputs.release_branch }}
       node_version: ${{ inputs.node_version }}
 
   updateVersion:
-    needs: [createVersion, build]
+    needs: [createVersion, test]
     if: ${{ (github.head_ref || github.ref) == format('refs/heads/{0}',inputs.release_branch) }}
     uses: ./.github/workflows/job-chart-version-update.yml
     secrets: inherit
