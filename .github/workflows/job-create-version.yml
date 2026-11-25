@@ -1,4 +1,8 @@
 name: Create Version
+
+permissions:
+  contents: write
+
 on:
   workflow_call:
     inputs:

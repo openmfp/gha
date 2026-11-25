@@ -1,4 +1,8 @@
 name: pipeline-chart
+
+permissions:
+  contents: read
+
 on:
   workflow_call:
     inputs:
@@ -48,6 +52,9 @@ jobs:
 
   release:
     needs: [testChart,checkHelmDocs]
+    permissions:
+      contents: write
+      packages: write
     uses: ./.github/workflows/job-release-chart.yml
     secrets: inherit
     with:

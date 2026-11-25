@@ -1,4 +1,8 @@
 name: Trigger Chart Version Update
+
+permissions:
+  contents: read
+
 on:
   workflow_call:
     inputs:

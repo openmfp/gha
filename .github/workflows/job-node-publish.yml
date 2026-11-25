@@ -1,4 +1,9 @@
 name: Node Test
+
+permissions:
+  contents: read
+  id-token: write # npm publish --provenance
+
 on:
   workflow_call:
     inputs:

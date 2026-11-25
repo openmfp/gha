@@ -1,4 +1,9 @@
 name: Release
+
+permissions:
+  contents: write # ncipollo release creation
+  packages: write # helm push to ghcr.io OCI registry
+
 on:
   workflow_call:
     inputs:

@@ -1,4 +1,9 @@
 name: Auto Labeler
+
+permissions:
+  contents: read
+  pull-requests: write
+
 on:
   workflow_call: {}
 
