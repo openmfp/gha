@@ -64,27 +64,25 @@ jobs:
       - name: Retrieve helm chart version
         id: chart_version
         run: echo "version=$(yq '.version' ${{ inputs.chartFolder }}/Chart.yaml)" >> $GITHUB_OUTPUT
+      - name: Log in to ghcr.io
+        run: |
+          echo "${GITHUB_TOKEN}" | helm registry login ghcr.io --username "${GITHUB_ACTOR}" --password-stdin
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_ACTOR: ${{ github.actor }}
       - name: Push Helm chart
-        uses: bsord/helm-push@51f937208fed71540ab5ec5215cf9b3ecae9c7b7 # v4.2.0
-        with:
-          useOCIRegistry: true
-          username: ${{ github.actor }}
-          access-token: ${{ secrets.GITHUB_TOKEN }}
-          registry-url:  oci://ghcr.io/${{ github.repository }}
-          chart-folder: ${{ inputs.chartFolder }}
+        run: |
+          helm package ${{ inputs.chartFolder }}
+          helm push $(ls *.tgz | head -1) oci://ghcr.io/${{ github.repository }}
       - name: Update CRD Chart version
         if: ${{ inputs.publishCRDChart && inputs.updateVersion }}
         run: |
           yq e -i '.version = "${{ inputs.version }}"' ${{ inputs.chartFolder }}/${{ inputs.crdChartPath }}/Chart.yaml
       - name: Push CRD Helm chart
-        uses: bsord/helm-push@51f937208fed71540ab5ec5215cf9b3ecae9c7b7 # v4.2.0
         if: ${{ inputs.publishCRDChart }}
-        with:
-          useOCIRegistry: true
-          username: ${{ github.actor }}
-          access-token: ${{ secrets.GITHUB_TOKEN }}
-          registry-url:  oci://ghcr.io/${{ github.repository }}
-          chart-folder: ${{ inputs.chartFolder }}/${{ inputs.crdChartPath }}
+        run: |
+          helm package ${{ inputs.chartFolder }}/${{ inputs.crdChartPath }}
+          helm push $(ls *.tgz | tail -1) oci://ghcr.io/${{ github.repository }}
       - name: Create Release
         if: ${{ inputs.pushTags }}
         uses: ncipollo/release-action@339a81892b84b4eeb0f6e744e4574d79d0d9b8dd # v1.21.0
