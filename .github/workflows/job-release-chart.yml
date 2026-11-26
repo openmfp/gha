@@ -81,9 +81,10 @@ jobs:
       - name: Push Helm chart
         run: |
           helm package "$CHART_FOLDER"
-          helm push $(ls *.tgz | head -1) oci://ghcr.io/${{ github.repository }}
+          helm push "$(ls *.tgz | head -1)" "oci://ghcr.io/$REPOSITORY"
         env:
           CHART_FOLDER: ${{ inputs.chartFolder }}
+          REPOSITORY: ${{ github.repository }}
       - name: Update CRD Chart version
         if: ${{ inputs.publishCRDChart && inputs.updateVersion }}
         run: |
@@ -96,10 +97,11 @@ jobs:
         if: ${{ inputs.publishCRDChart }}
         run: |
           helm package "$CHART_FOLDER/$CRD_CHART_PATH"
-          helm push $(ls *.tgz | tail -1) oci://ghcr.io/${{ github.repository }}
+          helm push "$(ls *.tgz | tail -1)" "oci://ghcr.io/$REPOSITORY"
         env:
           CHART_FOLDER: ${{ inputs.chartFolder }}
           CRD_CHART_PATH: ${{ inputs.crdChartPath }}
+          REPOSITORY: ${{ github.repository }}
       - name: Create Release
         if: ${{ inputs.pushTags }}
         uses: ncipollo/release-action@339a81892b84b4eeb0f6e744e4574d79d0d9b8dd # v1.21.0
