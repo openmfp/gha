@@ -30,10 +30,14 @@ jobs:
       - name: Install helm-docs
         run: go install github.com/norwoodj/helm-docs/cmd/helm-docs@37d3055fece566105cf8cff7c17b7b2355a01677 # v1.14.2
       - name: Run helm-docs
+        env:
+          CHART_FOLDER: ${{ inputs.chartFolder }}
+          HEADER_FILE: ${{ inputs.headerFile }}
+          FOOTER_FILE: ${{ inputs.footerFile }}
         run: |
           helm-docs \
-            --chart-search-root "${{ inputs.chartFolder }}" \
-            --template-files "${{ inputs.headerFile }}" \
+            --chart-search-root "$CHART_FOLDER" \
+            --template-files "$HEADER_FILE" \
             --template-files "README.md.gotmpl" \
-            --template-files "${{ inputs.footerFile }}"
+            --template-files "$FOOTER_FILE"
       - run: git diff --exit-code
