@@ -23,14 +23,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/setup-go@d8cbb8045d7f43706b9177cceb36c1f91a6644d5 # v7
+        with:
+          go-version: stable
+          cache: false
       - name: Install helm-docs
-        run: |
-          HELM_DOCS_VERSION="1.14.2"
-          curl -sSL -o helm-docs.tar.gz \
-            "https://github.com/norwoodj/helm-docs/releases/download/v${HELM_DOCS_VERSION}/helm-docs_${HELM_DOCS_VERSION}_Linux_x86_64.tar.gz"
-          tar xzf helm-docs.tar.gz helm-docs
-          sudo mv helm-docs /usr/local/bin/helm-docs
-          rm helm-docs.tar.gz
+        run: go install github.com/norwoodj/helm-docs/cmd/helm-docs@37d3055fece566105cf8cff7c17b7b2355a01677 # v1.14.2
       - name: Run helm-docs
         run: |
           helm-docs \
