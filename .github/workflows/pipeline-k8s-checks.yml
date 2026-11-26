@@ -2,6 +2,9 @@
 # using kube-score and kube-linter tools.
 name: K8S Checks
 
+permissions:
+  contents: read
+
 on:
   workflow_call:
     inputs:

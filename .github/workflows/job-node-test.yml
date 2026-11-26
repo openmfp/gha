@@ -1,4 +1,8 @@
 name: Node Test
+
+permissions:
+  contents: read
+
 on:
   workflow_call:
     inputs:

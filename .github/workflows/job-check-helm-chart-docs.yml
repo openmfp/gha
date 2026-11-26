@@ -1,4 +1,8 @@
 name: Check Helm Chart Docs
+
+permissions:
+  contents: read
+
 on:
   workflow_call:
     inputs:

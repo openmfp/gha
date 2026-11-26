@@ -1,5 +1,9 @@
 name: Docker
 
+permissions:
+  contents: read
+  packages: write # push helm-unittest image to ghcr.io
+
 on:
   push:
     branches: [ main ]
