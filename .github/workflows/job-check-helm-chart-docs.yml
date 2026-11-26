@@ -23,11 +23,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Install helm-docs
+        run: |
+          HELM_DOCS_VERSION="1.14.2"
+          curl -sSL -o helm-docs.tar.gz \
+            "https://github.com/norwoodj/helm-docs/releases/download/v${HELM_DOCS_VERSION}/helm-docs_${HELM_DOCS_VERSION}_Linux_x86_64.tar.gz"
+          tar xzf helm-docs.tar.gz helm-docs
+          sudo mv helm-docs /usr/local/bin/helm-docs
+          rm helm-docs.tar.gz
       - name: Run helm-docs
-        uses: losisin/helm-docs-github-action@9e0787c426fdec38be6288bb5c0559dcb388412c # v2
-        with:
-          fail-on-diff: false
-          chart-search-root: ${{ inputs.chartFolder }}
-          template-files: ${{ inputs.headerFile }},README.md.gotmpl,${{ inputs.footerFile }}
-          git-push: false
+        run: |
+          helm-docs \
+            --chart-search-root "${{ inputs.chartFolder }}" \
+            --template-files "${{ inputs.headerFile }}" \
+            --template-files "README.md.gotmpl" \
+            --template-files "${{ inputs.footerFile }}"
       - run: git diff --exit-code
