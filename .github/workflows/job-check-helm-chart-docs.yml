@@ -27,11 +27,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-      - name: Run helm-docs
-        uses: losisin/helm-docs-github-action@9e0787c426fdec38be6288bb5c0559dcb388412c # v2
+      - uses: actions/setup-go@d8cbb8045d7f43706b9177cceb36c1f91a6644d5 # v7
         with:
-          fail-on-diff: false
-          chart-search-root: ${{ inputs.chartFolder }}
-          template-files: ${{ inputs.headerFile }},README.md.gotmpl,${{ inputs.footerFile }}
-          git-push: false
+          go-version: stable
+          cache: false
+      - name: Install helm-docs
+        run: go install github.com/norwoodj/helm-docs/cmd/helm-docs@37d3055fece566105cf8cff7c17b7b2355a01677 # v1.14.2
+      - name: Run helm-docs
+        env:
+          CHART_FOLDER: ${{ inputs.chartFolder }}
+          HEADER_FILE: ${{ inputs.headerFile }}
+          FOOTER_FILE: ${{ inputs.footerFile }}
+        run: |
+          helm-docs \
+            --chart-search-root "$CHART_FOLDER" \
+            --template-files "$HEADER_FILE" \
+            --template-files "README.md.gotmpl" \
+            --template-files "$FOOTER_FILE"
       - run: git diff --exit-code
